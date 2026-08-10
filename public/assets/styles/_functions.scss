@@ -1,0 +1,7 @@
+@function px-to-rem($px, $base: 16) {
+    @return calc($px / $base) * 1rem;
+}
+
+@function use-clamp($min, $fluid, $max) {
+    @return clamp(px-to-rem($min), $fluid, px-to-rem($max));
+}

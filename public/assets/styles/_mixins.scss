@@ -1,0 +1,35 @@
+@use './functions' as func;
+@use 'sass:map';
+@use './variables' as v;
+
+@mixin flex($direction: column, $align: center, $justify: center, $gap: 0) {
+    display: flex;
+    flex-direction: $direction;
+    align-items: $align;
+    justify-content: $justify;
+    gap: func.px-to-rem($gap);
+}
+
+@mixin tablet {
+    @media (min-width: 768px) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin wide {
+    @media (min-width: 1440px) {
+        @content;
+    }
+}
+
+@mixin font-inter($weight, $min, $fluid, $max) {
+    font-family: 'Inter';
+    font-weight: map.get(v.$f-weight, $weight);
+    font-size: clamp(func.px-to-rem($min), $fluid, func.px-to-rem($max));
+}
