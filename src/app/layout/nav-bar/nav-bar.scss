@@ -1,0 +1,19 @@
+@use '../../../../public/assets/styles/main.scss' as *;
+
+nav {
+    height: 12dvh;
+    background: $main-color;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+
+    @include flex(row, $justify: space-evenly, $gap: 4);
+
+    img {
+        height: 70px;
+    }
+
+}
