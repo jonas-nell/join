@@ -11,10 +11,15 @@ nav {
     z-index: 10;
     padding: 0 16px;
 
-    @include flex(row, $justify: space-around, $gap: 4);
+    @include flex(row, $justify: space-around, $gap: 6);
 
-    img {
-        height: 70px;
+    a {
+        @include flex($gap: 4);
+        color: $font-dirty-white;
+        font-family: Open Sans;
+
+        img {
+            height: 35px;
+        }
     }
-
 }
