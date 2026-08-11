@@ -41,3 +41,16 @@ export function createProfileColor(userId: string): string {
     // Return the color at the calculated position.
     return PROFILE_COLORS[colorIndex];
 }
+
+// Create up to two initials from a username.
+export function createProfileInitials(
+  userName: string
+): string {
+  return userName
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((namePart) => namePart.charAt(0))
+    .join('')
+    .toUpperCase();
+}

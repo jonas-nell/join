@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { Profile } from '../../interfaces/profile';
-import { createProfileColor } from '../../helpers/profile-color';
+import { createProfileColor, createProfileInitials } from '../../helpers/profile-helper';
 import { SupabaseService } from '../../services/supabase-service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -25,6 +25,7 @@ export class UserList implements OnInit {
 
     // Connecting the color helper to the HTML template.
     readonly getProfileColor = createProfileColor;
+    readonly getInitials = createProfileInitials;
 
     // Angular calls ngOnInit() when the component first appears.
     async ngOnInit(): Promise<void> {
@@ -78,15 +79,4 @@ export class UserList implements OnInit {
             profiles,
         }));
     });
-
-    // Create up to two initials from the user's name.
-    getInitials(name: string): string {
-        return name
-            .trim()
-            .split(/\s+/)
-            .slice(0, 2)
-            .map((namePart) => namePart.charAt(0))
-            .join('')
-            .toUpperCase();
-    }
 }
