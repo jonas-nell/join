@@ -1,0 +1,41 @@
+// Mobile: show the contact list first.
+.contacts-layout {
+  min-height: 100vh;
+}
+
+// Mobile: hide the profile until a user is selected.
+.contacts-layout__profile {
+  display: none;
+}
+
+// Mobile: hide the list when a profile is open.
+.contacts-layout.profile-open {
+  .contacts-layout__list {
+    display: none;
+  }
+
+  // Show the selected profile.
+  .contacts-layout__profile {
+    display: block;
+  }
+}
+
+// Desktop: show the list and profile beside each other.
+@media (min-width: 1024px) {
+  .contacts-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+      padding-left: clamp(250px, 20%, 400px);
+  }
+
+  // Always show the list on desktop.
+  .contacts-layout__list {
+    display: block;
+    border-right: 1px solid #e5e7eb;
+  }
+
+  // Always show the profile area on desktop.
+  .contacts-layout__profile {
+    display: block;
+  }
+}
