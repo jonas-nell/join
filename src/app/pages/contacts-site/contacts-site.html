@@ -1,1 +1,15 @@
-<p>contacts-site works!</p>
+<div
+  class="contacts-layout"
+  [class.profile-open]="profileOpen()"
+>
+  <aside class="contacts-layout__list">
+    <app-user-list></app-user-list>
+  </aside>
+
+  <main class="contacts-layout__profile">
+    <router-outlet
+      (activate)="profileOpen.set(true)"
+      (deactivate)="profileOpen.set(false)"
+    />
+  </main>
+</div>

@@ -1,0 +1,66 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+.user-list {
+    display: grid;
+    margin: 0 auto;
+    width: 350px;
+}
+
+.user-group {
+    display: grid;
+
+    h2 {
+        @include font-inter(400, 20, 20px, 20);
+
+        // margin: 0;
+        padding: 16px 30px;
+
+        border-bottom: 1px solid $border-contact-list;
+       
+    }
+}
+
+.user {
+    @include flex($direction: row, $align: center, $justify: left, $gap: 16);
+    padding: 12px 20px;
+
+    &:hover {
+    background-color: $main-color;
+  }
+}
+
+// Highlight the currently selected profile.
+.user.active {
+  background-color: $main-color;
+}
+
+.user__badge {
+    @include font-inter(400, 16, 16px, 16);
+
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    place-items: center;
+
+    color: #ffffff;
+    border-radius: 50%;
+}
+
+.user__information {
+    display: grid;
+    gap: 2px;
+}
+
+.user__name {
+    @include font-inter(400, 20, 20px, 20);
+
+    margin: 0;
+}
+
+.user__email {
+    @include font-inter(400, 16, 16px, 16);
+
+    color: #1683ff;
+    text-decoration: none;
+}
