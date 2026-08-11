@@ -1,0 +1,17 @@
+@use '../../../../public/assets/styles/mixins' as *;
+
+
+.legal-wrapper{
+    @include font-inter(regular, 16, 2dvh, 16);
+    padding: 16px 16px;
+    width: 100%;
+    @include flex($align:left, $gap: 12);
+    
+    h2 {
+        font-size: 42px;
+    }
+
+    h3{
+        font-size: 20px;
+    }
+}
