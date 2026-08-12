@@ -9,15 +9,15 @@ aside {
     background: $main-color;
     z-index: 10;
 
-    @include flex($gap: 72);
+    @include flex($gap: 12);
 
-    
     @include desktop {
         top: 0;
-        bottom: auto;
         height: 100%;
         width: clamp(250px, 20%, 400px);
-        padding: 64px 32px;
+        padding: 64px 0;
+
+        @include flex($justify:start, $gap: 84);
     }
 
     .logo {
@@ -33,34 +33,48 @@ aside {
 
         @include desktop {
             @include flex($gap: 16);
+            color: $font-dirty-white;
+            font-family: Open Sans;
+
+            margin-top: auto;
         }
     }
-    
+
     nav {
         width: 100%;
-        height: 100%;
-        padding: 0 16px;
+        padding: 0;
+        @include flex(row, $justify: space-around, $align: center, $gap: 6);
 
-        @include flex(row, $justify: space-around, $gap: 6);
-        
         @include desktop {
-            @include flex($justify: start, $gap: 12);
-            width: auto;
+            @include flex(column, $gap: 12);
+            width: 100%;
         }
     }
 
-    a {
-        @include flex($gap: 4);
-        color: $font-dirty-white;
-        font-family: Open Sans;
+    .nav-link {
+        width: 100%;
 
-        @include desktop{
-            width: 100%;
-            @include flex(row, center, start, 28);
+        @include desktop {
+            @include flex();
+
+            &:hover {
+                background: $button-blue;
+            }
         }
-    
-        img {
-            height: 35px;
+
+        a {
+            @include flex($gap: 4);
+            color: $font-dirty-white;
+            font-family: Open Sans;
+
+            @include desktop {
+                width: 160px;
+                @include flex($direction: row, $align: center, $justify: start, $gap: 12);
+            }
+
+            img {
+                height: 30px;
+            }
         }
     }
 }
