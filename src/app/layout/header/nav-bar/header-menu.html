@@ -1,9 +1,9 @@
 
 <dialog appDialog="menu">
     <nav>
-        <a href="">Help</a>
-        <a href="">Legal Notice</a>
-        <a href="">Privacy Policy</a>
-        <a href="">Logout</a>
+        <a [routerLink]="['/help']" routerLinkActive="active" >Help</a>
+        <a [routerLink]="['/legal-notice']" routerLinkActive="active">Legal Notice</a>
+        <a [routerLink]="['/privacy-policy']" routerLinkActive="active">Privacy Policy</a>
+        <a [routerLink]="['/']" routerLinkActive="active">Logout</a>
     </nav>
 </dialog>
