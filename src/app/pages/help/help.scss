@@ -2,9 +2,15 @@
 
 .legal-wrapper {
     @include font-inter(regular, 16, 2dvh, 16);
-    padding: 16px 16px;
+    padding: 18px 16px;
     width: 100%;
     @include flex($align: start, $gap: 12);
+
+    app-back-button {
+        position: absolute;
+        top: 18px;
+        right: 16px;
+    }
 
     h2 {
         font-size: 42px;
@@ -32,5 +38,9 @@
         padding-left: calc(clamp(250px, 20%, 400px) + 64px);
         padding-right: 32px;
         max-width: 1300px;
+
+        app-back-button{
+            display: none;
+        }
     }
 }
