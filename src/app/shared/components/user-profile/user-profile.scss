@@ -1,0 +1,93 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+// Add space around the profile information.
+.profile {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+// Show the badge and username beside each other.
+.profile__header {
+    @include flex($direction: row, $align: center, $justify: left, $gap: 12);
+    // display: flex;
+    // align-items: center;
+    // gap: 16px;
+}
+
+// Display the initials inside a colored circle.
+.profile__badge {
+    @include font-inter(regular, 28, 4vw, 48);
+
+    display: grid;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    place-items: center;
+
+    color: #ffffff;
+    border-radius: 50%;
+
+    // Add a white ring and a thin grey ring.
+    box-shadow:
+        0 0 0 2px #ffffff,
+        0 0 0 3px #cbd5e1;
+}
+
+// Style the selected username.
+.profile__name {
+    @include font-inter(bold, 28, 2vw, 48);
+
+    margin: 0;
+}
+
+// Show the role below the username.
+.profile__role {
+    margin: 4px 0 0;
+    color: red;
+}
+
+// Add space above the contact information.
+.profile__information {
+    margin-top: 24px;
+
+    h3 {
+        @include font-inter(regular, 20, 20px, 20);
+        margin: 0 0 16px;
+    }
+}
+
+// Display the label above its value.
+.profile__field {
+    display: grid;
+    gap: 4px;
+    @include font-inter(regular, 16, 16px, 16);
+    margin-bottom: 16px;
+
+    span {
+        font-weight: 600;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    a {
+        color: $email-address;
+        text-decoration: none;
+    }
+}
+
+// Desktop: let the profile use the available space.
+@include desktop {
+    .profile {
+        max-width: none;
+        margin: 0;
+    }
+
+    .profile__badge {
+        width: 120px;
+        height: 120px;
+    }
+}

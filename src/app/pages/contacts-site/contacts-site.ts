@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { UserList } from '../../shared/components/user-list/user-list';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-contacts-site',
-  imports: [RouterOutlet, UserList],
+  imports: [RouterLink, RouterOutlet, UserList],
   templateUrl: './contacts-site.html',
   styleUrl: './contacts-site.scss',
 })

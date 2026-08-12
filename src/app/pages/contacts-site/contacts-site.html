@@ -1,15 +1,26 @@
-<div
-  class="contacts-layout"
-  [class.profile-open]="profileOpen()"
->
-  <aside class="contacts-layout__list">
-    <app-user-list></app-user-list>
-  </aside>
+<div class="contacts-layout" [class.profile-open]="profileOpen()">
+    <aside class="contacts-layout__list">
+        <app-user-list></app-user-list>
+    </aside>
 
-  <main class="contacts-layout__profile">
-    <router-outlet
-      (activate)="profileOpen.set(true)"
-      (deactivate)="profileOpen.set(false)"
-    />
-  </main>
+    <main class="contacts-layout__profile">
+        <header class="contacts-header">
+            <div class="contacts-header__text">
+        <h1>Contacts</h1>
+        <p>Better with a team</p>
+      </div>
+            <!-- When a profile is selected, displays UserProfile below it -->
+            @if (profileOpen()) {
+                <a
+                    class="contacts-header__back"
+                    routerLink="/contacts"
+                    aria-label="Back to contacts"
+                >
+                    ←
+                </a>
+            }
+        </header>
+
+        <router-outlet (activate)="profileOpen.set(true)" (deactivate)="profileOpen.set(false)" />
+    </main>
 </div>

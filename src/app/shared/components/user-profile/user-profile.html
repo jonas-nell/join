@@ -1,0 +1,54 @@
+@if (loading()) {
+    <p>Loading profile...</p>
+}
+
+@if (errorMessage()) {
+    <p>{{ errorMessage() }}</p>
+}
+
+@if (!loading() && profile(); as selectedProfile) {
+    <article class="profile">
+        <header class="profile__header">
+            <div
+                class="profile__badge"
+                [style.background-color]="getProfileColor(selectedProfile.id)"
+            >
+                {{ getInitials(selectedProfile.user_name) }}
+            </div>
+
+            <div>
+                <h2 class="profile__name">
+                    {{ selectedProfile.user_name }}
+                </h2>
+
+                <p class="profile__role">
+                    {{ selectedProfile.user_role }}
+                </p>
+            </div>
+        </header>
+
+        <section class="profile__information">
+            <h3>Contact information</h3>
+
+            <div class="profile__field">
+                <span>Email</span>
+
+                <a [href]="'mailto:' + selectedProfile.user_email">
+                    {{ selectedProfile.user_email }}
+                </a>
+            </div>
+
+            <div class="profile__field">
+                <span>Phone</span>
+
+                @if (selectedProfile.user_phone) {
+                    <a [href]="'tel:' + selectedProfile.user_phone">
+                        {{ selectedProfile.user_phone }}
+                    </a>
+                } @else {
+                    <p>No phone number</p>
+                }
+            </div>
+        </section>
+    </article>
+}
