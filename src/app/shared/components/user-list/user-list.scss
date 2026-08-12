@@ -1,0 +1,161 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+// Allow the component to use the available height.
+:host {
+    display: block;
+    height: 100%;
+}
+
+// Let the list use the width of its parent.
+.user-list {
+    display: grid;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+// Add space around loading and error messages.
+.user-list__message {
+    margin: 16px;
+}
+
+// Hide the Add contact button on mobile.
+.user-list__add {
+    display: none;
+}
+
+// Separate the alphabetical user groups.
+.user-group {
+    display: grid;
+
+    h2 {
+        @include font-inter(bold, 20, 20px, 20);
+
+        // Keep 20px of space on the left and right.
+        width: calc(100% - 40px);
+        margin: 0 auto;
+        padding: 12px 0;
+
+        border-bottom: 1px solid $border-contact-list;
+
+        span {
+            // Use the same width as the user badge.
+            display: block;
+            width: 42px;
+
+            // Center the letter inside the badge width.
+            text-align: center;
+        }
+    }
+}
+
+// Make the complete user row clickable.
+.user {
+    @include flex($direction: row, $align: center, $justify: left, $gap: 12);
+
+    min-width: 0;
+    padding: 10px 20px;
+
+    color: inherit;
+    text-decoration: none;
+}
+
+.user__badge {
+    @include font-inter(regular, 16, 16px, 16);
+
+    display: grid;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    place-items: center;
+
+    color: #ffffff;
+    border-radius: 50%;
+}
+
+// Prevent long names and emails from widening the list.
+.user__information {
+    display: grid;
+    min-width: 0;
+    gap: 2px;
+}
+
+.user__name {
+    @include font-inter(regular, 20, 20px, 20);
+
+    margin: 0;
+}
+
+.user__email {
+    @include font-inter(regular, 16, 16px, 16);
+
+    color: $email-address;
+    text-decoration: none;
+}
+
+@include desktop {
+    .user-list {
+        padding-top: 16px;
+    }
+
+    // Show the Add contact button on desktop.
+    .user-list__add {
+        @include font-inter(bold, 20, 20px, 20);
+        @include flex($direction: row, $align: center, $justify: center, $gap: 10);
+
+        width: calc(100% - 24px);
+        margin: 0 12px 8px;
+        padding: 10px 16px;
+
+        color: #ffffff;
+
+        background-color: $main-color;
+        border: 0;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    // Keep the desktop rows away from the list edges.
+    .user {
+        margin: 0 12px;
+        padding: 9px 12px;
+
+        border-radius: 6px;
+    }
+
+    .user-group {
+        h2 {
+            // Match the 12px margin of the desktop user row.
+            width: calc(100% - 24px);
+            margin: 0 12px;
+            padding: 12px;
+
+            span {
+                // Keep the letter centered with the 42px badge.
+                width: 42px;
+                text-align: center;
+            }
+        }
+    }
+
+    // Add a hover background only on desktop.
+    .user:hover {
+        background-color: $border-contact-list;
+    }
+
+    // Highlight the selected contact only on desktop.
+    .user.active {
+        color: #ffffff;
+        background-color: $main-color;
+
+        // Add a white ring and a thin grey ring.
+        .user__badge {
+            box-shadow:
+                0 0 0 2px #ffffff,
+                0 0 0 3px #cbd5e1;
+        }
+        .user__name {
+            color: #ffffff;
+        }
+    }
+}

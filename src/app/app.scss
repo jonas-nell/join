@@ -1,0 +1,16 @@
+@use '../../public/assets/styles/main.scss' as *;
+
+// Desktop: keep the application inside the browser height.
+@include desktop {
+  :host {
+    display: block;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  main {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+}

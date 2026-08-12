@@ -21,3 +21,22 @@
     max-width: 1440px;
     margin: 0 auto;
 }
+
+// Mobile: leave room for the fixed bottom navigation.
+body {
+    padding-bottom: 12dvh;
+}
+
+// Desktop: remove the mobile navigation space and page scrolling,
+// only user-list should scroll...
+@include desktop {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    padding-bottom: 0;
+  }
+}

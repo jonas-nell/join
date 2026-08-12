@@ -1,0 +1,51 @@
+@if (loading()) {
+    <p class="user-list__message">Loading users...</p>
+}
+
+@if (errorMessage()) {
+    <p class="user-list__message">
+        {{ errorMessage() }}
+    </p>
+}
+
+@if (!loading() && !errorMessage()) {
+    <div class="user-list">
+        <button class="user-list__add" type="button">
+            <span>Add new contact</span>
+            <span aria-hidden="true">＋</span>
+        </button>
+
+        @for (group of groupedProfiles(); track group.letter) {
+            <section class="user-group">
+                <h2>
+                    <span>{{ group.letter }}</span>
+                </h2>
+
+                @for (profile of group.profiles; track profile.id) {
+                    <a
+                        class="user"
+                        [routerLink]="['/contacts', profile.id]"
+                        routerLinkActive="active"
+                    >
+                        <div
+                            class="user__badge"
+                            [style.background-color]="getProfileColor(profile.id)"
+                        >
+                            {{ getInitials(profile.user_name) }}
+                        </div>
+
+                        <div class="user__information">
+                            <p class="user__name">
+                                {{ profile.user_name }}
+                            </p>
+
+                            <span class="user__email">
+                                {{ profile.user_email }}
+                            </span>
+                        </div>
+                    </a>
+                }
+            </section>
+        }
+    </div>
+}
