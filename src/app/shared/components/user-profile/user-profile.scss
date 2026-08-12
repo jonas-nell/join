@@ -10,7 +10,7 @@
 
 // Show the badge and username beside each other.
 .profile__header {
-    @include flex($direction: row, $align: center, $justify: left, $gap: 12);
+    @include flex($direction: row, $align: center, $justify: left, $gap: 20);
     // display: flex;
     // align-items: center;
     // gap: 16px;
@@ -37,7 +37,7 @@
 
 // Style the selected username.
 .profile__name {
-    @include font-inter(bold, 28, 2vw, 48);
+    @include font-inter(bold, 28, 4vw, 48);
 
     margin: 0;
 }
@@ -48,9 +48,14 @@
     color: red;
 }
 
-// Add space above the contact information.
+// Hide the Edit and Delete buttons on mobile.
+.profile__actions {
+    display: none;
+}
+
+// Add space above the contact isnformation.
 .profile__information {
-    margin-top: 24px;
+    margin-top: 60px;
 
     h3 {
         @include font-inter(regular, 20, 20px, 20);
@@ -74,8 +79,111 @@
     }
 
     a {
+        // Keep the clickable area as wide as the text.
+        width: fit-content;
         color: $email-address;
         text-decoration: none;
+    }
+}
+
+// // Cover the page while a popup is open.
+// .popup-backdrop {
+//     position: fixed;
+//     inset: 0;
+//     z-index: 20;
+
+//     display: grid;
+//     place-items: center;
+
+//     padding: 20px;
+//     background-color: rgb(0 0 0 / 35%);
+// }
+
+// Cover the page while a popup is open.
+.popup-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+
+    display: grid;
+    place-items: center;
+
+    padding: 20px;
+
+    background-color: rgb(15 23 42 / 45%);
+}
+
+// Display the popup above the dark background.
+.popup {
+    width: min(100%, 420px);
+    padding: 28px;
+
+    color: #1e293b;
+    text-align: center;
+
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgb(0 0 0 / 20%);
+
+    h2 {
+        @include font-inter(bold, 24, 24px, 24);
+
+        margin: 0 0 12px;
+    }
+
+    p {
+        @include font-inter(regular, 18, 18px, 18);
+
+        margin: 0;
+        line-height: 1.5;
+    }
+}
+
+// Place the popup buttons beside each other.
+.popup__actions {
+    @include flex($direction: row, $align: center, $justify: center, $gap: 12);
+
+    margin-top: 24px;
+
+    button {
+        @include font-inter(regular, 16, 16px, 16);
+
+        min-width: 100px;
+        padding: 10px 18px;
+
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #f1f5f9;
+        }
+
+        &:disabled {
+            cursor: default;
+            opacity: 0.5;
+        }
+    }
+}
+
+// Give the delete confirmation a pastel-red background.
+.popup--delete {
+    color: #000000;
+
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+
+    // Keep both buttons white.
+    .popup__actions {
+        button {
+            color: #000000;
+            background-color: #ffffff;
+
+            &:hover {
+                background-color: #f8fafc;
+            }
+        }
     }
 }
 
@@ -86,8 +194,33 @@
         margin: 0;
     }
 
+    .profile__header {
+        gap: 60px;
+    }
+
     .profile__badge {
         width: 120px;
         height: 120px;
+    }
+
+    // Show the Edit and Delete buttons on desktop.
+    .profile__actions {
+        @include flex($direction: row, $align: center, $justify: left, $gap: 12);
+        @include font-inter(regular, 16, 1vw, 16);
+        margin-top: 8px;
+    }
+
+    // Style one profile action.
+    .profile__action {
+        @include flex($direction: row, $align: center, $justify: left, $gap: 4);
+
+        padding: 0;
+        cursor: pointer;
+
+        img {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
     }
 }

@@ -24,7 +24,7 @@
 
 // Keep the mobile heading and back button apart.
 .contacts-header {
-    @include flex($direction: row, $align: center, $justify: space-between);
+    @include flex($direction: row, $align: start, $justify: space-between);
 
     width: 100%;
     max-width: 350px;
@@ -66,11 +66,34 @@
 // Style the mobile back button.
 .contacts-header__back {
     font-size: 32px;
-
     padding: 0 4px;
 
     color: $button-blue;
     text-decoration: none;
+}
+
+// Show a short confirmation message.
+// Show a large confirmation after successful deletion.
+.contacts-notification {
+    @include font-inter(bold, 20, 20px, 20);
+
+    position: fixed;
+    right: 50%;
+    bottom: calc(12dvh + 24px);
+    z-index: 15;
+
+    width: min(calc(100% - 32px), 500px);
+    padding: 24px;
+
+    color: #166534;
+    text-align: center;
+
+    background-color: #dcfce7;
+    border: 1px solid #86efac;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+
+    transform: translateX(50%);
 }
 
 // Desktop: show the list and profile beside each other.
@@ -117,7 +140,7 @@
     .contacts-header {
         max-width: none;
         margin: 0;
-        padding: 48px 40px 16px;
+        padding: 80px 40px 16px;
     }
 
     // Desktop: place the title and subtitle beside each other.
@@ -141,5 +164,14 @@
     // Hide the back button on desktop.
     .contacts-header__back {
         display: none;
+    }
+
+    .contacts-notification {
+        // The desktop navigation is on the left,
+        // so center the message in the remaining content area.
+        right: calc(
+            (100% - clamp(250px, 20%, 400px)) / 2
+        );
+        bottom: 32px;
     }
 }

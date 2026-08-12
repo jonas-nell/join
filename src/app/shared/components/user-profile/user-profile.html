@@ -24,6 +24,24 @@
                 <p class="profile__role">
                     {{ selectedProfile.user_role }}
                 </p>
+
+                <div class="profile__actions">
+                    <button type="button" class="profile__action">
+                        <img src="/assets/icons/edit.png" alt="" />
+                        <span>Edit</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="profile__action"
+                        (click)="openDeleteConfirmation()"
+                        [disabled]="deleting()"
+                    >
+                        <img src="/assets/icons/delete.png" alt="" />
+
+                        <span>Delete</span>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -42,13 +60,48 @@
                 <span>Phone</span>
 
                 @if (selectedProfile.user_phone) {
-                    <a [href]="'tel:' + selectedProfile.user_phone">
-                        {{ selectedProfile.user_phone }}
-                    </a>
+                    {{ selectedProfile.user_phone }}
                 } @else {
                     <p>No phone number</p>
                 }
             </div>
         </section>
     </article>
+}
+
+@if (showDeleteConfirmation() && profile(); as selectedProfile) {
+    <div class="popup-backdrop">
+        <section
+            class="popup popup--delete"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-popup-title"
+        >
+            <h2 id="delete-popup-title">Delete profile</h2>
+
+            <p>
+                Do you really want to delete
+                {{ selectedProfile.user_name }}?
+            </p>
+
+            <div class="popup__actions">
+                <button type="button" (click)="deleteSelectedProfile()" [disabled]="deleting()">
+                    {{ deleting() ? 'Deleting...' : 'Yes' }}
+                </button>
+                <button type="button" (click)="closeDeleteConfirmation()">No</button>
+            </div>
+        </section>
+    </div>
+}
+
+@if (popupMessage()) {
+    <div class="popup-backdrop">
+        <section class="popup" role="alertdialog" aria-modal="true">
+            <p>{{ popupMessage() }}</p>
+
+            <div class="popup__actions">
+                <button type="button" (click)="closePopupMessage()">OK</button>
+            </div>
+        </section>
+    </div>
 }

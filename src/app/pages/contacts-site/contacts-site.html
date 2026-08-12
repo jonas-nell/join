@@ -6,9 +6,9 @@
     <main class="contacts-layout__profile">
         <header class="contacts-header">
             <div class="contacts-header__text">
-        <h1>Contacts</h1>
-        <p>Better with a team</p>
-      </div>
+                <h1>Contacts</h1>
+                <p>Better with a team</p>
+            </div>
             <!-- When a profile is selected, displays UserProfile below it -->
             @if (profileOpen()) {
                 <a
@@ -24,3 +24,9 @@
         <router-outlet (activate)="profileOpen.set(true)" (deactivate)="profileOpen.set(false)" />
     </main>
 </div>
+
+@if (supabaseService.notification()) {
+    <div class="contacts-notification" role="status">
+        {{ supabaseService.notification() }}
+    </div>
+}
