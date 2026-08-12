@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, effect } from '@angular/core';
 import { Profile } from '../../interfaces/profile';
 import { createProfileColor, createProfileInitials } from '../../helpers/profile-helper';
 import { SupabaseService } from '../../services/supabase-service';
@@ -7,11 +7,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 @Component({
     selector: 'app-user-list',
     standalone: true,
-    imports: [RouterLink, RouterLinkActive], 
+    imports: [RouterLink, RouterLinkActive],
     templateUrl: './user-list.html',
     styleUrl: './user-list.scss',
 })
-export class UserList implements OnInit {
+export class UserList {
     // inject() gives this component access to the Supabase service
     private readonly supabaseService = inject(SupabaseService);
 
@@ -27,10 +27,17 @@ export class UserList implements OnInit {
     readonly getProfileColor = createProfileColor;
     readonly getInitials = createProfileInitials;
 
-    // Angular calls ngOnInit() when the component first appears.
-    async ngOnInit(): Promise<void> {
-        await this.loadProfiles();
-    }
+    // INstead of ngOnInit...
+    // The effect runs once when the component starts. 
+    // It runs again whenever profilesChanged increases.
+    // Reload the list when a profile is created or deleted.
+    private readonly reloadProfiles = effect(() => {
+        // Reading this signal makes the effect listen to it.
+        this.supabaseService.profilesChanged();
+
+        // Load the current profiles from Supabase.
+        void this.loadProfiles();
+    });
 
     // Loads all profiles from the Supabase service.
     async loadProfiles(): Promise<void> {
