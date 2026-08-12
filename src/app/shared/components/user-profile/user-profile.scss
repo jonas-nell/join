@@ -10,7 +10,7 @@
 
 // Show the badge and username beside each other.
 .profile__header {
-    @include flex($direction: row, $align: center, $justify: left, $gap: 12);
+    @include flex($direction: row, $align: center, $justify: left, $gap: 20);
     // display: flex;
     // align-items: center;
     // gap: 16px;
@@ -37,7 +37,7 @@
 
 // Style the selected username.
 .profile__name {
-    @include font-inter(bold, 28, 2vw, 48);
+    @include font-inter(bold, 28, 4vw, 48);
 
     margin: 0;
 }
@@ -53,9 +53,9 @@
     display: none;
 }
 
-// Add space above the contact information.
+// Add space above the contact isnformation.
 .profile__information {
-    margin-top: 24px;
+    margin-top: 60px;
 
     h3 {
         @include font-inter(regular, 20, 20px, 20);
@@ -79,6 +79,8 @@
     }
 
     a {
+        // Keep the clickable area as wide as the text.
+        width: fit-content;
         color: $email-address;
         text-decoration: none;
     }
@@ -190,6 +192,10 @@
     .profile {
         max-width: none;
         margin: 0;
+    }
+
+    .profile__header {
+        gap: 60px;
     }
 
     .profile__badge {

@@ -60,9 +60,7 @@
                 <span>Phone</span>
 
                 @if (selectedProfile.user_phone) {
-                    <a [href]="'tel:' + selectedProfile.user_phone">
-                        {{ selectedProfile.user_phone }}
-                    </a>
+                    {{ selectedProfile.user_phone }}
                 } @else {
                     <p>No phone number</p>
                 }

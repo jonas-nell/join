@@ -24,7 +24,7 @@
 
 // Keep the mobile heading and back button apart.
 .contacts-header {
-    @include flex($direction: row, $align: center, $justify: space-between);
+    @include flex($direction: row, $align: start, $justify: space-between);
 
     width: 100%;
     max-width: 350px;
@@ -66,7 +66,6 @@
 // Style the mobile back button.
 .contacts-header__back {
     font-size: 32px;
-
     padding: 0 4px;
 
     color: $button-blue;
@@ -141,7 +140,7 @@
     .contacts-header {
         max-width: none;
         margin: 0;
-        padding: 48px 40px 16px;
+        padding: 80px 40px 16px;
     }
 
     // Desktop: place the title and subtitle beside each other.
