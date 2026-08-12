@@ -14,4 +14,17 @@
     h3{
         font-size: 20px;
     }
+
+    ol, li {
+        list-style: decimal;
+        padding-left: 16px;
+    }
+
+    ol {
+        @include flex($gap: 8);
+    }
+    
+    li::marker{
+        font-weight: bold;
+    }
 }
