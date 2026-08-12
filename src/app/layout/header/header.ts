@@ -1,9 +1,14 @@
-import { Component } from '@angular/core';
-
+import { Component, inject } from '@angular/core';
+import { DialogService } from '../../dialog-service';
+import { HeaderMenu } from './nav-bar/header-menu';
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [HeaderMenu],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
-export class Header {}
+export class Header {
+
+  dialogservice = inject(DialogService);
+}
+

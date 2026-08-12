@@ -1,0 +1,20 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+dialog {
+    position: fixed;
+    top: 100px;
+    right: 16px;
+}
+
+nav {
+    background-color: $main-color;
+    padding: 8px;
+    @include flex(column, flex-start, flex-start, 10);
+    @include font-inter(regular, 16, 2vw, 24);
+    border-radius: 20px 0 20px 20px;
+
+    a {
+        color: $light-secondary;
+        @include use-padding(8, 16);
+    }
+}
