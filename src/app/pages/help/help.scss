@@ -1,0 +1,36 @@
+@use '../../../../public/assets/styles/mixins' as *;
+
+.legal-wrapper {
+    @include font-inter(regular, 16, 2dvh, 16);
+    padding: 16px 16px;
+    width: 100%;
+    @include flex($align: start, $gap: 12);
+
+    h2 {
+        font-size: 42px;
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+
+    ol,
+    li {
+        list-style: decimal;
+        padding-left: 16px;
+    }
+    
+    ol {
+        @include flex($gap: 8);
+    }
+
+    li::marker {
+        font-weight: bold;
+    }
+
+    @include desktop {
+        padding-left: calc(clamp(250px, 20%, 400px) + 64px);
+        padding-right: 32px;
+        max-width: 1300px;
+    }
+}
