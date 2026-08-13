@@ -100,92 +100,92 @@
 // }
 
 // Cover the page while a popup is open.
-.popup-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 20;
+// .popup-backdrop {
+//     position: fixed;
+//     inset: 0;
+//     z-index: 20;
 
-    display: grid;
-    place-items: center;
+//     display: grid;
+//     place-items: center;
 
-    padding: 20px;
+//     padding: 20px;
 
-    background-color: rgb(15 23 42 / 45%);
-}
+//     background-color: rgb(15 23 42 / 45%);
+// }
 
-// Display the popup above the dark background.
-.popup {
-    width: min(100%, 420px);
-    padding: 28px;
+// // Display the popup above the dark background.
+// .popup {
+//     width: min(100%, 420px);
+//     padding: 28px;
 
-    color: #1e293b;
-    text-align: center;
+//     color: #1e293b;
+//     text-align: center;
 
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    box-shadow: 0 16px 40px rgb(0 0 0 / 20%);
+//     background-color: #ffffff;
+//     border: 1px solid #e2e8f0;
+//     border-radius: 14px;
+//     box-shadow: 0 16px 40px rgb(0 0 0 / 20%);
 
-    h2 {
-        @include font-inter(bold, 24, 24px, 24);
+//     h2 {
+//         @include font-inter(bold, 24, 24px, 24);
 
-        margin: 0 0 12px;
-    }
+//         margin: 0 0 12px;
+//     }
 
-    p {
-        @include font-inter(regular, 18, 18px, 18);
+//     p {
+//         @include font-inter(regular, 18, 18px, 18);
 
-        margin: 0;
-        line-height: 1.5;
-    }
-}
+//         margin: 0;
+//         line-height: 1.5;
+//     }
+// }
 
-// Place the popup buttons beside each other.
-.popup__actions {
-    @include flex($direction: row, $align: center, $justify: center, $gap: 12);
+// // Place the popup buttons beside each other.
+// .popup__actions {
+//     @include flex($direction: row, $align: center, $justify: center, $gap: 12);
 
-    margin-top: 24px;
+//     margin-top: 24px;
 
-    button {
-        @include font-inter(regular, 16, 16px, 16);
+//     button {
+//         @include font-inter(regular, 16, 16px, 16);
 
-        min-width: 100px;
-        padding: 10px 18px;
+//         min-width: 100px;
+//         padding: 10px 18px;
 
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        cursor: pointer;
+//         border: 1px solid #cbd5e1;
+//         border-radius: 8px;
+//         cursor: pointer;
 
-        &:hover {
-            background-color: #f1f5f9;
-        }
+//         &:hover {
+//             background-color: #f1f5f9;
+//         }
 
-        &:disabled {
-            cursor: default;
-            opacity: 0.5;
-        }
-    }
-}
+//         &:disabled {
+//             cursor: default;
+//             opacity: 0.5;
+//         }
+//     }
+// }
 
-// Give the delete confirmation a pastel-red background.
-.popup--delete {
-    color: #000000;
+// // Give the delete confirmation a pastel-red background.
+// .popup--delete {
+//     color: #000000;
 
-    background-color: #fee2e2;
-    border-color: #fca5a5;
+//     background-color: #fee2e2;
+//     border-color: #fca5a5;
 
-    // Keep both buttons white.
-    .popup__actions {
-        button {
-            color: #000000;
-            background-color: #ffffff;
+//     // Keep both buttons white.
+//     .popup__actions {
+//         button {
+//             color: #000000;
+//             background-color: #ffffff;
 
-            &:hover {
-                background-color: #f8fafc;
-            }
-        }
-    }
-}
+//             &:hover {
+//                 background-color: #f8fafc;
+//             }
+//         }
+//     }
+// }
 
 // Desktop: let the profile use the available space.
 @include desktop {
