@@ -1,0 +1,28 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+.part {
+
+    padding: 24px;
+    &-top{
+        color: white;
+        background-color: $main-color;
+        @include font-inter(bold, 47, 7vw, 61)
+    }
+
+    &-bottom{
+        background-color: white;
+        @include font-inter(regular, 20, 4vw, 20)
+    }
+}
+
+form {
+    @include flex(column, center, center, 24);
+
+    input{
+        width: 100%;
+        border-radius: 10px;
+        border: 1px #686868 solid;
+        height: 40px;
+        padding: 13px 21px;
+    }
+}

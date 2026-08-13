@@ -1,7 +1,7 @@
 import { Service, signal } from '@angular/core';
 
 // beim erstellen von weiteren dialogs namen hinzufügen
-export type DialogName = 'menu';
+export type DialogName = 'menu' | 'edit-and-add-contact';
 
 @Service()
 export class DialogService {
