@@ -25,8 +25,8 @@
     </main>
 </div>
 
-@if (supabaseService.notification()) {
+@if (notificationService.message()) {
     <div class="contacts-notification" role="status">
-        {{ supabaseService.notification() }}
+        {{ notificationService.message() }}
     </div>
 }

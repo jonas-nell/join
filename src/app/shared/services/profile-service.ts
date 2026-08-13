@@ -1,7 +1,8 @@
-import { Injectable, signal } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { environment } from '../../environments/environment';
+import { Injectable, inject, signal } from '@angular/core';
+// import { createClient, SupabaseClient } from '@supabase/supabase-js';
+// import { environment } from '../../environments/environment';
 import { Profile, ProfileChanges } from '../interfaces/profile';
+import { DatabaseService } from './database-service';
 
 const PROFILE_COLUMNS = `
     id,
@@ -16,25 +17,19 @@ const PROFILE_COLUMNS = `
 @Injectable({
     providedIn: 'root',
 })
-export class SupabaseService {
-    // This is the connection between Angular and Supabase.
-    // Angular uses the project URL and publishable key
-    // from the environment file.
-
-    private readonly supabase: SupabaseClient;
-    constructor() {
-        this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
-    }
+export class ProfileService {
+    // Get access to the shared Supabase connection.
+private readonly database = inject(DatabaseService);
 
     // This number changes whenever the profile list must reload.
     readonly profilesChanged = signal(0);
 
     // Store a short message shown to the user.
-    readonly notification = signal('');
+    // readonly notification = signal('');
 
     // Loads the profiles from the Supabase "profiles" table.
     async getProfiles(): Promise<Profile[]> {
-        const { data, error } = await this.supabase
+        const { data, error } = await this.database.client
             .from('profiles')
             .select(PROFILE_COLUMNS)
             .order('user_name');
@@ -51,7 +46,7 @@ export class SupabaseService {
 
     // Load one profile using its unique ID.
     async getProfileById(profileId: string): Promise<Profile | null> {
-        const { data, error } = await this.supabase
+        const { data, error } = await this.database.client
             .from('profiles')
             .select(PROFILE_COLUMNS)
             .eq('id', profileId)
@@ -70,7 +65,7 @@ export class SupabaseService {
 
     // Update the editable fields of one profile.
     async updateProfile(profileId: string, changes: ProfileChanges): Promise<Profile> {
-        const { data, error } = await this.supabase
+        const { data, error } = await this.database.client
             .from('profiles')
             .update(changes)
             .eq('id', profileId)
@@ -91,7 +86,7 @@ export class SupabaseService {
         return data as Profile;
     }
 
-    // await this.supabaseService.updateProfile(
+    // await this.database.clientService.updateProfile(
     // selectedProfile.id,
     // {
     //     user_name: 'Anna Schmidt',
@@ -105,7 +100,7 @@ export class SupabaseService {
     // cannot delete a normal user profile.
     // TODO: Important: the Angular filter is helpful, but the Supabase RLS policy must enforce the same rule.
     async deleteDummyProfile(profileId: string): Promise<void> {
-        const { data, error } = await this.supabase
+        const { data, error } = await this.database.client
             .from('profiles')
             .delete()
             .eq('id', profileId)
@@ -133,12 +128,16 @@ export class SupabaseService {
         this.profilesChanged.update((currentValue) => currentValue + 1);
     }
 
-    // Show a message for three seconds.
-    showNotification(message: string): void {
-        this.notification.set(message);
 
-        window.setTimeout(() => {
-            this.notification.set('');
-        }, 3000);
-    }
+
+
+    // This is now in NotificationService
+    // Show a message for three seconds.
+    // showNotification(message: string): void {
+    //     this.notification.set(message);
+
+    //     window.setTimeout(() => {
+    //         this.notification.set('');
+    //     }, 3000);
+    // }
 }

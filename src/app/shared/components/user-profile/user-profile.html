@@ -31,16 +31,7 @@
                         <span>Edit</span>
                     </button>
 
-                    <button
-                        type="button"
-                        class="profile__action"
-                        (click)="openDeleteConfirmation()"
-                        [disabled]="deleting()"
-                    >
-                        <img src="/assets/icons/delete.png" alt="" />
-
-                        <span>Delete</span>
-                    </button>
+                    <app-delete-profile [profile]="selectedProfile" buttonStyle="profile" />
                 </div>
             </div>
         </header>
@@ -69,7 +60,7 @@
     </article>
 }
 
-@if (showDeleteConfirmation() && profile(); as selectedProfile) {
+<!-- @if (showDeleteConfirmation() && profile(); as selectedProfile) {
     <div class="popup-backdrop">
         <section
             class="popup popup--delete"
@@ -104,4 +95,4 @@
             </div>
         </section>
     </div>
-}
+} -->

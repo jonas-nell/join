@@ -1,7 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { UserList } from '../../shared/components/user-list/user-list';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { SupabaseService } from '../../shared/services/supabase-service';
+import { ProfileService } from '../../shared/services/profile-service';
+import { NotificationService } from '../../shared/services/notification-service';
 
 @Component({
     selector: 'app-contacts-site',
@@ -13,6 +14,9 @@ export class ContactsSite {
     // True when a profile route is open.
     readonly profileOpen = signal(false);
 
-    // Give the HTML access to shared notifications.
-    readonly supabaseService = inject(SupabaseService);
+    // // Give the HTML access to shared notifications.
+    // readonly profileService = inject(ProfileService);
+    
+    // Make global notifications available in the HTML.
+    readonly notificationService = inject(NotificationService);
 }
