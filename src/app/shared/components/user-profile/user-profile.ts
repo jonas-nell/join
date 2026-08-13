@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Profile } from '../../interfaces/profile';
 import { createProfileColor, createProfileInitials } from '../../helpers/profile-helper';
 import { ProfileService } from '../../services/profile-service';
@@ -8,7 +8,7 @@ import { DeleteProfile } from '../delete-profile/delete-profile';
 @Component({
     selector: 'app-user-profile',
     standalone: true,
-    imports: [DeleteProfile, RouterLink],
+    imports: [DeleteProfile],
     templateUrl: './user-profile.html',
     styleUrl: './user-profile.scss',
 })
