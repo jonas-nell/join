@@ -6,10 +6,9 @@
     width: 100%;
     @include flex($align: start, $gap: 12);
 
-    app-back-button {
-        position: absolute;
-        top: 18px;
-        right: 16px;
+    .legal-top{
+        width: 100%;
+        @include flex(row-reverse, $justify: space-between, $gap: 14);
     }
 
     h2 {
