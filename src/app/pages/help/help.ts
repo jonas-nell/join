@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { BackButton } from "../../shared/components/back-button/back-button";
 
 @Component({
     selector: 'app-help',
-    imports: [],
+    imports: [BackButton],
     templateUrl: './help.html',
     styleUrl: './help.scss',
 })
