@@ -19,7 +19,7 @@
         font-size: 20px;
     }
     @include desktop {
-        padding-left: calc(clamp(250px, 20%, 400px) + 64px);
+        padding-left: calc(250px + 64px);
         padding-right: 32px;
         max-width: 1300px;
 
