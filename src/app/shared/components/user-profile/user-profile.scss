@@ -18,7 +18,7 @@
 
 // Display the initials inside a colored circle.
 .profile__badge {
-    @include font-inter(regular, 28, 4vw, 48);
+    @include font-inter(regular, 28, 28px, 28);
 
     display: grid;
     width: 48px;
@@ -201,6 +201,7 @@
     .profile__badge {
         width: 120px;
         height: 120px;
+        @include font-inter(regular, 58, 0vw, 658);
     }
 
     // Show the Edit and Delete buttons on desktop.
