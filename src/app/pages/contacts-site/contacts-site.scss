@@ -108,6 +108,10 @@
         min-height: 0;
         overflow: hidden;
     }
+    
+    .contacts-layout__profile{
+        padding-top: 9dvh;
+    }
 
     // Always show both areas on desktop.
     .contacts-layout__list,
