@@ -26,6 +26,9 @@
 body {
     padding-bottom: 12dvh;
 }
+body:has(dialog:open) {
+  overflow: hidden;
+}
 
 // Desktop: remove the mobile navigation space and page scrolling,
 // only user-list should scroll...
