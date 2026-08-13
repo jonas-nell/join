@@ -8,6 +8,7 @@ aside {
     height: 12dvh;
     background: $main-color;
     z-index: 10;
+    padding: 0 16px;
 
     @include flex($gap: 12);
 
@@ -17,7 +18,7 @@ aside {
         width: clamp(250px, 20%, 400px);
         padding: 64px 0;
 
-        @include flex($justify:start, $gap: 84);
+        @include flex($justify: start, $gap: 84);
     }
 
     .logo {
@@ -37,6 +38,10 @@ aside {
             font-family: Open Sans;
 
             margin-top: auto;
+
+            a:hover {
+                color: $button-blue;
+            }
         }
     }
 
@@ -53,13 +58,27 @@ aside {
 
     .nav-link {
         width: 100%;
+        @include flex();
+
+        &.active {
+            width: 110%;
+            height: 130%;
+            background: $highlight-color;
+            border-radius: 16px;
+        }
 
         @include desktop {
-            @include flex();
-
             &:hover {
                 background: $button-blue;
             }
+
+            &.active {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+                pointer-events: none;
+            }
+            @include flex();
         }
 
         a {
