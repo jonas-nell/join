@@ -8,7 +8,7 @@
 
     .legal-top{
         width: 100%;
-        @include flex(row-reverse, $justify: space-between, $gap: 14);
+        @include flex(row, $justify: space-between, $gap: 14);
     }
 
     h2 {
