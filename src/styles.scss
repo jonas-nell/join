@@ -25,7 +25,7 @@
 // Mobile: leave room for the fixed bottom navigation and the header
 main {
     padding-bottom: 12dvh;
-    padding-top: 10dvh;
+    padding-top: 12dvh;
 }
 body:has(dialog:open) {
   overflow: hidden;
