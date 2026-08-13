@@ -1,9 +1,29 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
 dialog {
+    overscroll-behavior: contain;
+    overflow: hidden;
     position: fixed;
-    top: 100px;
-    right: 16px;
+    top: 70px;
+    transform: translateX(200%);
+    transition:
+        transform 0.2s ease-in-out,
+        overlay 0.2s ease-in-out allow-discrete,
+        display 0.2s ease-in-out allow-discrete;
+}
+
+dialog:open {
+    transform: translateX(100%);
+}
+
+@starting-style {
+    dialog:open {
+        transform: translateX(200%);
+    }
+}
+
+dialog::backdrop {
+    background-color: transparent;
 }
 
 nav {
