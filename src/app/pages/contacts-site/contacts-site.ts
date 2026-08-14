@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { UserList } from '../../shared/components/user-list/user-list';
+import { UserList } from './user-list/user-list';
 import { RouterOutlet } from '@angular/router';
 import { NotificationService } from '../../shared/services/notification-service';
 import { BackButton } from '../../shared/components/back-button/back-button';

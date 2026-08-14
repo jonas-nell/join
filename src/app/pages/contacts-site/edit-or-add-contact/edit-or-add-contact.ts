@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { Dialog } from '../../../dialog-directive';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { minLengthWithoutSpaces } from '../../helpers/function-min-length';
+import { minLengthWithoutSpaces } from '../../../shared/helpers/function-min-length';
 
 @Component({
     selector: 'app-edit-or-add-contact',

@@ -1,9 +1,9 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Profile } from '../../interfaces/profile';
-import { createProfileColor, createProfileInitials } from '../../helpers/profile-helper';
-import { ProfileService } from '../../services/profile-service';
-import { DeleteProfile } from '../delete-profile/delete-profile';
+import { Profile } from '../../../shared/interfaces/profile';
+import { createProfileColor, createProfileInitials } from '../../../shared/helpers/profile-helper';
+import { ProfileService } from '../../../shared/services/profile-service';
+import { DeleteProfile } from '../../../shared/components/delete-profile/delete-profile';
 
 @Component({
     selector: 'app-user-profile',
