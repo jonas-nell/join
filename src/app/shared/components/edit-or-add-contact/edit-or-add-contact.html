@@ -2,22 +2,50 @@
     <div>
         <section class="part part-top">
             <div>
-                <button><img src="./assets/icons/btn-close-white.png" alt="icon close button" /></button>
+                <button>
+                    <img src="./assets/icons/btn-close-white.png" alt="icon close button" />
+                </button>
             </div>
             <h2>Edit contact</h2>
             <div></div>
         </section>
         <section class="part part-bottom">
-            <form>
-                <input type="text" placeholder="Name"/>
-                <input type="email" placeholder="Email"/>
-                <input type="tel" placeholder="Phone"/>
-            </form>
             <div>
-                <button>Delete</button>
-                <button>Save</button>
+                <!--Daniel: kürzel einfügen -->
+                <p>AM</p>
             </div>
+            <form [formGroup]="contactForm" (ngSubmit)="formSubmit()">
+                <input type="text" placeholder="Name" formControlName="name" />
+                @if (name?.hasError('required') && name?.touched) {
+                    <p>This field is required</p>
+                }
+                @if (name?.hasError('stringTooShort') && name?.touched) {
+                    <p>Please enter at least three characters</p>
+                }
+                <!-- validator error einfügen -->
+                @if (name?.hasError('pattern') && name?.touched) {
+                    <p>Please use only letters and valid name characters</p>
+                }
+                <input type="email" placeholder="Email" formControlName="email" />
+                @if (email?.hasError('required') && email?.touched) {
+                    <p>This field is required</p>
+                }
+                @if (email?.hasError('email') && email?.touched) {
+                    <p>Please use a valid email</p>
+                }
+                <input type="tel" placeholder="Phone" formControlName="phone" />
+                @if (phone?.hasError('required')) {
+                    <p>This field is required</p>
+                }
+                <!-- validator error einfügen -->
+                @if (phone?.hasError('pattern')) {
+                    <p>Please use a valid phone number</p>
+                }
+                <div>
+                    <button>Delete</button>
+                    <button type="submit">Save</button>
+                </div>
+            </form>
         </section>
     </div>
-    <p>AM</p>
 </dialog>
