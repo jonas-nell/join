@@ -18,7 +18,7 @@ export class EditOrAddContact {
     contactForm = this.fb.group({
         name: ['', [Validators.required, minLengthWithoutSpaces(3), Validators.pattern(/^[\p{L}\p{M}]+(?:[ '’-][\p{L}\p{M}]+)*$/u)]],
         email: ['', [Validators.required, Validators.email]],
-        phone: [0, [Validators.required, minLengthWithoutSpaces(10), Validators.pattern(/^\+?[0-9]+$/)]],
+        phone: ['', [Validators.required, minLengthWithoutSpaces(10), Validators.pattern(/^\+?[0-9]+$/)]],
     });
 
     get name(){
@@ -41,7 +41,7 @@ export class EditOrAddContact {
             this.contactForm.setValue({
                 name: 'hans',
                 email: 'hans@email',
-                phone: 123456789
+                phone: '123456789'
             })            
         }
     }

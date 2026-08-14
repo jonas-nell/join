@@ -38,7 +38,7 @@
                     <p>This field is required</p>
                 }
                 <!-- validator error einfügen -->
-                @if (phone?.hasError('pattern')) {
+                @if (phone?.hasError('pattern') || phone?.hasError('stringTooShort')) {
                     <p>Please use a valid phone number</p>
                 }
                 <div>
