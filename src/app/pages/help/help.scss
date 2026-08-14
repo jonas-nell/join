@@ -6,10 +6,9 @@
     width: 100%;
     @include flex($align: start, $gap: 12);
 
-    app-back-button {
-        position: absolute;
-        top: 18px;
-        right: 16px;
+    .legal-top{
+        width: 100%;
+        @include flex(row, $justify: space-between, $gap: 14);
     }
 
     h2 {
@@ -35,7 +34,7 @@
     }
 
     @include desktop {
-        padding-left: calc(clamp(250px, 20%, 400px) + 64px);
+        padding-left: calc(250px + 64px);
         padding-right: 32px;
         max-width: 1300px;
 

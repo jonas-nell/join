@@ -1,0 +1,51 @@
+<button
+    class="delete-profile__button"
+    [class.delete-profile__button--profile]="buttonStyle() === 'profile'"
+    [class.delete-profile__button--edit]="buttonStyle() === 'edit'"
+    type="button"
+    (click)="openConfirmation()"
+    [disabled]="deleting()"
+>
+    @if (buttonStyle() === 'profile') {
+        <img src="./assets/icons/delete.png" alt="" />
+    }
+
+    <span>Delete</span>
+</button>
+
+@if (confirmationOpen()) {
+    <div class="popup-backdrop">
+        <section class="popup popup--delete">
+            <p>
+                Do you really want to delete
+                {{ profile().user_name }}?
+            </p>
+
+            <div class="popup__actions">
+                <button type="button" (click)="closeConfirmation()" [disabled]="deleting()">
+                    No
+                </button>
+
+                <button type="button" (click)="confirmDeletion()" [disabled]="deleting()">
+                    @if (deleting()) {
+                        Deleting...
+                    } @else {
+                        Yes
+                    }
+                </button>
+            </div>
+        </section>
+    </div>
+}
+
+@if (errorMessage()) {
+    <div class="popup-backdrop">
+        <section class="popup popup--error">
+            <p>{{ errorMessage() }}</p>
+
+            <div class="popup__actions">
+                <button type="button" (click)="closeError()">OK</button>
+            </div>
+        </section>
+    </div>
+}

@@ -2,7 +2,7 @@
 
 // Mobile: show the contact list first.
 .contacts-layout {
-    min-height: 100vh;
+    min-height: 50vh;
 }
 
 // Mobile: hide the profile until a user is selected.
@@ -63,16 +63,6 @@
     }
 }
 
-// Style the mobile back button.
-.contacts-header__back {
-    font-size: 32px;
-    padding: 0 4px;
-
-    color: $button-blue;
-    text-decoration: none;
-}
-
-// Show a short confirmation message.
 // Show a large confirmation after successful deletion.
 .contacts-notification {
     @include font-inter(bold, 20, 20px, 20);
@@ -100,13 +90,17 @@
 @include desktop {
     .contacts-layout {
         display: grid;
-        grid-template-columns: 320px 1fr;
-        padding-left: clamp(250px, 20%, 400px);
+        grid-template-columns: 400px 1fr;
+        padding-left: 250px;
 
         // Keep the contacts area inside its parent.
         height: 100%;
         min-height: 0;
         overflow: hidden;
+    }
+    
+    .contacts-layout__profile{
+        padding-top: 9dvh;
     }
 
     // Always show both areas on desktop.
@@ -119,7 +113,6 @@
     .contacts-layout__list {
         // Only the user list should scroll.
         height: 100%;
-        min-height: 0;
         overflow-y: auto;
     }
 
@@ -140,7 +133,7 @@
     .contacts-header {
         max-width: none;
         margin: 0;
-        padding: 80px 40px 16px;
+        padding: 0px 40px 16px;
     }
 
     // Desktop: place the title and subtitle beside each other.
@@ -162,7 +155,7 @@
     }
 
     // Hide the back button on desktop.
-    .contacts-header__back {
+    app-back-button {
         display: none;
     }
 
@@ -175,3 +168,22 @@
         bottom: 32px;
     }
 }
+
+
+.contact-site-btn{
+    position: fixed;
+    bottom: 16dvh;
+    right: 5%;
+
+    height: 60px;
+    width: 60px;
+
+    background: $main-color;
+    border-radius: 50%;
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
+
+    @include desktop{
+        display: none;
+    }
+}
+

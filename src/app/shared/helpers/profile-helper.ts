@@ -32,6 +32,9 @@ export function createProfileColor(userId: string): string {
         // Convert the character into a number and combine it
         // with the numbers from the previous characters.
         number = character.charCodeAt(0) + ((number << 5) - number);
+        // number << 5 => Shift the binary representation of number 5 positions to the left.
+        // For integers, shifting left by 5 is equivalent to multiplying by 32, ignoring 
+        // JavaScript's 32-bit integer behavior.
     }
 
     // PROFILE_COLORS.length is currently 15.

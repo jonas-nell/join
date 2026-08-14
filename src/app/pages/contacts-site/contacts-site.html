@@ -2,8 +2,19 @@
     <aside class="contacts-layout__list">
         <app-user-list></app-user-list>
     </aside>
+    <button
+        class="contact-site-btn"
+        [class.contact-site-btn--edit]="profileOpen()"
+        (click)="profileOpen() ? onEditContact() : onAddContact()"
+    >
+    @if (profileOpen()) {
+        <img src="./assets/icons/dotdotdot.svg" alt="">
+    } @else {
+        <img src="./assets/icons/add-icon.svg" alt="">
+    }
+    </button>
 
-    <main class="contacts-layout__profile">
+    <div class="contacts-layout__profile">
         <header class="contacts-header">
             <div class="contacts-header__text">
                 <h1>Contacts</h1>
@@ -11,22 +22,17 @@
             </div>
             <!-- When a profile is selected, displays UserProfile below it -->
             @if (profileOpen()) {
-                <a
-                    class="contacts-header__back"
-                    routerLink="/contacts"
-                    aria-label="Back to contacts"
-                >
-                    ←
-                </a>
+                <app-back-button></app-back-button>
             }
         </header>
 
         <router-outlet (activate)="profileOpen.set(true)" (deactivate)="profileOpen.set(false)" />
-    </main>
+        
+    </div>
 </div>
 
-@if (supabaseService.notification()) {
+@if (notificationService.message()) {
     <div class="contacts-notification" role="status">
-        {{ supabaseService.notification() }}
+        {{ notificationService.message() }}
     </div>
 }
