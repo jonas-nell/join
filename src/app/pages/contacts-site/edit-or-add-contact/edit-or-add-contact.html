@@ -6,7 +6,11 @@
                     <img src="./assets/icons/btn-close-white.png" alt="icon close button" />
                 </button>
             </div>
-            <h2>Edit contact</h2>
+            @if (dialogService.dialogMode() == 'edit') {
+                <h2>Edit contact</h2>
+            } @else if (dialogService.dialogMode() == 'add') {
+                <h2>Add contact</h2>
+            }
             <div></div>
         </section>
         <section class="part part-bottom">

@@ -22,7 +22,7 @@ export class ContactsSite {
     dialogservice = inject(DialogService);
 
     onAddContact(){
-        this.dialogservice.openDialog('edit-and-add-contact');
+        this.dialogservice.openDialog('edit-and-add-contact', 'add');
     }
 
     onEditContact(){
