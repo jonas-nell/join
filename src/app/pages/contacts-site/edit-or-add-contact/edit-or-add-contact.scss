@@ -1,28 +1,71 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-.part {
+.contactDialog {
 
-    padding: 24px;
-    &-top{
+    border-radius: 20px;
+    width: 298px;
+    position: fixed;
+    inset: 0;
+    margin: auto;
+}
+
+.dialog-wrpr {
+    width: 100%;
+}
+
+.part {
+    width: 100%;
+    padding: 15px;
+    &-top {
         color: white;
         background-color: $main-color;
-        @include font-inter(bold, 47, 7vw, 61)
+
+        h2 {
+            @include font-inter(bold, 40, 7vw, 61);
+        }
+
+        p {
+            @include font-inter(regular, 20, 3.5vw, 27);
+        }
     }
 
-    &-bottom{
+    &-bottom {
         background-color: white;
-        @include font-inter(regular, 20, 4vw, 20)
+        @include font-inter(regular, 20, 4vw, 20);
     }
+}
+
+.line {
+    width: 90px;
+    height: 3px;
+    background-color: $button-light;
 }
 
 form {
     @include flex(column, center, center, 24);
 
-    input{
+    input {
         width: 100%;
         border-radius: 10px;
         border: 1px #686868 solid;
         height: 40px;
         padding: 13px 21px;
+    }
+}
+
+.buttons {
+    width: 100%;
+    @include flex(row, center, center, 24);
+}
+
+.button {
+    border: solid, 1px, $main-color;
+    border-radius: 10px;
+    padding: 8px;
+    &-primary {
+    }
+    &-secondary {
+        color: white;
+        background-color: $main-color;
     }
 }

@@ -5,10 +5,11 @@ import { NotificationService } from '../../shared/services/notification-service'
 import { BackButton } from '../../shared/components/back-button/back-button';
 import { EditOrAddContact } from "./edit-or-add-contact/edit-or-add-contact";
 import { DialogService } from '../../dialog-service';
+import { Dialog } from "../../dialog-directive";
 
 @Component({
     selector: 'app-contacts-site',
-    imports: [RouterOutlet, UserList, BackButton, EditOrAddContact],
+    imports: [RouterOutlet, UserList, BackButton, EditOrAddContact, Dialog],
     templateUrl: './contacts-site.html',
     styleUrl: './contacts-site.scss',
 })
@@ -26,6 +27,6 @@ export class ContactsSite {
     }
 
     onEditContact(){
-        //open edit/delete thing --> edit/delte based (currently open profile)
+        this.dialogservice.openDialog('contact-btn-dialog');
     }
 }
