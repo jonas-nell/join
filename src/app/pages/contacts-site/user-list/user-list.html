@@ -26,13 +26,13 @@
                         class="user"
                         [routerLink]="['/contacts', profile.id]"
                         routerLinkActive="active"
+                        #activeLink="routerLinkActive"
                     >
-                        <div
-                            class="user__badge"
-                            [style.background-color]="getProfileColor(profile.id)"
-                        >
-                            {{ getInitials(profile.user_name) }}
-                        </div>
+                        <app-user-badge
+                            [userId]="profile.id"
+                            [userName]="profile.user_name"
+                            [active]="activeLink.isActive"
+                        />
 
                         <div class="user__information">
                             <p class="user__name">

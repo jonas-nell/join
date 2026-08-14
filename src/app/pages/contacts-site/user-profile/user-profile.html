@@ -9,12 +9,12 @@
 @if (!loading() && profile(); as selectedProfile) {
     <article class="profile">
         <header class="profile__header">
-            <div
-                class="profile__badge"
-                [style.background-color]="getProfileColor(selectedProfile.id)"
-            >
-                {{ getInitials(selectedProfile.user_name) }}
-            </div>
+            <app-user-badge
+                [userId]="selectedProfile.id"
+                [userName]="selectedProfile.user_name"
+                size="large"
+                [active]="true"
+            />
 
             <div>
                 <h2 class="profile__name">

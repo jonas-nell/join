@@ -50,17 +50,17 @@
     text-decoration: none;
 }
 
-.user__badge {
-    @include font-inter(regular, 16, 16px, 16);
+// .user__badge {
+//     @include font-inter(regular, 16, 16px, 16);
 
-    display: grid;
-    width: 42px;
-    height: 42px;
-    place-items: center;
+//     display: grid;
+//     width: 42px;
+//     height: 42px;
+//     place-items: center;
 
-    color: #ffffff;
-    border-radius: 50%;
-}
+//     color: #ffffff;
+//     border-radius: 50%;
+// }
 
 // Prevent long names and emails from widening the list.
 .user__information {
@@ -130,11 +130,11 @@
         background-color: $main-color;
 
         // Add a white ring and a thin grey ring.
-        .user__badge {
-            box-shadow:
-                0 0 0 2px #ffffff,
-                0 0 0 3px #cbd5e1;
-        }
+        // .user__badge {
+        //     box-shadow:
+        //         0 0 0 2px #ffffff,
+        //         0 0 0 3px #cbd5e1;
+        // }
         .user__name {
             color: #ffffff;
         }

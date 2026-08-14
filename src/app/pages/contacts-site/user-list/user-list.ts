@@ -1,14 +1,15 @@
 import { Component, inject, signal, computed, effect } from '@angular/core';
 import { Profile } from '../../../shared/interfaces/profile';
-import { createProfileColor, createProfileInitials } from '../../../shared/helpers/profile-helper';
+// import { createProfileColor, createProfileInitials } from '../../../shared/helpers/profile-helper';
 import { ProfileService } from '../../../shared/services/profile-service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { UserBadge } from '../user-badge/user-badge';
 import { DialogService } from '../../../dialog-service';
 
 @Component({
     selector: 'app-user-list',
     standalone: true,
-    imports: [RouterLink, RouterLinkActive],
+    imports: [RouterLink, RouterLinkActive, UserBadge],
     templateUrl: './user-list.html',
     styleUrl: './user-list.scss',
 })
@@ -27,8 +28,8 @@ export class UserList {
     readonly errorMessage = signal('');
 
     // Connecting the color helper to the HTML template.
-    readonly getProfileColor = createProfileColor;
-    readonly getInitials = createProfileInitials;
+    // readonly getProfileColor = createProfileColor;
+    // readonly getInitials = createProfileInitials;
 
     // INstead of ngOnInit...
     // The effect runs once when the component starts. 

@@ -14,23 +14,23 @@
 }
 
 // Display the initials inside a colored circle.
-.profile__badge {
-    @include font-inter(regular, 28, 28px, 28);
+// .profile__badge {
+//     @include font-inter(regular, 28, 28px, 28);
 
-    display: grid;
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-    place-items: center;
+//     display: grid;
+//     width: 48px;
+//     height: 48px;
+//     flex-shrink: 0;
+//     place-items: center;
 
-    color: #ffffff;
-    border-radius: 50%;
+//     color: #ffffff;
+//     border-radius: 50%;
 
-    // Add a white ring and a thin grey ring.
-    box-shadow:
-        0 0 0 2px #ffffff,
-        0 0 0 3px #cbd5e1;
-}
+//     // Add a white ring and a thin grey ring.
+//     box-shadow:
+//         0 0 0 2px #ffffff,
+//         0 0 0 3px #cbd5e1;
+// }
 
 // Style the selected username.
 .profile__name {
@@ -94,11 +94,11 @@
         gap: 60px;
     }
 
-    .profile__badge {
-        width: 120px;
-        height: 120px;
-        @include font-inter(regular, 58, 58px, 58);
-    }
+    // .profile__badge {
+    //     width: 120px;
+    //     height: 120px;
+    //     @include font-inter(regular, 58, 58px, 58);
+    // }
 
     // Show the Edit and Delete buttons on desktop.
     .profile__actions {

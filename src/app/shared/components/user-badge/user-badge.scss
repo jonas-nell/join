@@ -1,0 +1,40 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+// Display the reusable user badge.
+.user-badge {
+    @include font-inter(regular, 16, 16px, 16);
+
+    display: grid;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    place-items: center;
+
+    color: #ffffff;
+    border-radius: 50%;
+}
+
+// Add the rings only when the profile is active.
+.user-badge--active {
+    box-shadow:
+        0 0 0 2px #ffffff,
+        0 0 0 3px #cbd5e1;
+}
+
+// Use a larger badge in the profile view.
+.user-badge--large {
+    @include font-inter(regular, 28, 28px, 28);
+
+    width: 48px;
+    height: 48px;
+}
+
+// Increase the large badge on desktop.
+@include desktop {
+    .user-badge--large {
+        @include font-inter(regular, 58, 58px, 58);
+
+        width: 120px;
+        height: 120px;
+    }
+}
