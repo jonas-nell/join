@@ -1,0 +1,8 @@
+<div
+    class="user-badge"
+    [class.user-badge--large]="size() === 'large'"
+    [class.user-badge--active]="active()"
+    [style.background-color]="getProfileColor(userId())"
+>
+    {{ getInitials(userName()) }}
+</div>

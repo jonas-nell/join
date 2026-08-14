@@ -1,14 +1,15 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Profile } from '../../interfaces/profile';
-import { createProfileColor, createProfileInitials } from '../../helpers/profile-helper';
+// import { createProfileColor, createProfileInitials } from '../../helpers/profile-helper';
 import { ProfileService } from '../../services/profile-service';
 import { DeleteProfile } from '../delete-profile/delete-profile';
+import { UserBadge } from '../user-badge/user-badge';
 
 @Component({
     selector: 'app-user-profile',
     standalone: true,
-    imports: [DeleteProfile],
+    imports: [DeleteProfile, UserBadge],
     templateUrl: './user-profile.html',
     styleUrl: './user-profile.scss',
 })
@@ -27,8 +28,8 @@ export class UserProfile implements OnInit {
     readonly errorMessage = signal('');
 
     // Make the profile helpers available in the HTML...
-    readonly getProfileColor = createProfileColor;
-    readonly getInitials = createProfileInitials;
+    // readonly getProfileColor = createProfileColor;
+    // readonly getInitials = createProfileInitials;
 
     ngOnInit(): void {
         // Listen for changes to the ID in the URL.
