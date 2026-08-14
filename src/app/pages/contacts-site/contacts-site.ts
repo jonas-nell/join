@@ -25,6 +25,6 @@ export class ContactsSite {
     }
 
     onEditContact(){
-        //open edit/delete thing (currently open profile)
+        //open edit/delete thing --> edit/delte based (currently open profile)
     }
 }
