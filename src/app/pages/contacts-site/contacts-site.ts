@@ -19,4 +19,12 @@ export class ContactsSite {
     
     // Make global notifications available in the HTML.
     readonly notificationService = inject(NotificationService);
+
+    onAddContact(){
+        // open ad new contact dialog
+    }
+
+    onEditContact(){
+        //open edit/delete thing --> edit/delte based (currently open profile)
+    }
 }
