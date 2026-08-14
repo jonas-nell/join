@@ -1,22 +1,29 @@
-<dialog appDialog="edit-and-add-contact">
-    <div>
+<dialog appDialog="edit-and-add-contact" class="contactDialog">
+    <div class="dialog-wrpr">
         <section class="part part-top">
             <div>
                 <button>
                     <img src="./assets/icons/btn-close-white.png" alt="icon close button" />
                 </button>
             </div>
-            @if (dialogService.dialogMode() == 'edit') {
-                <h2>Edit contact</h2>
-            } @else if (dialogService.dialogMode() == 'add') {
-                <h2>Add contact</h2>
-            }
-            <div></div>
+            <div>
+                @if (dialogService.dialogMode() == 'edit') {
+                    <h2>Edit contact</h2>
+                } @else if (dialogService.dialogMode() == 'add') {
+                    <h2>Add contact</h2>
+                    <p>Tasks are better with a team!</p>
+                }
+            </div>
+            <div class="line"></div>
         </section>
         <section class="part part-bottom">
             <div>
-                <!--Daniel: kürzel einfügen -->
-                <p>AM</p>
+                @if (dialogService.dialogMode() == 'edit') {
+                    <!--Daniel: kürzel einfügen -->
+                    <p>AM</p>
+                } @else if (dialogService.dialogMode() == 'add') {
+                    <img src="./assets/icons/person-contact.png" alt="person icon" />
+                }
             </div>
             <form [formGroup]="contactForm" (ngSubmit)="formSubmit()">
                 <input type="text" placeholder="Name" formControlName="name" />
@@ -45,9 +52,17 @@
                 @if (phone?.hasError('pattern') || phone?.hasError('stringTooShort')) {
                     <p>Please use a valid phone number</p>
                 }
-                <div>
-                    <button>Delete</button>
-                    <button type="submit">Save</button>
+                <div class="buttons">
+                    @if (dialogService.dialogMode() == 'edit') {
+                        <button class="button button-primary">Delete</button>
+                        <button class="button button-secondary" type="submit">Save</button>
+                    }
+                    @if (dialogService.dialogMode() == 'add') {
+                        <button class="button button-primary">Cancel</button>
+                        <button class="button button-secondary" type="submit">
+                            Create contact
+                        </button>
+                    }
                 </div>
             </form>
         </section>
