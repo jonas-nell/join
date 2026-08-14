@@ -7,11 +7,11 @@
         [class.contact-site-btn--edit]="profileOpen()"
         (click)="profileOpen() ? onEditContact() : onAddContact()"
     >
-    @if (profileOpen()) {
-        <img src="./assets/icons/dotdotdot.svg" alt="">
-    } @else {
-        <img src="./assets/icons/add-icon.svg" alt="">
-    }
+        @if (profileOpen()) {
+            <img src="./assets/icons/dotdotdot.svg" alt="" />
+        } @else {
+            <img src="./assets/icons/add-icon.svg" alt="" />
+        }
     </button>
 
     <div class="contacts-layout__profile">
@@ -27,7 +27,6 @@
         </header>
 
         <router-outlet (activate)="profileOpen.set(true)" (deactivate)="profileOpen.set(false)" />
-        
     </div>
 </div>
 

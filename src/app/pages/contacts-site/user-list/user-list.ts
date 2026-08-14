@@ -1,7 +1,7 @@
 import { Component, inject, signal, computed, effect } from '@angular/core';
-import { Profile } from '../../interfaces/profile';
-import { createProfileColor, createProfileInitials } from '../../helpers/profile-helper';
-import { ProfileService } from '../../services/profile-service';
+import { Profile } from '../../../shared/interfaces/profile';
+import { createProfileColor, createProfileInitials } from '../../../shared/helpers/profile-helper';
+import { ProfileService } from '../../../shared/services/profile-service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
