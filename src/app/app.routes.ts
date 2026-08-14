@@ -25,7 +25,7 @@ export const routes: Routes = [
                 // Load the selected profile inside ContactsSite.
                 path: ':id',
                 loadComponent: () =>
-                    import('./shared/components/user-profile/user-profile').then(
+                    import('./pages/contacts-site/user-profile/user-profile').then(
                         (component) => component.UserProfile,
                     ),
             },

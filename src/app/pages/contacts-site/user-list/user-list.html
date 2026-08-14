@@ -10,7 +10,7 @@
 
 @if (!loading() && !errorMessage()) {
     <div class="user-list">
-        <button class="user-list__add" type="button">
+        <button class="user-list__add" type="button" (click)="dialogservice.openDialog('edit-and-add-contact', 'add')">
             <span>Add new contact</span>
             <span aria-hidden="true">＋</span>
         </button>

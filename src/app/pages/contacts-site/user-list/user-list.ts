@@ -1,9 +1,10 @@
 import { Component, inject, signal, computed, effect } from '@angular/core';
-import { Profile } from '../../interfaces/profile';
-// import { createProfileColor, createProfileInitials } from '../../helpers/profile-helper';
-import { ProfileService } from '../../services/profile-service';
+import { Profile } from '../../../shared/interfaces/profile';
+// import { createProfileColor, createProfileInitials } from '../../../shared/helpers/profile-helper';
+import { ProfileService } from '../../../shared/services/profile-service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UserBadge } from '../user-badge/user-badge';
+import { DialogService } from '../../../dialog-service';
 
 @Component({
     selector: 'app-user-list',
@@ -15,6 +16,8 @@ import { UserBadge } from '../user-badge/user-badge';
 export class UserList {
     // inject() gives this component access to the Supabase service
     private readonly profileService = inject(ProfileService);
+
+    dialogservice = inject(DialogService);
 
     // Stores the loaded profiles.
     // A signal automatically updates the HTML when its value changes.
