@@ -4,7 +4,8 @@ import { Profile } from '../../../shared/interfaces/profile';
 // import { createProfileColor, createProfileInitials } from '../../../shared/helpers/profile-helper';
 import { ProfileService } from '../../../shared/services/profile-service';
 import { DeleteProfile } from '../../../shared/components/delete-profile/delete-profile';
-import { UserBadge } from '../user-badge/user-badge';
+import { UserBadge } from '../../../shared/components/user-badge/user-badge';
+
 
 @Component({
     selector: 'app-user-profile',
