@@ -22,13 +22,7 @@
             </div>
             <!-- When a profile is selected, displays UserProfile below it -->
             @if (profileOpen()) {
-                <a
-                    class="contacts-header__back"
-                    routerLink="/contacts"
-                    aria-label="Back to contacts"
-                >
-                    ←
-                </a>
+                <app-back-button></app-back-button>
             }
         </header>
 

@@ -1,6 +1,4 @@
 import { Injectable, inject, signal } from '@angular/core';
-// import { createClient, SupabaseClient } from '@supabase/supabase-js';
-// import { environment } from '../../environments/environment';
 import { Profile, ProfileChanges } from '../interfaces/profile';
 import { DatabaseService } from './database-service';
 
@@ -86,14 +84,6 @@ private readonly database = inject(DatabaseService);
         return data as Profile;
     }
 
-    // await this.database.clientService.updateProfile(
-    // selectedProfile.id,
-    // {
-    //     user_name: 'Anna Schmidt',
-    //     user_email: 'anna@example.com',
-    //     user_phone: '+49 123 456789',
-    // })
-
     // Delete a dummy profile.
     //
     // The second filter makes sure that this method
@@ -127,17 +117,4 @@ private readonly database = inject(DatabaseService);
     private notifyProfilesChanged(): void {
         this.profilesChanged.update((currentValue) => currentValue + 1);
     }
-
-
-
-
-    // This is now in NotificationService
-    // Show a message for three seconds.
-    // showNotification(message: string): void {
-    //     this.notification.set(message);
-
-    //     window.setTimeout(() => {
-    //         this.notification.set('');
-    //     }, 3000);
-    // }
 }

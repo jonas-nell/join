@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed, effect } from '@angular/core';
+import { Component, inject, signal, computed, effect } from '@angular/core';
 import { Profile } from '../../interfaces/profile';
 import { createProfileColor, createProfileInitials } from '../../helpers/profile-helper';
 import { ProfileService } from '../../services/profile-service';
