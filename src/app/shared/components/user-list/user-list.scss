@@ -1,15 +1,7 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-// Allow the component to use the available height.
-:host {
-    display: block;
-    height: 100%;
-}
 
-// Let the list use the width of its parent.
 .user-list {
-    display: grid;
-    width: 100%;
     max-width: 350px;
     margin: 0 auto;
 }
@@ -55,8 +47,6 @@
 
     min-width: 0;
     padding: 10px 20px;
-
-    color: inherit;
     text-decoration: none;
 }
 
@@ -66,7 +56,6 @@
     display: grid;
     width: 42px;
     height: 42px;
-    flex-shrink: 0;
     place-items: center;
 
     color: #ffffff;
@@ -82,7 +71,6 @@
 
 .user__name {
     @include font-inter(regular, 20, 20px, 20);
-
     margin: 0;
 }
 
@@ -90,7 +78,6 @@
     @include font-inter(regular, 16, 16px, 16);
 
     color: $email-address;
-    text-decoration: none;
 }
 
 @include desktop {
@@ -129,12 +116,6 @@
             width: calc(100% - 24px);
             margin: 0 12px;
             padding: 12px;
-
-            span {
-                // Keep the letter centered with the 42px badge.
-                width: 42px;
-                text-align: center;
-            }
         }
     }
 

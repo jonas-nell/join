@@ -2,7 +2,7 @@
 
 // Mobile: show the contact list first.
 .contacts-layout {
-    min-height: 100vh;
+    min-height: 50vh;
 }
 
 // Mobile: hide the profile until a user is selected.
@@ -63,16 +63,6 @@
     }
 }
 
-// Style the mobile back button.
-.contacts-header__back {
-    font-size: 32px;
-    padding: 0 4px;
-
-    color: $button-blue;
-    text-decoration: none;
-}
-
-// Show a short confirmation message.
 // Show a large confirmation after successful deletion.
 .contacts-notification {
     @include font-inter(bold, 20, 20px, 20);
@@ -123,7 +113,6 @@
     .contacts-layout__list {
         // Only the user list should scroll.
         height: 100%;
-        min-height: 0;
         overflow-y: auto;
     }
 
@@ -166,7 +155,7 @@
     }
 
     // Hide the back button on desktop.
-    .contacts-header__back {
+    app-back-button {
         display: none;
     }
 
