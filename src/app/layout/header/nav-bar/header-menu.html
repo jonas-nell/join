@@ -1,7 +1,7 @@
 
 <dialog appDialog="menu">
     <nav>
-        <a [routerLink]="['/help']" routerLinkActive="active" (click)="dialogservice.closeDialog()">Help</a>
+        <a class="help-btn" [routerLink]="['/help']" routerLinkActive="active" (click)="dialogservice.closeDialog()">Help</a>
         <a [routerLink]="['/legal-notice']" routerLinkActive="active" (click)="dialogservice.closeDialog()">Legal Notice</a>
         <a [routerLink]="['/privacy-policy']" routerLinkActive="active" (click)="dialogservice.closeDialog()">Privacy Policy</a>
         <a [routerLink]="['/']" routerLinkActive="active" (click)="dialogservice.closeDialog()">Logout</a>
