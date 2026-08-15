@@ -2,7 +2,7 @@
 
 
 .user-list {
-    max-width: 350px;
+    max-width: 400px;
     margin: 0 auto;
 }
 
@@ -21,12 +21,12 @@
     display: grid;
 
     h2 {
-        @include font-inter(bold, 20, 20px, 20);
+        @include font-inter(regular, 20, 20px, 20);
 
         // Keep 20px of space on the left and right.
-        width: calc(100% - 40px);
-        margin: 0 auto;
-        padding: 12px 0;
+        width: calc(100% - 32px);
+        margin: 0 16px;
+        padding: 20px 20px;                   
 
         border-bottom: 1px solid $border-contact-list;
 
@@ -43,11 +43,12 @@
 
 // Make the complete user row clickable.
 .user {
-    @include flex($direction: row, $align: center, $justify: left, $gap: 12);
+    @include flex($direction: row, $align: center, $justify: left, $gap: 20);
 
     min-width: 0;
     padding: 10px 20px;
     text-decoration: none;
+    margin: 8px 16px 0 16px;    
 }
 
 // .user__badge {
@@ -66,7 +67,8 @@
 .user__information {
     display: grid;
     min-width: 0;
-    gap: 2px;
+    gap: 6px;
+    overflow-wrap: anywhere
 }
 
 .user__name {
@@ -82,7 +84,8 @@
 
 @include desktop {
     .user-list {
-        padding-top: 16px;
+        padding-top: 36px;
+        box-shadow: 0 -6px 10px 5px rgba(0, 0, 0, 0.5);
     }
 
     // Show the Add contact button on desktop.
@@ -90,32 +93,32 @@
         @include font-inter(bold, 20, 20px, 20);
         @include flex($direction: row, $align: center, $justify: center, $gap: 10);
 
-        width: calc(100% - 24px);
-        margin: 0 12px 8px;
+        width: calc(100% - 48px);
+        margin: 0 24px 8px;
         padding: 10px 16px;
 
         color: #ffffff;
 
         background-color: $main-color;
         border: 0;
-        border-radius: 6px;
+        border-radius: 10px;
         cursor: pointer;
     }
 
     // Keep the desktop rows away from the list edges.
     .user {
-        margin: 0 12px;
-        padding: 9px 12px;
+        margin: 8px 24px 0 24px;
+        padding: 15px 24px;
 
-        border-radius: 6px;
+        border-radius: 10px;
     }
 
     .user-group {
         h2 {
             // Match the 12px margin of the desktop user row.
-            width: calc(100% - 24px);
-            margin: 0 12px;
-            padding: 12px;
+            width: calc(100% - 48px);
+            margin: 0 24px;
+            padding: 18px 24px;
         }
     }
 
@@ -128,6 +131,7 @@
     .user.active {
         color: #ffffff;
         background-color: $main-color;
+        margin-top: 8px;
 
         // Add a white ring and a thin grey ring.
         // .user__badge {

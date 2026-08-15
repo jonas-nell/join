@@ -19,7 +19,6 @@
     // Show the selected profile.
     .contacts-layout__profile {
         display: block;
-        background-color: $light-gray;
     }
 }
 
@@ -102,6 +101,7 @@
 
     .contacts-layout__profile {
         padding-top: 9dvh;
+        background-color: $light-gray;
     }
 
     // Always show both areas on desktop.
@@ -127,7 +127,9 @@
 
     // Add a line between the list and profile.
     .contacts-layout__list {
-        border-right: 1px solid #e5e7eb;
+        border:transparent;
+        box-shadow: 5px 0 5px -2px rgba(0, 0, 0, 0.1);
+        z-index: 15;     
     }
 
     // Remove the mobile width limit on desktop.
