@@ -39,12 +39,14 @@
 <app-edit-or-add-contact></app-edit-or-add-contact>
 
 <dialog class="contact-btn-dialog" appDialog="contact-btn-dialog">
-    <button (click)="dialogservice.openDialog('edit-and-add-contact', 'edit')">
-        <img src="./assets/icons/edit.png" alt="">
-        <span>Edit</span>
-    </button>
-    <button>
-        <img src="./assets/icons/delete.png" alt="">
-        <span>Delete</span>
-    </button>
+    <div>
+        <button (click)="dialogservice.openDialog('edit-and-add-contact', 'edit')">
+            <img src="./assets/icons/edit.png" alt="">
+            <span>Edit</span>
+        </button>
+        <button>
+            <img src="./assets/icons/delete.png" alt="">
+            <span>Delete</span>
+        </button>
+    </div>
 </dialog>
