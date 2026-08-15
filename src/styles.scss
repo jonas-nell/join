@@ -15,11 +15,10 @@
     border: initial;
 }
 
-.content{
+.content {
     width: 100%;
     height: 100%;
     max-width: 1440px;
-
 }
 
 // Mobile: leave room for the fixed bottom navigation and the header
@@ -27,23 +26,28 @@ main {
     padding-bottom: 12dvh;
     padding-top: 12dvh;
 
-    @include desktop{
-      padding-bottom: 3dvh;
+    @include desktop {
+        padding-bottom: 3dvh;
     }
 }
 body:has(dialog:open) {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 // Desktop: remove the mobile navigation space and page scrolling,
 // only user-list should scroll...
 @include desktop {
-  html,
-  body {
-    height: 100%;
-  }
+    html,
+    body {
+        height: 100%;
+    }
 
-  body {
-    padding-bottom: 0;
-  }
+    body {
+        padding-bottom: 0;
+    }
+}
+
+button,
+a {
+    cursor: pointer;
 }

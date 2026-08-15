@@ -1,24 +1,76 @@
 @use '../../../../public/assets/styles/main.scss' as *;
 
-header{
+header {
+    height: px-to-rem(80);
     width: 100%;
     position: fixed;
     top: 0;
-    left: 0;
+    right: 0;
     z-index: 1;
     background-color: white;
     @include use-padding(20, 16);
     @include flex(row, center, space-between, 0);
-    box-shadow: 0 -6px 10px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 -6px 10px 5px rgba(0, 0, 0, 0.5);
 
-    img{
+    .logo {
         width: px-to-rem(32);
     }
 
-    button{
-        border: $main-color solid 2px;
-        border-radius: 50%;
-        width: px-to-rem(40);
-        aspect-ratio: 1 / 1;
+    p {
+        @include font-inter(regular, 20, 20px, 20);
+        display: none;
+    }
+
+    .btn-wrpr {
+        @include flex(row, center, space-between, 20);
+
+        .btn-menu {
+            border: $main-color solid 3px;
+            border-radius: 50%;
+            width: px-to-rem(40);
+            aspect-ratio: 1 / 1;
+        }
+
+        .btn-help {
+            display: none;
+        }
+    }
+
+    @include desktop {
+        height: px-to-rem(96);
+        width: calc(100% - 250px);
+
+        @include use-padding(20, 36);
+
+        .btn-wrpr {
+            @include flex(row, center, space-between, 20);
+
+            .btn-menu {
+                width: px-to-rem(56);
+
+                &:hover {
+                    background-color: $light-gray;
+                }
+            }
+
+            .btn-help {
+                display: block;
+                width: px-to-rem(32);
+                height: px-to-rem(32);
+
+                &:hover {
+                    transform: scale(1.15);
+                }
+            }
+        }
+
+        .logo {
+            display: none;
+        }
+
+        p {
+            display: block;
+            margin-left: px-to-rem(36);
+        }
     }
 }
