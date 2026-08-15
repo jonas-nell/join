@@ -3,8 +3,8 @@ import { Profile } from '../../../shared/interfaces/profile';
 // import { createProfileColor, createProfileInitials } from '../../../shared/helpers/profile-helper';
 import { ProfileService } from '../../../shared/services/profile-service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { UserBadge } from '../user-badge/user-badge';
 import { DialogService } from '../../../dialog-service';
+import { UserBadge } from '../../../shared/components/user-badge/user-badge';
 
 @Component({
     selector: 'app-user-list',

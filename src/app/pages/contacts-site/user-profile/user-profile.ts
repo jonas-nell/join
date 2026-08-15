@@ -5,6 +5,7 @@ import { Profile } from '../../../shared/interfaces/profile';
 import { ProfileService } from '../../../shared/services/profile-service';
 import { DeleteProfile } from '../../../shared/components/delete-profile/delete-profile';
 import { UserBadge } from '../../../shared/components/user-badge/user-badge';
+import { DialogService } from '../../../dialog-service';
 
 
 @Component({
@@ -31,6 +32,8 @@ export class UserProfile implements OnInit {
     // Make the profile helpers available in the HTML...
     // readonly getProfileColor = createProfileColor;
     // readonly getInitials = createProfileInitials;
+
+    dialogservice = inject(DialogService);
 
     ngOnInit(): void {
         // Listen for changes to the ID in the URL.

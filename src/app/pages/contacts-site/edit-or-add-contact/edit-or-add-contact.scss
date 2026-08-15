@@ -1,24 +1,63 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
 .contactDialog {
-
     border-radius: 20px;
-    width: 298px;
+    height: 75dvh;
+    width: clamp(300px, 90%, 600px);
     position: fixed;
     inset: 0;
     margin: auto;
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        display 0.2s allow-discrete,
+        overlay 0.2s allow-discrete;
+
+    @starting-style {
+        transform: translateY(120%);
+    }
+
+    &:not([open]) {
+        transform: translateY(120%);
+    }
+
+    ::backdrop {
+        color: initial;
+    }
+
+    @include desktop {
+        height: 60dvh;
+        width: 60dvw;
+    }
 }
 
 .dialog-wrpr {
     width: 100%;
+    height: 100%;
+    @include flex($justify: space-between);
+
+    @include desktop {
+        @include flex(row);
+    }
 }
 
 .part {
+    height: 100%;
     width: 100%;
     padding: 15px;
     &-top {
+        height: 40%;
+        flex-shrink: 0;
         color: white;
         background-color: $main-color;
+        @include flex($align: start);
+
+        @include desktop {
+            @include flex($align:start, $gap: 16);
+            height: 100%;
+            width: 40%;
+        }
 
         h2 {
             @include font-inter(bold, 40, 7vw, 61);
@@ -27,45 +66,131 @@
         p {
             @include font-inter(regular, 20, 3.5vw, 27);
         }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 2;
+
+            @include desktop {
+                display: none;
+            }
+
+            img {
+                height: 35px;
+                width: 35px;
+            }
+        }
+
+        .dialog-logo {
+            display: none;
+
+            @include desktop{
+                display: flex;
+                height: 60px;
+            }
+        }
     }
 
     &-bottom {
+        @include flex($justify: end);
+        flex: 1;
+        min-height: 0;
         background-color: white;
         @include font-inter(regular, 20, 4vw, 20);
+
+        @include desktop{
+            @include flex($align:end)
+        }
     }
 }
 
 .line {
-    width: 90px;
+    width: 30%;
     height: 3px;
     background-color: $button-light;
 }
 
 form {
-    @include flex(column, center, center, 24);
+    @include flex(column, center, center, 12);
+    width: 100%;
+    max-width: 500px;
+
+    @include desktop{
+        @include flex($justify:end);
+        max-width: 300px;
+    }
 
     input {
         width: 100%;
         border-radius: 10px;
         border: 1px #686868 solid;
-        height: 40px;
+        height: 30px;
         padding: 13px 21px;
+    }
+
+    .field {
+        width: 100%;
+
+        .input-wrapper {
+            width: 100%;
+
+            .input-icon {
+                position: absolute;
+                top: 50%;
+                right: 16px;
+                transform: translateY(-50%);
+                width: 20px;
+                height: 20px;
+                pointer-events: none;
+            }
+        }
+    }
+
+    .error-field {
+        min-height: 32px;
+    }
+
+    p {
+        @include font-inter(regular, 16, 16px, 16);
+        color: $error-color;
+        line-height: 1;
+        transform: translateY(8px);
     }
 }
 
 .buttons {
     width: 100%;
-    @include flex(row, center, center, 24);
+    @include flex(row, center, center, 30);
+    @include font-inter(regular, 18, 18px, 18);
 }
 
 .button {
+    width: 80px;
+    height: 40px;
     border: solid, 1px, $main-color;
     border-radius: 10px;
     padding: 8px;
-    &-primary {
-    }
     &-secondary {
         color: white;
         background-color: $main-color;
+    }
+}
+
+.close-btn-desk {
+    display: none;
+
+    @include desktop {
+        display: flex;
+        position: absolute;
+        top: 26px;
+        right: 26px;
+        z-index: 2;
+
+        &:hover {
+            background: $light-secondary;
+            border-radius: 50%;
+        }
     }
 }
