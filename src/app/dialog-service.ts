@@ -17,5 +17,6 @@ export class DialogService {
     closeDialog(){
         this.dialogOpen.set(null);
         this.dialogMode.set(null);
+        
     }
 }

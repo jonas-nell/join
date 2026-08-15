@@ -68,7 +68,7 @@
                         <img class="input-icon" src="./assets/icons/phone_new.svg" alt="" />
                     </div>
                     <div class="error-field">
-                        @if (phone?.hasError('required')) {
+                        @if (phone?.hasError('required') && phone?.touched) {
                             <p>This field is required</p>
                         }
                         <!-- validator error einfügen -->
