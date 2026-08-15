@@ -28,7 +28,7 @@
 
     @include desktop {
         height: 60dvh;
-        width: 60dvw;
+        width: 70dvw;
     }
 }
 
@@ -57,10 +57,15 @@
             @include flex($align:start, $gap: 16);
             height: 100%;
             width: 40%;
+            padding: 0 24px;
         }
 
         h2 {
-            @include font-inter(bold, 40, 7vw, 61);
+            @include font-inter(bold, 42, 7vw, 61);
+
+            @include desktop{
+                line-height: 1;
+            }
         }
 
         p {
@@ -101,7 +106,8 @@
         @include font-inter(regular, 20, 4vw, 20);
 
         @include desktop{
-            @include flex($align:end)
+            @include flex($align:end);
+            padding: 16px 24px;
         }
     }
 }
@@ -126,8 +132,9 @@ form {
         width: 100%;
         border-radius: 10px;
         border: 1px #686868 solid;
-        height: 30px;
+        height: 40px;
         padding: 13px 21px;
+        padding-right: 40px;
     }
 
     .field {
@@ -187,6 +194,7 @@ form {
         top: 26px;
         right: 26px;
         z-index: 2;
+        padding: 4px;
 
         &:hover {
             background: $light-secondary;
