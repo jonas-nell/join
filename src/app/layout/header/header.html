@@ -1,6 +1,10 @@
 <header>
-    <img src="./assets/icons/logo-blue.png" alt="join logo">
-    <button (click)="dialogService.openDialog('menu')">SM</button>
+    <img class="logo" src="./assets/icons/logo-blue.png" alt="join logo" />
+    <p>Kanban Project Management Tool</p>
+    <div class="btn-wrpr">
+        <button class="btn-help"><img src="./assets/icons/help.png" alt="help button icon" /></button>
+        <button class="btn-menu" (click)="dialogService.openDialog('menu')">SM</button>
+    </div>
 </header>
 
 <app-header-menu></app-header-menu>
