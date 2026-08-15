@@ -12,7 +12,7 @@
     <div class="user-list">
         <button class="user-list__add" type="button" (click)="dialogservice.openDialog('edit-and-add-contact', 'add')">
             <span>Add new contact</span>
-            <span aria-hidden="true">＋</span>
+            <img src="./assets/icons/person_add.png" alt="add contact icon">
         </button>
 
         @for (group of groupedProfiles(); track group.letter) {
