@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { Dialog } from '../../../dialog-directive';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { minLengthWithoutSpaces } from '../../../shared/helpers/function-min-length';
@@ -12,14 +12,25 @@ import { DialogService } from '../../../dialog-service';
 })
 export class EditOrAddContact {
     fb = inject(FormBuilder);
-
     dialogService = inject(DialogService);
 
     contactForm = this.fb.group({
         name: ['', [Validators.required, minLengthWithoutSpaces(3), Validators.pattern(/^[\p{L}\p{M}]+(?:[ '’-][\p{L}\p{M}]+)*$/u)]],
         email: ['', [Validators.required, Validators.email]],
-        phone: ['', [Validators.required, minLengthWithoutSpaces(10), Validators.pattern(/^\+?[0-9]+$/)]],
+        phone: ['', [Validators.required, minLengthWithoutSpaces(8), Validators.pattern(/^\+?[0-9]+$/)]],
     });
+
+    constructor(){
+        effect(() => {
+            const isThisDialogOpen = this.dialogService.dialogOpen() === 'edit-and-add-contact';
+
+            if (isThisDialogOpen) {
+                this.fillEditForm();
+            } else {
+                this.contactForm.reset();
+            }
+        });
+    }
 
     get name(){
         return this.contactForm.get('name');
@@ -42,15 +53,14 @@ export class EditOrAddContact {
                 name: 'hans',
                 email: 'hans@email',
                 phone: '123456789'
-            })            
+            });            
         }
     }
 
     // ### Daniel:Daten an Datenbank schicken
     formSubmit() {
         if (this.contactForm.valid) {
-            console.log(this.contactForm.value);
-            this.contactForm.reset();
+            this.dialogService.closeDialog();
         } else {
             this.contactForm.markAllAsTouched();
         }
