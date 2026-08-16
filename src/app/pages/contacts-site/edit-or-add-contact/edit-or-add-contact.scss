@@ -2,8 +2,8 @@
 
 .contactDialog {
     border-radius: 20px;
-    height: 75dvh;
-    width: clamp(300px, 90%, 600px);
+    height: clamp(500px, 80%, 600px);
+    width: clamp(310px, 98%, 400px);
     position: fixed;
     inset: 0;
     margin: auto;
@@ -29,6 +29,7 @@
     @include desktop {
         height: 60dvh;
         width: 70dvw;
+        width: clamp(760px, 70%, 1100px);
     }
 }
 
@@ -47,29 +48,44 @@
     width: 100%;
     padding: 15px;
     &-top {
-        height: 40%;
+        height: 36%;
         flex-shrink: 0;
         color: white;
         background-color: $main-color;
-        @include flex($align: start);
+        @include flex($align: start, $gap: 8);
 
         @include desktop {
-            @include flex($align:start, $gap: 16);
+            @include flex($align: start, $gap: 16);
             height: 100%;
-            width: 40%;
-            padding: 0 24px;
+            width: 45%;
+            padding: 0 40px;
+        }
+
+        img{
+            height: 12%
         }
 
         h2 {
-            @include font-inter(bold, 42, 7vw, 61);
+            @include font-inter(bold, 40, 4vw, 61);
 
-            @include desktop{
+            @include desktop {
                 line-height: 1;
             }
         }
 
         p {
-            @include font-inter(regular, 20, 3.5vw, 27);
+            @include font-inter(regular, 18, 3.5vw, 27);
+        }
+
+        .line {
+            width: 25%;
+            height: 3px;
+            background-color: $button-light;
+        }
+
+        .filler{
+            height: 12%;
+            width: 50px;
         }
 
         .close-btn {
@@ -91,9 +107,9 @@
         .dialog-logo {
             display: none;
 
-            @include desktop{
+            @include desktop {
                 display: flex;
-                height: 60px;
+                height: 12%;
             }
         }
     }
@@ -103,28 +119,22 @@
         flex: 1;
         min-height: 0;
         background-color: white;
-        @include font-inter(regular, 20, 4vw, 20);
+        @include font-inter(regular, 18, 4vw, 20);
 
-        @include desktop{
-            @include flex($align:end);
-            padding: 16px 24px;
+        @include desktop {
+            @include flex($align: end);
+            padding: 16px 40px;
         }
     }
 }
 
-.line {
-    width: 30%;
-    height: 3px;
-    background-color: $button-light;
-}
-
 form {
-    @include flex(column, center, center, 12);
+    @include flex(column, center, center, 5);
     width: 100%;
     max-width: 500px;
 
-    @include desktop{
-        @include flex($justify:end);
+    @include desktop {
+        @include flex($justify: end);
         max-width: 300px;
     }
 
@@ -135,6 +145,7 @@ form {
         height: 40px;
         padding: 13px 21px;
         padding-right: 40px;
+        margin-bottom: 6px;
     }
 
     .field {
@@ -163,7 +174,7 @@ form {
         @include font-inter(regular, 16, 16px, 16);
         color: $error-color;
         line-height: 1;
-        transform: translateY(8px);
+        // transform: translateY(8px);
     }
 }
 
