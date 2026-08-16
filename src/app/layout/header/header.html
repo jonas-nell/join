@@ -2,7 +2,7 @@
     <img class="logo" src="./assets/icons/logo-blue.png" alt="join logo" />
     <p>Kanban Project Management Tool</p>
     <div class="btn-wrpr">
-        <button class="btn-help"><img src="./assets/icons/help.png" alt="help button icon" /></button>
+        <button class="btn-help" [routerLink]="['/help']"><img src="./assets/icons/help.png" alt="help button icon" /></button>
         <button class="btn-menu" (click)="dialogService.openDialog('menu')">SM</button>
     </div>
 </header>
