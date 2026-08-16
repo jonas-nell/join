@@ -1,17 +1,19 @@
-<button
-    class="delete-profile__button"
-    [class.delete-profile__button--profile]="buttonStyle() === 'profile'"
-    [class.delete-profile__button--edit]="buttonStyle() === 'edit'"
-    type="button"
-    (click)="openConfirmation()"
-    [disabled]="deleting()"
->
-    @if (buttonStyle() === 'profile') {
-        <img src="./assets/icons/delete.png" alt="" />
-    }
-
-    <span>Delete</span>
-</button>
+@if (showButton()) {
+    <button
+        class="delete-profile__button"
+        [class.delete-profile__button--profile]="buttonStyle() === 'profile'"
+        [class.delete-profile__button--edit]="buttonStyle() === 'edit'"
+        type="button"
+        (click)="openConfirmation()"
+        [disabled]="deleting()"
+    >
+        @if (buttonStyle() === 'profile') {
+            <img src="./assets/icons/delete.png" alt="" />
+        }
+    
+        <span>Delete</span>
+    </button>
+}
 
 @if (confirmationOpen()) {
     <div class="popup-backdrop">

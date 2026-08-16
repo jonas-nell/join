@@ -22,6 +22,8 @@ export class DeleteProfile {
     // Choose which button design should be used.
     readonly buttonStyle = input<'profile' | 'edit'>('profile');
 
+    readonly showButton = input(true);
+
     // True while the confirmation popup is visible.
     readonly confirmationOpen = signal(false);
 
