@@ -23,13 +23,13 @@
 
             <div class="dialog-badge">
                 @if (dialogService.dialogMode() == 'edit' && profileService.selectedProfile(); as selected) {
-                    <app-user-badge
+                    <app-user-badge class="user-badge"
                     [userId]="selected.id"
                     [userName]="selected.user_name"
-                    size="large"
+                    size="dialog"
                     [active]="true" />
                 } @else if (dialogService.dialogMode() == 'add') {
-                    <div class="user-badge user-badge--large">
+                    <div class="badge-default">
                         <img src="./assets/icons/person-icon.svg" alt="">
                     </div>
                 }

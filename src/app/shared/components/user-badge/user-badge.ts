@@ -30,7 +30,7 @@ export class UserBadge {
     readonly userName = input.required<string>();
 
     // Use a small badge by default.
-    readonly size = input<'small' | 'large'>('small');
+    readonly size = input<'small' | 'dialog' | 'large'>('small');
 
     // Make the helper functions available in the HTML.
     readonly getProfileColor = createProfileColor;
