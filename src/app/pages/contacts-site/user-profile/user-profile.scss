@@ -3,9 +3,13 @@
 // Add space around the profile information.
 .profile {
     width: 100%;
-    max-width: 350px;
+    max-width: 500px;
     margin: 0 auto;
     padding: 24px;
+
+    @include tablet{
+    padding: 32px;
+    }
 }
 
 // Show the badge and username beside each other.
@@ -34,8 +38,7 @@
 
 // Style the selected username.
 .profile__name {
-    @include font-inter(bold, 28, 4vw, 48);
-
+    @include font-inter(medium, 26, 3vw, 40);    
     margin: 0;
 }
 
@@ -68,7 +71,7 @@
     margin-bottom: 16px;
 
     span {
-        font-weight: 600;
+        font-weight: 700;
     }
 
     p {
@@ -88,10 +91,11 @@
     .profile {
         max-width: none;
         margin: 0;
+        padding: 30px 25px;
     }
 
     .profile__header {
-        gap: 60px;
+        gap: 40px;
     }
 
     // .profile__badge {
@@ -121,3 +125,12 @@
         }
     }
 }
+
+@media (min-width: 1230px) {
+        .profile {
+            padding: 30px 40px;
+        }
+        .profile__header{
+            gap: 60px;
+        }
+    }

@@ -5,15 +5,16 @@
             <button class="close-btn" (click)="dialogService.closeDialog()">
                 <img src="./assets/icons/btn-close-white.png" alt="icon close button" />
             </button>
-            <div>
-                @if (dialogService.dialogMode() == 'edit') {
-                    <h2>Edit contact</h2>
-                } @else if (dialogService.dialogMode() == 'add') {
-                    <h2>Add contact</h2>
-                    <p>Tasks are better with a team!</p>
-                }
-            </div>
+
+            @if (dialogService.dialogMode() == 'edit') {
+                <h2>Edit contact</h2>
+            } @else if (dialogService.dialogMode() == 'add') {
+                <h2>Add contact</h2>
+                <p>Tasks are better with a team!</p>
+            }
+
             <div class="line"></div>
+            <div class="filler"></div>
         </section>
         <section class="part part-bottom">
             <button class="close-btn-desk" (click)="dialogService.closeDialog()">
@@ -32,7 +33,7 @@
                 <div class="field">
                     <div class="input-wrapper">
                         <input type="text" placeholder="Name" formControlName="name" />
-                        <img class="input-icon" src="./assets/icons/person_new.svg" alt="" />
+                        <img class="input-icon" src="./assets/icons/person (1).png" alt="" />
                     </div>
                     <div class="error-field">
                         @if (name?.hasError('required') && name?.touched) {
@@ -50,7 +51,7 @@
                 <div class="field">
                     <div class="input-wrapper">
                         <input type="email" placeholder="Email" formControlName="email" />
-                        <img class="input-icon" src="./assets/icons/mail_new.svg" alt="" />
+                        <img class="input-icon" src="./assets/icons/mail (1).png" alt="" />
                     </div>
                     <div class="error-field">
                         @if (email?.hasError('required') && email?.touched) {
@@ -65,7 +66,7 @@
                 <div class="field">
                     <div class="input-wrapper">
                         <input type="tel" placeholder="Phone" formControlName="phone" />
-                        <img class="input-icon" src="./assets/icons/phone_new.svg" alt="" />
+                        <img class="input-icon" src="./assets/icons/call (1).png" alt="" />
                     </div>
                     <div class="error-field">
                         @if (phone?.hasError('required') && phone?.touched) {

@@ -1,8 +1,17 @@
 @use '../../../../public/assets/styles/main.scss' as *;
 
+.sect-contact-site {
+    height: calc(100dvh - 180px);
+
+    @include desktop {
+        height: calc(100dvh - 100px);
+    }
+}
+
 // Mobile: show the contact list first.
 .contacts-layout {
-    min-height: 50vh;
+    height: 100%;
+    // min-height: 50vh;
 }
 
 // Mobile: hide the profile until a user is selected.
@@ -10,8 +19,15 @@
     display: none;
 }
 
+.contacts-layout__profile {
+    height: 100%;
+    background-color: $light-gray;
+}
+
 // Mobile: hide the list when a profile is open.
 .contacts-layout.profile-open {
+    height: 100%;
+
     .contacts-layout__list {
         display: none;
     }
@@ -19,6 +35,7 @@
     // Show the selected profile.
     .contacts-layout__profile {
         display: block;
+        height: 100%;
     }
 }
 
@@ -27,23 +44,25 @@
     @include flex($direction: row, $align: start, $justify: space-between);
 
     width: 100%;
-    max-width: 350px;
+    max-width: 500px;
     margin: 0 auto;
+    padding: 30px 16px 8px;
 
-    padding: 20px 16px 8px;
+    @include tablet {
+        padding: 32px;
+    }
 }
 
 // Mobile: place the subtitle below the headline.
 .contacts-header__text {
     h1 {
-        // Grow from 48px to a maximum of 60px.
-        @include font-inter(bold, 48, 8vw, 60);
-
+        // Grow from 46px to a maximum of 60px.
+        @include font-inter(bold, 46, 5vw, 60);
         margin: 0;
     }
 
     p {
-        @include font-inter(regular, 20, 4vw, 28);
+        @include font-inter(regular, 20, 2.5vw, 27);
 
         width: fit-content;
         margin: 4px 0 0;
@@ -86,6 +105,39 @@
     transform: translateX(50%);
 }
 
+@include tablet {
+    .contacts-layout {
+        display: grid;
+        grid-template-columns: 400px 1fr;
+
+        .contacts-layout__list,
+        .contacts-layout__profile {
+            display: block;
+            min-height: 0;
+        }
+
+        .contacts-layout__list {
+            // Only the user list should scroll.
+            height: 100%;
+            overflow-y: auto;
+            border: transparent;
+            box-shadow: 5px 0 5px -2px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+    }
+
+    .contacts-layout.profile-open {
+        .contacts-layout__list,
+        .contacts-layout__profile {
+            display: block;
+        }
+    }
+
+    app-back-button {
+        display: none;
+    }
+}
+
 // Desktop: show the list and profile beside each other.
 @include desktop {
     .contacts-layout {
@@ -96,12 +148,13 @@
         // Keep the contacts area inside its parent.
         height: 100%;
         min-height: 0;
-        overflow: hidden;
+        overflow-wrap: anywhere;
     }
 
     .contacts-layout__profile {
         padding-top: 9dvh;
         background-color: $light-gray;
+        overflow: auto;
     }
 
     // Always show both areas on desktop.
@@ -127,33 +180,42 @@
 
     // Add a line between the list and profile.
     .contacts-layout__list {
-        border:transparent;
+        border: transparent;
         box-shadow: 5px 0 5px -2px rgba(0, 0, 0, 0.1);
-        z-index: 15;     
+        z-index: 15;
     }
 
     // Remove the mobile width limit on desktop.
     .contacts-header {
         max-width: none;
         margin: 0;
-        padding: 0px 40px 16px;
+        padding: 0px 25px 16px;
     }
 
     // Desktop: place the title and subtitle beside each other.
-    .contacts-header__text {
-        @include flex($direction: row, $align: center, $justify: center, $gap: 16);
 
-        p {
-            margin: 0;
-            padding: 0 0 0 16px;
+    @media (min-width: 1240px) {
+        .contacts-header__text {
+            @include flex($direction: row, $align: center, $justify: center, $gap: 16);
 
-            border-bottom: 0;
-            border-left: 2px solid $button-light;
+            p {
+                margin: 0;
+                padding: 0 0 0 16px;
 
-            // Hide the mobile underline on desktop.
-            &::after {
-                display: none;
+                border-bottom: 0;
+                border-left: 2px solid $button-light;
+
+                // Hide the mobile underline on desktop.
+                &::after {
+                    display: none;
+                }
             }
+        }
+    }
+
+    @media (min-width: 1300px) {
+        .contacts-header {
+            padding: 0 40px 16px;
         }
     }
 
@@ -172,11 +234,11 @@
 
 .contact-site-btn {
     position: fixed;
-    bottom: 16dvh;
+    bottom: 130px;
     right: 5%;
 
-    height: 60px;
-    width: 60px;
+    height: 56px;
+    width: 56px;
 
     background: $main-color;
     border-radius: 50%;
