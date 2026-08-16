@@ -32,7 +32,7 @@
 // Increase the large badge on desktop.
 @include desktop {
     .user-badge--large {
-        @include font-inter(regular, 58, 58px, 58);
+        @include font-inter(regular, 47, 47px, 47);
 
         width: 120px;
         height: 120px;

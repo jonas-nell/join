@@ -1,52 +1,57 @@
-<div class="contacts-layout" [class.profile-open]="profileOpen()">
-    <aside class="contacts-layout__list">
-        <app-user-list></app-user-list>
-    </aside>
-    <button
-        class="contact-site-btn"
-        [class.contact-site-btn--edit]="profileOpen()"
-        (click)="profileOpen() ? onEditContact() : onAddContact()"
-    >
-        @if (profileOpen()) {
-            <img src="./assets/icons/dotdotdot.svg" alt="" />
-        } @else {
-            <img src="./assets/icons/add-icon.svg" alt="" />
-        }
-    </button>
-
-    <div class="contacts-layout__profile">
-        <header class="contacts-header">
-            <div class="contacts-header__text">
-                <h1>Contacts</h1>
-                <p>Better with a team</p>
-            </div>
-            <!-- When a profile is selected, displays UserProfile below it -->
+<section class="sect-contact-site">
+    <div class="contacts-layout" [class.profile-open]="profileOpen()">
+        <aside class="contacts-layout__list">
+            <app-user-list></app-user-list>
+        </aside>
+        <button
+            class="contact-site-btn"
+            [class.contact-site-btn--edit]="profileOpen()"
+            (click)="profileOpen() ? onEditContact() : onAddContact()"
+        >
             @if (profileOpen()) {
-                <app-back-button></app-back-button>
+                <img src="./assets/icons/dotdotdot.svg" alt="" />
+            } @else {
+                <img src="./assets/icons/add-icon.svg" alt="" />
             }
-        </header>
-
-        <router-outlet (activate)="profileOpen.set(true)" (deactivate)="profileOpen.set(false)" />
-    </div>
-</div>
-
-@if (notificationService.message()) {
-    <div class="contacts-notification" role="status">
-        {{ notificationService.message() }}
-    </div>
-}
-
-<app-edit-or-add-contact></app-edit-or-add-contact>
-
-<dialog class="contact-btn-dialog" appDialog="contact-btn-dialog">
-    <div>
-        <button (click)="dialogservice.openDialog('edit-and-add-contact', 'edit')">
-            <img src="./assets/icons/edit.png" alt="">
-            <span>Edit</span>
         </button>
-        <button>
-            <img src="./assets/icons/delete.png" alt="">
-            <span>Delete</span>
-        </button>
+
+        <div class="contacts-layout__profile">
+            <header class="contacts-header">
+                <div class="contacts-header__text">
+                    <h1>Contacts</h1>
+                    <p>Better with a team</p>
+                </div>
+                <!-- When a profile is selected, displays UserProfile below it -->
+                @if (profileOpen()) {
+                    <app-back-button></app-back-button>
+                }
+            </header>
+
+            <router-outlet
+                (activate)="profileOpen.set(true)"
+                (deactivate)="profileOpen.set(false)"
+            />
+        </div>
     </div>
-</dialog>
+
+    @if (notificationService.message()) {
+        <div class="contacts-notification" role="status">
+            {{ notificationService.message() }}
+        </div>
+    }
+
+    <app-edit-or-add-contact></app-edit-or-add-contact>
+
+    <dialog class="contact-btn-dialog" appDialog="contact-btn-dialog">
+        <div>
+            <button (click)="dialogservice.openDialog('edit-and-add-contact', 'edit')">
+                <img src="./assets/icons/edit.png" alt="" />
+                <span>Edit</span>
+            </button>
+            <button>
+                <img src="./assets/icons/delete.png" alt="" />
+                <span>Delete</span>
+            </button>
+        </div>
+    </dialog>
+</section>

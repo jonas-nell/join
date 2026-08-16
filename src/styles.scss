@@ -23,7 +23,7 @@
 
 // Mobile: leave room for the fixed bottom navigation and the header
 main {
-    padding-bottom: 12dvh;
+    padding-bottom: 100px;
     padding-top: 80px;
 
     @include desktop {

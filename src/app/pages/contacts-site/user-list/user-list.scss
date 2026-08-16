@@ -1,9 +1,13 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-
 .user-list {
     max-width: 400px;
-    margin: 0 auto;
+    // margin: 0 auto;
+    padding-bottom: 140px;
+
+    @include tablet {
+        padding-bottom: 40px;
+    }
 }
 
 // Add space around loading and error messages.
@@ -26,9 +30,12 @@
         // Keep 20px of space on the left and right.
         width: calc(100% - 32px);
         margin: 0 16px;
-        padding: 20px 20px;                   
-
+        padding: 20px 0;
         border-bottom: 1px solid $border-contact-list;
+
+        @media (min-width: 440px) {
+            padding: 20px;
+        }
 
         span {
             // Use the same width as the user badge.
@@ -43,12 +50,19 @@
 
 // Make the complete user row clickable.
 .user {
-    @include flex($direction: row, $align: center, $justify: left, $gap: 20);
+    @include flex($direction: row, $align: center, $justify: left, $gap: 15);
 
     min-width: 0;
-    padding: 10px 20px;
+    padding: 10px 55px 10px 0;
     text-decoration: none;
-    margin: 8px 16px 0 16px;    
+    margin: 8px 16px 0 16px;
+
+    @media (min-width: 440px) {
+        gap: 20px;
+        padding: 10px 20px;
+        text-decoration: none;
+        margin: 8px 16px 0 16px;
+    }
 }
 
 // .user__badge {
@@ -68,11 +82,11 @@
     display: grid;
     min-width: 0;
     gap: 6px;
-    overflow-wrap: anywhere
+    overflow-wrap: anywhere;
 }
 
 .user__name {
-    @include font-inter(regular, 20, 20px, 20);
+    @include font-inter(regular, 18, 3vw, 20);
     margin: 0;
 }
 
@@ -80,6 +94,32 @@
     @include font-inter(regular, 16, 16px, 16);
 
     color: $email-address;
+}
+
+@include tablet {
+    // Highlight the selected contact only on desktop.
+    .user {
+        border-radius: 10px;
+    }
+    // Add a hover background only on desktop.
+    .user:hover {
+        background-color: $border-contact-list;
+    }
+    .user.active {
+        color: #ffffff;
+        background-color: $main-color;
+        margin-top: 8px;
+
+        // Add a white ring and a thin grey ring.
+        // .user__badge {
+        //     box-shadow:
+        //         0 0 0 2px #ffffff,
+        //         0 0 0 3px #cbd5e1;
+        // }
+        .user__name {
+            color: #ffffff;
+        }
+    }
 }
 
 @include desktop {
@@ -104,7 +144,7 @@
         border-radius: 10px;
         cursor: pointer;
 
-        &:hover{
+        &:hover {
             background-color: $button-light;
         }
     }
@@ -113,8 +153,6 @@
     .user {
         margin: 8px 24px 0 24px;
         padding: 15px 24px;
-
-        border-radius: 10px;
     }
 
     .user-group {
@@ -123,28 +161,6 @@
             width: calc(100% - 48px);
             margin: 0 24px;
             padding: 18px 24px;
-        }
-    }
-
-    // Add a hover background only on desktop.
-    .user:hover {
-        background-color: $border-contact-list;
-    }
-
-    // Highlight the selected contact only on desktop.
-    .user.active {
-        color: #ffffff;
-        background-color: $main-color;
-        margin-top: 8px;
-
-        // Add a white ring and a thin grey ring.
-        // .user__badge {
-        //     box-shadow:
-        //         0 0 0 2px #ffffff,
-        //         0 0 0 3px #cbd5e1;
-        // }
-        .user__name {
-            color: #ffffff;
         }
     }
 }
