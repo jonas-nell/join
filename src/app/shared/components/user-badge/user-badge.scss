@@ -25,8 +25,8 @@
 .user-badge--large {
     @include font-inter(regular, 28, 28px, 28);
 
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
 }
 
 // Increase the large badge on desktop.
@@ -37,4 +37,11 @@
         width: 120px;
         height: 120px;
     }
+}
+
+.user-badge--dialog {
+    @include font-inter(regular, 47, 47px, 47);
+
+    width: 120px;
+    height: 120px;
 }

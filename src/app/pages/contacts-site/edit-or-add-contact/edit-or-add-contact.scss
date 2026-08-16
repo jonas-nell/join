@@ -29,7 +29,7 @@
     @include desktop {
         height: 60dvh;
         width: 70dvw;
-        width: clamp(760px, 70%, 1100px);
+        width: clamp(1000px, 70%, 1100px);
     }
 }
 
@@ -61,8 +61,8 @@
             padding: 0 40px;
         }
 
-        img{
-            height: 12%
+        img {
+            height: 12%;
         }
 
         h2 {
@@ -83,7 +83,7 @@
             background-color: $button-light;
         }
 
-        .filler{
+        .filler {
             height: 12%;
             width: 50px;
         }
@@ -116,10 +116,40 @@
 
     &-bottom {
         @include flex($justify: end);
+        height: 100%;
         flex: 1;
         min-height: 0;
         background-color: white;
         @include font-inter(regular, 18, 4vw, 20);
+
+        .dialog-badge {
+            position: absolute;
+            top: 0;
+            transform: translateY(-50%);
+
+            @include desktop {
+                left: 50px;
+                top: auto;
+                transform: translateY(0);
+            }
+        }
+
+        .badge-default {
+            width: 120px;
+            height: 120px;
+            color: #ffffff;
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 2px #ffffff,
+                0 0 0 3px #cbd5e1;
+            background-color: $border-contact-list;
+            @include flex();
+            
+            img {
+                width: 50%;
+                filter: brightness(0) invert(1);
+            }
+        }
 
         @include desktop {
             @include flex($align: end);
@@ -174,7 +204,6 @@ form {
         @include font-inter(regular, 16, 16px, 16);
         color: $error-color;
         line-height: 1;
-        // transform: translateY(8px);
     }
 }
 
@@ -193,6 +222,10 @@ form {
     &-secondary {
         color: white;
         background-color: $main-color;
+    }
+
+    &:hover{
+        transform: scale(1.05);
     }
 }
 
