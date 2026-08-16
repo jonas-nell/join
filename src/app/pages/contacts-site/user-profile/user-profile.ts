@@ -64,6 +64,7 @@ export class UserProfile implements OnInit {
             // Show an error when the profile does not exist.
             if (!profile) {
                 this.profile.set(null);
+                this.profileService.selectedProfile.set(null);
 
                 this.errorMessage.set('The profile was not found.');
 
@@ -72,10 +73,12 @@ export class UserProfile implements OnInit {
 
             // Save the loaded profile.
             this.profile.set(profile);
+            this.profileService.selectedProfile.set(profile);
         } catch (error) {
             console.error(error);
 
             this.profile.set(null);
+            this.profileService.selectedProfile.set(null);
 
             this.errorMessage.set('The profile could not be loaded.');
         } finally {

@@ -22,6 +22,8 @@ private readonly database = inject(DatabaseService);
     // This number changes whenever the profile list must reload.
     readonly profilesChanged = signal(0);
 
+    readonly selectedProfile = signal<Profile | null>(null);
+
     // Store a short message shown to the user.
     // readonly notification = signal('');
 
@@ -59,6 +61,25 @@ private readonly database = inject(DatabaseService);
 
         // Return the profile or null when it does not exist.
         return data as Profile | null;
+    }
+
+    //Create a new dummy contact
+    async createProfile(changes: ProfileChanges): Promise<Profile> {
+        const { data, error } = await this.database.client
+        .from('profiles')
+        .insert({ ...changes, user_role:'dummy' })
+        .select(PROFILE_COLUMNS)
+        .single();
+
+        if (error) {
+            console.error('The Profile could not be created:', error);
+
+            throw error;
+        }
+
+        this.notifyProfilesChanged();
+
+        return data as Profile;
     }
 
     // Update the editable fields of one profile.

@@ -20,15 +20,21 @@
             <button class="close-btn-desk" (click)="dialogService.closeDialog()">
                 <img src="./assets/icons/btn-close-blue.svg" alt="icon close button" />
             </button>
-            <!-- badge: -->
-            <!-- <div>
-                @if (dialogService.dialogMode() == 'edit') { -->
-            <!--Daniel: kürzel einfügen -->
-            <!-- <p>AM</p>
+
+            <div class="dialog-badge">
+                @if (dialogService.dialogMode() == 'edit' && profileService.selectedProfile(); as selected) {
+                    <app-user-badge
+                    [userId]="selected.id"
+                    [userName]="selected.user_name"
+                    size="large"
+                    [active]="true" />
                 } @else if (dialogService.dialogMode() == 'add') {
-                    <img src="./assets/icons/person-icon.svg" alt="person icon" />
+                    <div class="user-badge user-badge--large">
+                        <img src="./assets/icons/person-icon.svg" alt="">
+                    </div>
                 }
-            </div> -->
+            </div>
+
             <form [formGroup]="contactForm" (ngSubmit)="formSubmit()">
                 <div class="field">
                     <div class="input-wrapper">
@@ -81,11 +87,14 @@
 
                 <div class="buttons">
                     @if (dialogService.dialogMode() == 'edit') {
-                        <button class="button button-primary">Delete</button>
+                        @if (profileService.selectedProfile(); as selected) {
+                            <app-delete-profile #deleteTrigger [profile] ="selected" [showButton]="false" />
+                            <button class="button button-primary" type="button" (click)="deleteTrigger.openConfirmation()">Delete</button>
+                        }
                         <button class="button button-secondary" type="submit">Save</button>
                     }
                     @if (dialogService.dialogMode() == 'add') {
-                        <button class="button button-primary">Cancel</button>
+                        <button class="button button-primary" type="button" (click)="dialogService.closeDialog()">Cancel</button>
                         <button class="button button-secondary" type="submit">Create</button>
                     }
                 </div>

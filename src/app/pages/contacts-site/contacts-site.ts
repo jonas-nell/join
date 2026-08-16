@@ -6,10 +6,12 @@ import { BackButton } from '../../shared/components/back-button/back-button';
 import { EditOrAddContact } from "./edit-or-add-contact/edit-or-add-contact";
 import { DialogService } from '../../dialog-service';
 import { Dialog } from "../../dialog-directive";
+import { ProfileService } from '../../shared/services/profile-service';
+import { DeleteProfile } from "../../shared/components/delete-profile/delete-profile";
 
 @Component({
     selector: 'app-contacts-site',
-    imports: [RouterOutlet, UserList, BackButton, EditOrAddContact, Dialog],
+    imports: [RouterOutlet, UserList, BackButton, EditOrAddContact, Dialog, DeleteProfile],
     templateUrl: './contacts-site.html',
     styleUrl: './contacts-site.scss',
 })
@@ -19,6 +21,8 @@ export class ContactsSite {
     
     // Make global notifications available in the HTML.
     readonly notificationService = inject(NotificationService);
+
+    readonly profileService = inject(ProfileService);
 
     dialogservice = inject(DialogService);
 
