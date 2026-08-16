@@ -1,10 +1,10 @@
-import { Service, signal } from '@angular/core';
+import { Injectable, Service, signal } from '@angular/core';
 
 // beim erstellen von weiteren dialogs namen hinzufügen
 export type DialogName = 'menu' | 'edit-and-add-contact' | 'contact-btn-dialog';
 export type DialogMode = 'edit' | 'add';
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class DialogService {
     dialogOpen = signal<DialogName | null>(null);
     dialogMode = signal<DialogMode | null>(null);
