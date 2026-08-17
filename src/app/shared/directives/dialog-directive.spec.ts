@@ -1,4 +1,4 @@
-import { Dialog } from './dialog-directive';
+import { Dialog } from '../../dialog-directive';
 
 describe('Dialog', () => {
   it('should create an instance', () => {
