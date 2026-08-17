@@ -7,8 +7,8 @@
     margin: 0 auto;
     padding: px-to-rem(24);
 
-    @include tablet{
-    padding: px-to-rem(32);
+    @include tablet {
+        padding: px-to-rem(32);
     }
 }
 
@@ -38,7 +38,7 @@
 
 // Style the selected username.
 .profile__name {
-    @include font-inter(medium, 26, 3vw, 40);    
+    @include font-inter(medium, 26, 3vw, 40);
     margin: 0;
 }
 
@@ -83,6 +83,7 @@
         width: fit-content;
         color: $email-address;
         text-decoration: none;
+        overflow-wrap: anywhere;
     }
 }
 
@@ -127,10 +128,10 @@
 }
 
 @media (min-width: 1230px) {
-        .profile {
-            padding: 30px 40px;
-        }
-        .profile__header{
-            gap: px-to-rem(60);
-        }
+    .profile {
+        padding: 30px 40px;
     }
+    .profile__header {
+        gap: px-to-rem(60);
+    }
+}
