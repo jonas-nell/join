@@ -26,6 +26,10 @@ export class ContactsSite {
 
     dialogservice = inject(DialogService);
 
+    constructor() {
+        void this.profileService.ensureProfilesLoaded();
+    }
+
     onAddContact(){
         this.dialogservice.openDialog('edit-and-add-contact', 'add');
     }

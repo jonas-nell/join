@@ -18,31 +18,83 @@ const PROFILE_COLUMNS = `
 export class ProfileService {
     // Get access to the shared Supabase connection.
 private readonly database = inject(DatabaseService);
+    
+    readonly profiles = signal<Profile[]>([]);
 
-    // This number changes whenever the profile list must reload.
-    readonly profilesChanged = signal(0);
+    readonly profilesLoading = signal(false);
+    readonly profilesError = signal('');
+
+    // // This number changes whenever the profile list must reload.
+    // readonly profilesChanged = signal(0);
 
     readonly selectedProfile = signal<Profile | null>(null);
+
+    private profilesRequested = false;
+
+    private profilesResquest: Promise<void> | null = null;
+
+    async ensureProfilesLoaded(forceReload = false): Promise<void> {
+        if (!forceReload && this.profilesRequested) {
+            if (this.profilesResquest) {
+                await this.profilesResquest;
+            }
+
+            return;
+        }
+
+        this.profilesRequested = true;
+        this.profilesResquest = this.loadProfiles();
+
+        await this.profilesResquest;
+    }
+
+    private async loadProfiles(): Promise<void> {
+        this.profilesLoading.set(true);
+        this.profilesError.set('');
+
+        try {
+            const { data, error } = await this.database.client
+            .from('profiles')
+            .select(PROFILE_COLUMNS)
+            .order('user_name');
+
+            if (error) {
+                console.error('Supabase error:', error);
+                throw error;
+            }
+
+            this.profiles.set(data ?? []);
+        } catch (error) {
+            this.profilesError.set('The profiles could not be loaded');
+        } finally {
+            this.profilesLoading.set(false);
+            this.profilesResquest = null;
+        }
+    }
+
+    getCachedProfileById(profileId: string): Profile | undefined {
+        return this.profiles().find((profile) => profile.id === profileId);
+    }
 
     // Store a short message shown to the user.
     // readonly notification = signal('');
 
     // Loads the profiles from the Supabase "profiles" table.
-    async getProfiles(): Promise<Profile[]> {
-        const { data, error } = await this.database.client
-            .from('profiles')
-            .select(PROFILE_COLUMNS)
-            .order('user_name');
+    // async getProfiles(): Promise<Profile[]> {
+    //     const { data, error } = await this.database.client
+    //         .from('profiles')
+    //         .select(PROFILE_COLUMNS)
+    //         .order('user_name');
 
-        // Supabase returns an error object when the request fails.
-        if (error) {
-            console.error('Supabase error:', error);
-            throw error;
-        }
-        // Supabase may return null when no data is available,
-        // in that case, return an empty array...
-        return data ?? [];
-    }
+    //     // Supabase returns an error object when the request fails.
+    //     if (error) {
+    //         console.error('Supabase error:', error);
+    //         throw error;
+    //     }
+    //     // Supabase may return null when no data is available,
+    //     // in that case, return an empty array...
+    //     return data ?? [];
+    // }
 
     // Load one profile using its unique ID.
     async getProfileById(profileId: string): Promise<Profile | null> {
@@ -136,6 +188,6 @@ private readonly database = inject(DatabaseService);
 
     // Tell the user list that its data has changed.
     private notifyProfilesChanged(): void {
-        this.profilesChanged.update((currentValue) => currentValue + 1);
+        void this.ensureProfilesLoaded(true);
     }
 }

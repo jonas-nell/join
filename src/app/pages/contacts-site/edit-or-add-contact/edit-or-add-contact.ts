@@ -8,6 +8,7 @@ import { DeleteProfile } from "../../../shared/components/delete-profile/delete-
 import { NotificationService } from '../../../shared/services/notification-service';
 import { ProfileChanges } from '../../../shared/interfaces/profile';
 import { UserBadge } from "../../../shared/components/user-badge/user-badge";
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-edit-or-add-contact',
@@ -18,6 +19,7 @@ import { UserBadge } from "../../../shared/components/user-badge/user-badge";
 export class EditOrAddContact {
     fb = inject(FormBuilder);
     dialogService = inject(DialogService);
+    private readonly router = inject(Router);
 
     readonly profileService = inject(ProfileService);
     readonly notificationService = inject(NotificationService);
@@ -98,6 +100,7 @@ export class EditOrAddContact {
             } else {
                 const created = await this.profileService.createProfile(changes);
                 this.notificationService.show(`${created.user_name} was created`);
+                void this.router.navigate(['/contacts', created.id]);
             }
 
             this.dialogService.closeDialog();
