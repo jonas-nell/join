@@ -23,11 +23,11 @@
 
 // Mobile: leave room for the fixed bottom navigation and the header
 main {
-    padding-bottom: 100px;
-    padding-top: 80px;
+    padding-bottom: px-to-rem(100);
+    padding-top: px-to-rem(80);
 
     @include desktop {
-        padding-top: 96px;
+        padding-top: px-to-rem(96);
         padding-bottom: 0;
     }
 }

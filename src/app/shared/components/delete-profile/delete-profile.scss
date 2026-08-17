@@ -15,14 +15,12 @@
     @include flex($direction: row, $align: center, $justify: left, $gap: 4);
 
     img {
-        width: 16px;
-        height: 16px;
+        width: px-to-rem(16);
+        height: px-to-rem(16);
     }
 }
 
 // edit-form button styles here.
-.delete-profile__button--edit {
-}
 
 // Cover the screen while a popup is visible.
 .popup-backdrop {
@@ -33,7 +31,7 @@
     display: grid;
     place-items: center;
 
-    padding: 20px;
+    padding: px-to-rem(20);
 
     background-color: rgba(0, 0, 0, 0.35);
 }
@@ -41,8 +39,8 @@
 // Style every popup.
 .popup {
     width: 100%;
-    max-width: 400px;
-    padding: 24px;
+    max-width: px-to-rem(400);
+    padding: px-to-rem(24);
 
     color: #000000;
     background-color: #ffffff;
@@ -59,7 +57,7 @@
 .popup__actions {
     @include flex($direction: row, $align: center, $justify: center, $gap: 12);
 
-    margin-top: 24px;
+    margin-top: px-to-rem(24);
 
     button {
         padding: 10px 18px;

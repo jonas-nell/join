@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DialogService } from '../../dialog-service';
+import { DialogService } from '../../shared/services/dialog-service';
 import { HeaderMenu } from './nav-bar/header-menu';
 import { RouterLink } from '@angular/router';
 

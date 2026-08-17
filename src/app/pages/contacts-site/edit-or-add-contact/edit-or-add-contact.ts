@@ -1,8 +1,8 @@
 import { Component, effect, inject } from '@angular/core';
-import { Dialog } from '../../../dialog-directive';
+import { Dialog } from '../../../shared/directives/dialog-directive';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { minLengthWithoutSpaces } from '../../../shared/helpers/function-min-length';
-import { DialogService } from '../../../dialog-service';
+import { DialogService } from '../../../shared/services/dialog-service';
 import { ProfileService } from '../../../shared/services/profile-service';
 import { DeleteProfile } from "../../../shared/components/delete-profile/delete-profile";
 import { NotificationService } from '../../../shared/services/notification-service';
