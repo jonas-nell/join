@@ -1,4 +1,4 @@
-@use '../public/assets/styles/main.scss' as *;
+@use '../../../../public/assets/styles/main.scss' as *;
 
 .legal-wrapper {
     @include font-inter(regular, 16, 2dvh, 16);
