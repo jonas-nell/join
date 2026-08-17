@@ -17,7 +17,6 @@ const PROFILE_COLORS = [
     '#FFBB2B',
 ];
 
-
 // Selects a consistent color from above array based on the user's unique ID.
 // Same user ID = same color
 //
@@ -33,7 +32,7 @@ export function createProfileColor(userId: string): string {
         // with the numbers from the previous characters.
         number = character.charCodeAt(0) + ((number << 5) - number);
         // number << 5 => Shift the binary representation of number 5 positions to the left.
-        // For integers, shifting left by 5 is equivalent to multiplying by 32, ignoring 
+        // For integers, shifting left by 5 is equivalent to multiplying by 32, ignoring
         // JavaScript's 32-bit integer behavior.
     }
 
@@ -46,14 +45,12 @@ export function createProfileColor(userId: string): string {
 }
 
 // Create up to two initials from a username.
-export function createProfileInitials(
-  userName: string
-): string {
-  return userName
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((namePart) => namePart.charAt(0))
-    .join('')
-    .toUpperCase();
+export function createProfileInitials(userName: string): string {
+    return userName
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map((namePart) => namePart.charAt(0))
+        .join('')
+        .toUpperCase();
 }

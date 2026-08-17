@@ -1,6 +1,6 @@
 import { Component, effect, ElementRef, inject, input, viewChild } from '@angular/core';
-import { DialogService } from '../../../dialog-service';
-import { Dialog } from '../../../dialog-directive';
+import { DialogService } from '../../../shared/services/dialog-service';
+import { Dialog } from '../../../shared/directives/dialog-directive';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Directive, effect, ElementRef, inject, input } from '@angular/core';
-import { DialogName, DialogService } from './dialog-service';
+import { DialogName, DialogService } from '../services/dialog-service';
 
 @Directive({
   // directive wird nur auf dialog elemente angewendet (mit dem attribut appDialog)

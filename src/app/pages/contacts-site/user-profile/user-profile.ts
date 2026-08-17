@@ -5,7 +5,7 @@ import { Profile } from '../../../shared/interfaces/profile';
 import { ProfileService } from '../../../shared/services/profile-service';
 import { DeleteProfile } from '../../../shared/components/delete-profile/delete-profile';
 import { UserBadge } from '../../../shared/components/user-badge/user-badge';
-import { DialogService } from '../../../dialog-service';
+import { DialogService } from '../../../shared/services/dialog-service';
 
 
 @Component({

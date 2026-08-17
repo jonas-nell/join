@@ -4,8 +4,8 @@ import { RouterOutlet } from '@angular/router';
 import { NotificationService } from '../../shared/services/notification-service';
 import { BackButton } from '../../shared/components/back-button/back-button';
 import { EditOrAddContact } from "./edit-or-add-contact/edit-or-add-contact";
-import { DialogService } from '../../dialog-service';
-import { Dialog } from "../../dialog-directive";
+import { DialogService } from '../../shared/services/dialog-service';
+import { Dialog } from "../../shared/directives/dialog-directive";
 import { ProfileService } from '../../shared/services/profile-service';
 import { DeleteProfile } from "../../shared/components/delete-profile/delete-profile";
 

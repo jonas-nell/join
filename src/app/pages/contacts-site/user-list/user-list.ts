@@ -3,7 +3,7 @@ import { Profile } from '../../../shared/interfaces/profile';
 // import { createProfileColor, createProfileInitials } from '../../../shared/helpers/profile-helper';
 import { ProfileService } from '../../../shared/services/profile-service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { DialogService } from '../../../dialog-service';
+import { DialogService } from '../../../shared/services/dialog-service';
 import { UserBadge } from '../../../shared/components/user-badge/user-badge';
 
 @Component({
