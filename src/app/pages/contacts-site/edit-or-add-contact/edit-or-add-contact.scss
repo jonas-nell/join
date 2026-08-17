@@ -2,8 +2,8 @@
 
 .contactDialog {
     border-radius: 20px;
-    height: clamp(500px, 80%, 600px);
-    width: clamp(310px, 98%, 400px);
+    height: use-clamp(500, 80%, 600);
+    width: use-clamp(310, 98%, 400);
     position: fixed;
     inset: 0;
     margin: auto;
@@ -29,7 +29,7 @@
     @include desktop {
         height: 60dvh;
         width: 70dvw;
-        width: clamp(1000px, 70%, 1100px);
+        width: use-clamp(1000, 70%, 1100);
     }
 }
 
@@ -46,7 +46,7 @@
 .part {
     height: 100%;
     width: 100%;
-    padding: 15px;
+    padding: px-to-rem(15);
     &-top {
         height: 36%;
         flex-shrink: 0;
@@ -85,13 +85,13 @@
 
         .filler {
             height: 12%;
-            width: 50px;
+            width: px-to-rem(50);
         }
 
         .close-btn {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: px-to-rem(16);
+            right: px-to-rem(16);
             z-index: 2;
 
             @include desktop {
@@ -99,8 +99,8 @@
             }
 
             img {
-                height: 35px;
-                width: 35px;
+                height: px-to-rem(35);
+                width: 3px-to-rem(35);
             }
         }
 
@@ -128,15 +128,15 @@
             transform: translateY(-50%);
 
             @include desktop {
-                left: 50px;
+                left: px-to-rem(50);
                 top: auto;
                 transform: translateY(0);
             }
         }
 
         .badge-default {
-            width: 120px;
-            height: 120px;
+            width: px-to-rem(120);
+            height: px-to-rem(120);
             color: #ffffff;
             border-radius: 50%;
             box-shadow:
@@ -144,7 +144,7 @@
                 0 0 0 3px #cbd5e1;
             background-color: $border-contact-list;
             @include flex();
-            
+
             img {
                 width: 50%;
                 filter: brightness(0) invert(1);
@@ -161,21 +161,21 @@
 form {
     @include flex(column, center, center, 5);
     width: 100%;
-    max-width: 500px;
+    max-width: px-to-rem(500);
 
     @include desktop {
         @include flex($justify: end);
-        max-width: 300px;
+        max-width: px-to-rem(300);
     }
 
     input {
         width: 100%;
         border-radius: 10px;
         border: 1px #686868 solid;
-        height: 40px;
+        height: px-to-rem(40);
         padding: 13px 21px;
-        padding-right: 40px;
-        margin-bottom: 6px;
+        padding-right: px-to-rem(40);
+        margin-bottom: px-to-rem(6);
     }
 
     .field {
@@ -187,17 +187,17 @@ form {
             .input-icon {
                 position: absolute;
                 top: 50%;
-                right: 16px;
+                right: px-to-rem(16);
                 transform: translateY(-50%);
-                width: 20px;
-                height: 20px;
+                width: px-to-rem(20);
+                height: px-to-rem(20);
                 pointer-events: none;
             }
         }
     }
 
     .error-field {
-        min-height: 32px;
+        min-height: px-to-rem(32);
     }
 
     p {
@@ -214,17 +214,17 @@ form {
 }
 
 .button {
-    width: 80px;
-    height: 40px;
+    width: px-to-rem(80);
+    height: px-to-rem(40);
     border: solid, 1px, $main-color;
     border-radius: 10px;
-    padding: 8px;
+    padding: px-to-rem(8);
     &-secondary {
         color: white;
         background-color: $main-color;
     }
 
-    &:hover{
+    &:hover {
         transform: scale(1.05);
     }
 }
@@ -235,10 +235,10 @@ form {
     @include desktop {
         display: flex;
         position: absolute;
-        top: 26px;
-        right: 26px;
+        top: px-to-rem(26);
+        right: px-to-rem(26);
         z-index: 2;
-        padding: 4px;
+        padding: px-to-rem(4);
 
         &:hover {
             background: $light-secondary;
