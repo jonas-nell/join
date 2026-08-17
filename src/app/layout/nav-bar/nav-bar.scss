@@ -14,7 +14,7 @@ aside {
     @include desktop {
         top: 0;
         height: 100%;
-        width: 250px;
+        width: px-to-rem(250);
         padding: 64px 0;
 
         @include flex($justify: start, $gap: 84);
@@ -58,8 +58,8 @@ aside {
     }
 
     .nav-link {
-        width: min(100px, 100%);
-        height: min(90px, 100%);
+        width: min(px-to-rem(100), 100%);
+        height: min(px-to-rem(90), 100%);
         padding: 0 8px;
         @include flex();
 
@@ -89,12 +89,12 @@ aside {
             font-family: Open Sans;
 
             @include desktop {
-                width: 160px;
+                width: px-to-rem(160);
                 @include flex($direction: row, $align: center, $justify: start, $gap: 12);
             }
 
             img {
-                height: 30px;
+                height: px-to-rem(30);
             }
         }
     }
