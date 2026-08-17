@@ -12,17 +12,17 @@
     }
 
     h2 {
-        font-size: 42px;
+        font-size: px-to-rem(42);
     }
 
     h3 {
-        font-size: 20px;
+        font-size: px-to-rem(20);
     }
 
     ol,
     li {
         list-style: decimal;
-        padding-left: 16px;
+        padding-left: px-to-rem(16);
     }
     
     ol {
@@ -35,8 +35,8 @@
 
     @include desktop {
         padding-left: calc(250px + 64px);
-        padding-right: 32px;
-        max-width: 1300px;
+        padding-right: px-to-rem(32);
+        max-width: px-to-rem(1300);
 
         app-back-button{
             display: none;
