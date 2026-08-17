@@ -50,6 +50,8 @@
 // Use a pastel-red background for delete confirmations.
 .popup--delete,
 .popup--error {
+    @include font-inter(regular, 16, 16px, 16);
+    text-align: center;
     background-color: #fee2e2;
 }
 
