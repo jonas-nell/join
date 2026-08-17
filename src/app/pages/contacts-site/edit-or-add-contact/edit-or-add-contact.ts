@@ -23,8 +23,8 @@ export class EditOrAddContact {
     readonly notificationService = inject(NotificationService);
 
     contactForm = this.fb.nonNullable.group({
-        name: ['', [Validators.required, minLengthWithoutSpaces(3), Validators.pattern(/^[\p{L}\p{M}]+(?:[ '’-][\p{L}\p{M}]+)*$/u)]],
-        email: ['', [Validators.required, Validators.email]],
+        name: ['', [Validators.required, minLengthWithoutSpaces(2), Validators.pattern(/^[\p{L}\p{M}]+(?:[ '’-][\p{L}\p{M}]+)*$/u)]],
+        email: ['', [Validators.required, Validators.email, Validators.pattern(/\.[a-zA-Z]{2,}$/)]],
         phone: ['', [Validators.required, minLengthWithoutSpaces(8), Validators.pattern(/^\+?[0-9 ]+$/)]],
     });
 
