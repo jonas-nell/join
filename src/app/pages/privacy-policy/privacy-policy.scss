@@ -1,4 +1,4 @@
-@use '../../../../public/assets/styles/mixins' as *;
+@use '../public/assets/styles/main.scss' as *;
 
 
 .legal-wrapper{
@@ -21,7 +21,7 @@
     }
 
     @include desktop {
-        padding-left: calc(250px + 64px);
+        padding-left: calc(px-to-rem(250) + px-to-rem(64));
         padding-right: px-to-rem(32);
         max-width: px-to-rem(1300);
 
