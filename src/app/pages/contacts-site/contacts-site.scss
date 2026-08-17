@@ -227,7 +227,6 @@
     .contacts-notification {
         // The desktop navigation is on the left,
         // so center the message in the remaining content area.
-        right: calc((100% - use-clamp(250, 20%, 400) / 2));
         bottom: px-to-rem(32);
     }
 }
