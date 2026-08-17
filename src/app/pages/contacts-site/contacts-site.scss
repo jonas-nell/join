@@ -154,7 +154,8 @@
     .contacts-layout__profile {
         padding-top: 9dvh;
         background-color: $light-gray;
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     // Always show both areas on desktop.
