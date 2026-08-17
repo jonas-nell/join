@@ -1,10 +1,10 @@
 @use '../../../../public/assets/styles/main.scss' as *;
 
 .sect-contact-site {
-    height: calc(100dvh - 180px);
+    height: calc(100dvh - px-to-rem(180));
 
     @include desktop {
-        height: calc(100dvh - 100px);
+        height: calc(100dvh - px-to-rem(100));
     }
 }
 
@@ -88,10 +88,10 @@
 
     position: fixed;
     right: 50%;
-    bottom: calc(12dvh + 24px);
+    bottom: calc(12dvh + px-to-rem(24));
     z-index: 15;
 
-    width: min(calc(100% - 32px), 500px);
+    width: min(calc(100% - px-to-rem(32)), px-to-rem(500));
     padding: px-to-rem(24);
 
     color: #166534;
@@ -108,7 +108,7 @@
 @include tablet {
     .contacts-layout {
         display: grid;
-        grid-template-columns: 400px 1fr;
+        grid-template-columns: px-to-rem(400) 1fr;
 
         .contacts-layout__list,
         .contacts-layout__profile {
@@ -227,7 +227,7 @@
     .contacts-notification {
         // The desktop navigation is on the left,
         // so center the message in the remaining content area.
-        right: calc((100% - clamp(250px, 20%, 400px)) / 2);
+        right: calc((100% - use-clamp(250, 20%, 400) / 2));
         bottom: px-to-rem(32);
     }
 }
@@ -256,7 +256,7 @@
     top: auto;
     left: auto;
     right: 2%;
-    bottom: calc(12dvh + 24px);
+    bottom: calc(12dvh + px-to-rem(24));
     z-index: 299;
 
     padding: px-to-rem(10);
