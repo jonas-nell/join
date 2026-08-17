@@ -1,18 +1,18 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
 .user-list {
-    max-width: 400px;
+    max-width: px-to-rem(400);
     // margin: 0 auto;
-    padding-bottom: 140px;
+    padding-bottom: px-to-rem(140);
 
     @include tablet {
-        padding-bottom: 40px;
+        padding-bottom: px-to-rem(40);
     }
 }
 
 // Add space around loading and error messages.
 .user-list__message {
-    margin: 16px;
+    margin: px-to-rem(16);
 }
 
 // Hide the Add contact button on mobile.
@@ -34,13 +34,13 @@
         border-bottom: 1px solid $border-contact-list;
 
         @media (min-width: 440px) {
-            padding: 20px;
+            padding: px-to-rem(20);
         }
 
         span {
             // Use the same width as the user badge.
             display: block;
-            width: 42px;
+            width: px-to-rem(42);
 
             // Center the letter inside the badge width.
             text-align: center;
@@ -58,7 +58,7 @@
     margin: 8px 16px 0 16px;
 
     @media (min-width: 440px) {
-        gap: 20px;
+        gap: px-to-rem(20);
         padding: 10px 20px;
         text-decoration: none;
         margin: 8px 16px 0 16px;
@@ -81,7 +81,7 @@
 .user__information {
     display: grid;
     min-width: 0;
-    gap: 6px;
+    gap: px-to-rem(6);
     overflow-wrap: anywhere;
 }
 
@@ -108,7 +108,7 @@
     .user.active {
         color: #ffffff;
         background-color: $main-color;
-        margin-top: 8px;
+        margin-top: px-to-rem(8);
 
         // Add a white ring and a thin grey ring.
         // .user__badge {
@@ -124,7 +124,7 @@
 
 @include desktop {
     .user-list {
-        padding-top: 36px;
+        padding-top: px-to-rem(36);
         box-shadow: 0 -6px 10px 5px rgba(0, 0, 0, 0.5);
     }
 

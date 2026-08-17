@@ -5,8 +5,8 @@
     @include font-inter(regular, 16, 16px, 16);
 
     display: grid;
-    width: 42px;
-    height: 42px;
+    width: px-to-rem(42);
+    height: px-to-rem(42);
     flex-shrink: 0;
     place-items: center;
 
@@ -25,8 +25,8 @@
 .user-badge--large {
     @include font-inter(regular, 28, 28px, 28);
 
-    width: 60px;
-    height: 60px;
+    width: px-to-rem(60);
+    height: px-to-rem(60);
 }
 
 // Increase the large badge on desktop.
@@ -34,14 +34,14 @@
     .user-badge--large {
         @include font-inter(regular, 47, 47px, 47);
 
-        width: 120px;
-        height: 120px;
+        width: px-to-rem(120);
+        height: px-to-rem(120);
     }
 }
 
 .user-badge--dialog {
     @include font-inter(regular, 47, 47px, 47);
 
-    width: 120px;
-    height: 120px;
+    width: px-to-rem(120);
+    height: px-to-rem(120);
 }

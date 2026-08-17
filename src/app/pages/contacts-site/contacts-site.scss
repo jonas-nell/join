@@ -44,12 +44,12 @@
     @include flex($direction: row, $align: start, $justify: space-between);
 
     width: 100%;
-    max-width: 500px;
+    max-width: px-to-rem(500);
     margin: 0 auto;
     padding: 30px 16px 8px;
 
     @include tablet {
-        padding: 32px;
+        padding: px-to-rem(32);
     }
 }
 
@@ -73,9 +73,9 @@
             // Add a short blue line below the subtitle.
             content: '';
             display: block;
-            width: 32px;
-            height: 2px;
-            margin-top: 5px;
+            width: px-to-rem(32);
+            height: px-to-rem(2);
+            margin-top: px-to-rem(5);
 
             background-color: $button-light;
         }
@@ -92,7 +92,7 @@
     z-index: 15;
 
     width: min(calc(100% - 32px), 500px);
-    padding: 24px;
+    padding: px-to-rem(24);
 
     color: #166534;
     text-align: center;
@@ -142,8 +142,8 @@
 @include desktop {
     .contacts-layout {
         display: grid;
-        grid-template-columns: 400px 1fr;
-        padding-left: 250px;
+        grid-template-columns: px-to-rem(400) 1fr;
+        padding-left: px-to-rem(250);
 
         // Keep the contacts area inside its parent.
         height: 100%;
@@ -228,17 +228,17 @@
         // The desktop navigation is on the left,
         // so center the message in the remaining content area.
         right: calc((100% - clamp(250px, 20%, 400px)) / 2);
-        bottom: 32px;
+        bottom: px-to-rem(32);
     }
 }
 
 .contact-site-btn {
     position: fixed;
-    bottom: 130px;
+    bottom: px-to-rem(130);
     right: 5%;
 
-    height: 56px;
-    width: 56px;
+    height: px-to-rem(56);
+    width: px-to-rem(56);
 
     background: $main-color;
     border-radius: 50%;
@@ -259,7 +259,7 @@
     bottom: calc(12dvh + 24px);
     z-index: 299;
 
-    padding: 10px;
+    padding: px-to-rem(10);
     border-radius: 12px;
     border-bottom-right-radius: 0;
     background: white;
@@ -296,8 +296,8 @@
         text-align: left;
 
         img {
-            width: 20px;
-            height: 20px;
+            width: px-to-rem(20);
+            height: px-to-rem(20);
         }
     }
 

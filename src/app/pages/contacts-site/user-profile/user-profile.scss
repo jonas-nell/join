@@ -3,12 +3,12 @@
 // Add space around the profile information.
 .profile {
     width: 100%;
-    max-width: 500px;
+    max-width: px-to-rem(500);
     margin: 0 auto;
-    padding: 24px;
+    padding: px-to-rem(24);
 
     @include tablet{
-    padding: 32px;
+    padding: px-to-rem(32);
     }
 }
 
@@ -55,7 +55,7 @@
 
 // Add space above the contact isnformation.
 .profile__information {
-    margin-top: 60px;
+    margin-top: px-to-rem(60);
 
     h3 {
         @include font-inter(regular, 20, 20px, 20);
@@ -66,9 +66,9 @@
 // Display the label above its value.
 .profile__field {
     display: grid;
-    gap: 4px;
+    gap: px-to-rem(4);
     @include font-inter(regular, 16, 16px, 16);
-    margin-bottom: 16px;
+    margin-bottom: px-to-rem(16);
 
     span {
         font-weight: 700;
@@ -95,7 +95,7 @@
     }
 
     .profile__header {
-        gap: 40px;
+        gap: px-to-rem(40);
     }
 
     // .profile__badge {
@@ -108,7 +108,7 @@
     .profile__actions {
         @include flex($direction: row, $align: center, $justify: left, $gap: 12);
         @include font-inter(regular, 16, 1vw, 16);
-        margin-top: 8px;
+        margin-top: px-to-rem(8);
     }
 
     // Style one profile action.
@@ -119,8 +119,8 @@
         cursor: pointer;
 
         img {
-            width: 16px;
-            height: 16px;
+            width: px-to-rem(16);
+            height: px-to-rem(16);
             object-fit: contain;
         }
     }
@@ -131,6 +131,6 @@
             padding: 30px 40px;
         }
         .profile__header{
-            gap: 60px;
+            gap: px-to-rem(60);
         }
     }
