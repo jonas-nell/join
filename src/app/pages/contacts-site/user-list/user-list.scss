@@ -53,9 +53,11 @@
     @include flex($direction: row, $align: center, $justify: left, $gap: 15);
 
     min-width: 0;
+    max-width: 100%;
     padding: 10px 55px 10px 0;
     text-decoration: none;
     margin: 8px 16px 0 16px;
+    overflow: hidden;
 
     @media (min-width: 440px) {
         gap: px-to-rem(20);
@@ -82,18 +84,23 @@
     display: grid;
     min-width: 0;
     gap: px-to-rem(6);
-    overflow-wrap: anywhere;
+    direction: ltr;
 }
 
 .user__name {
     @include font-inter(regular, 18, 3vw, 20);
     margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .user__email {
     @include font-inter(regular, 16, 16px, 16);
-
+    text-overflow: ellipsis;
     color: $email-address;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 @include tablet {

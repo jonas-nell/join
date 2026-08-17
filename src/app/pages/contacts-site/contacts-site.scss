@@ -120,6 +120,7 @@
             // Only the user list should scroll.
             height: 100%;
             overflow-y: auto;
+            overflow-x: hidden;
             border: transparent;
             box-shadow: 5px 0 5px -2px rgba(0, 0, 0, 0.1);
             z-index: 1;
@@ -148,14 +149,13 @@
         // Keep the contacts area inside its parent.
         height: 100%;
         min-height: 0;
-        overflow-wrap: anywhere;
     }
 
     .contacts-layout__profile {
         padding-top: 9dvh;
         background-color: $light-gray;
         overflow-y: auto;
-        overflow-x: hidden;
+        overflow-wrap: anywhere;
     }
 
     // Always show both areas on desktop.
@@ -169,6 +169,7 @@
         // Only the user list should scroll.
         height: 100%;
         overflow-y: auto;
+        white-space: nowrap;
     }
 
     // Override the mobile rule when a profile is open.
