@@ -63,7 +63,7 @@
                         @if (email?.hasError('required') && email?.touched) {
                             <p>This field is required</p>
                         }
-                        @if (email?.hasError('email') && email?.touched) {
+                        @if (email?.hasError('email') && email?.touched || email?.hasError('pattern')) {
                             <p>Please use a valid email</p>
                         }
                     </div>

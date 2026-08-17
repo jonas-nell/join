@@ -93,6 +93,8 @@
         max-width: none;
         margin: 0;
         padding: 30px 25px;
+
+        animation: profile-slide-in 0.15s ease-out;
     }
 
     .profile__header {
@@ -133,5 +135,14 @@
     }
     .profile__header {
         gap: px-to-rem(60);
+    }
+}
+
+@keyframes profile-slide-in {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
     }
 }
