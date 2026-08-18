@@ -1,5 +1,5 @@
 
-<dialog appDialog="menu">
+<dialog appDialog="menu" [modal]="false">
     <nav>
         <a class="help-btn" [routerLink]="['/help']" routerLinkActive="active" (click)="dialogservice.closeDialog()">Help</a>
         <a [routerLink]="['/legal-notice']" routerLinkActive="active" (click)="dialogservice.closeDialog()">Legal Notice</a>
