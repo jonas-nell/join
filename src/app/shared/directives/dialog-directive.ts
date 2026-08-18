@@ -1,4 +1,4 @@
-import { Directive, effect, ElementRef, inject, input } from '@angular/core';
+import { Directive, effect, ElementRef, HostListener, inject, input } from '@angular/core';
 import { DialogName, DialogService } from '../services/dialog-service';
 
 @Directive({
@@ -14,6 +14,7 @@ export class Dialog {
 
   // input gleichen namen wie directive selector geben, damit directive angewendet und gleichzeitig ein wert übergeben wird
   appDialog = input.required<DialogName>();
+  modal = input<boolean>(true);
 
   constructor() {
 
@@ -25,7 +26,7 @@ export class Dialog {
       const name = this.appDialog();
 
       if (this.dialogService.dialogOpen() == name) {
-        dialog.showModal();
+        this.modal() ? dialog.showModal() : dialog.show();
       } else {
         dialog.close();
       }
@@ -37,6 +38,17 @@ export class Dialog {
   // (falls nötig wrapper innerhalb von dialog nutzen)
   onClickClose(event: MouseEvent) {
     if (event.target === event.currentTarget) {
+      this.dialogService.closeDialog();
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.modal()) return;
+    if (!this.dialog.nativeElement.open) return;
+
+    const target = event.target as Node;
+    if (!this.dialog.nativeElement.contains(target)) {
       this.dialogService.closeDialog();
     }
   }

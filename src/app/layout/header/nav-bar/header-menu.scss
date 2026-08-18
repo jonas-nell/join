@@ -8,6 +8,7 @@ dialog {
     right: px-to-rem(8);
     left: auto;
     bottom: auto;
+    z-index: 999;
     transition:
         transform 0.2s ease,
         display 0.2s allow-discrete,

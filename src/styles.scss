@@ -36,9 +36,6 @@ main {
         // color: $light-gray;
     }
 }
-body:has(dialog:open) {
-    overflow: hidden;
-}
 
 // Desktop: remove the mobile navigation space and page scrolling,
 // only user-list should scroll...
