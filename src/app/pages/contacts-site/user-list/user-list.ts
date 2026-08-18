@@ -21,11 +21,11 @@ export class UserList {
 
     // Stores the loaded profiles.
     // A signal automatically updates the HTML when its value changes.
-    readonly profiles = signal<Profile[]>([]);
+    readonly profiles = this.profileService.profiles;
     // True while Angular is waiting for Supabase.
-    readonly loading = signal(true);
+    readonly loading = this.profileService.profilesLoading;
     // Contains a error message if loading fails...
-    readonly errorMessage = signal('');
+    readonly errorMessage = this.profileService.profilesError;
 
     // Connecting the color helper to the HTML template.
     // readonly getProfileColor = createProfileColor;
@@ -35,35 +35,35 @@ export class UserList {
     // The effect runs once when the component starts. 
     // It runs again whenever profilesChanged increases.
     // Reload the list when a profile is created or deleted.
-    private readonly reloadProfiles = effect(() => {
-        // Reading this signal makes the effect listen to it.
-        this.profileService.profilesChanged();
+    // private readonly reloadProfiles = effect(() => {
+    //     // Reading this signal makes the effect listen to it.
+    //     this.profileService.profilesChanged();
 
-        // Load the current profiles from Supabase.
-        void this.loadProfiles();
-    });
+    //     // Load the current profiles from Supabase.
+    //     void this.loadProfiles();
+    // });
 
     // Loads all profiles from the Supabase service.
-    async loadProfiles(): Promise<void> {
-        // Show the loading message...
-        this.loading.set(true);
-        // "Reset" in case of old error message.
-        this.errorMessage.set('');
+    // async loadProfiles(): Promise<void> {
+    //     // Show the loading message...
+    //     this.loading.set(true);
+    //     // "Reset" in case of old error message.
+    //     this.errorMessage.set('');
 
-        try {
-            const profiles = await this.profileService.getProfiles();
+    //     try {
+    //         const profiles = await this.profileService.getProfiles();
 
-            // Save the returned profiles in the signal.
-            this.profiles.set(profiles);
-        } catch (error) {
-            console.error('Profiles could not be loaded:');
+    //         // Save the returned profiles in the signal.
+    //         this.profiles.set(profiles);
+    //     } catch (error) {
+    //         console.error('Profiles could not be loaded:');
 
-            this.errorMessage.set('The profiles could not be loaded.');
-        } finally {
-            // The request has finished. Stop showing the loading indicator...
-            this.loading.set(false);
-        }
-    }
+    //         this.errorMessage.set('The profiles could not be loaded.');
+    //     } finally {
+    //         // The request has finished. Stop showing the loading indicator...
+    //         this.loading.set(false);
+    //     }
+    // }
 
     // Group the users by the first letter of their name.
     readonly groupedProfiles = computed(() => {

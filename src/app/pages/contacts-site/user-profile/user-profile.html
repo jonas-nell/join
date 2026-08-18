@@ -6,7 +6,7 @@
     <p>{{ errorMessage() }}</p>
 }
 
-@if (!loading() && profile(); as selectedProfile) {
+@for (selectedProfile of profileList(); track selectedProfile.id) {
     <article class="profile">
         <header class="profile__header">
             <app-user-badge
