@@ -66,17 +66,24 @@ export class UserList {
     // }
     constructor() {
         effect(() => {
-            const selected = this.profileService.selectedProfile();
+            const contactId = this.profileService.scrollToNewContact();
+            const profiles = this.profiles();
 
-            if (!selected){
+            if (!contactId || !profiles.length){
                 return;
             }
             setTimeout(() => {
-                const contact = document.getElementById(`contact-${selected.id}`);
+                const contact = document.getElementById(`contact-${contactId}`);
 
-                contact?.scrollIntoView({
-                    block: 'center'
+                if(!contact) {
+                    return;
+                }
+
+                contact.scrollIntoView({
+                    block:'center'
                 });
+
+                this.profileService.scrollToNewContact.set(null);
             });
         });
     }
