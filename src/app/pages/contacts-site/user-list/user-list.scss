@@ -129,13 +129,12 @@
     }
 }
 
-@include desktop {
+@media screen and (min-width: 768px) {
     .user-list {
         padding-top: px-to-rem(36);
         box-shadow: 0 -6px 10px 5px rgba(0, 0, 0, 0.5);
     }
 
-    // Show the Add contact button on desktop.
     .user-list__add {
         @include font-inter(bold, 20, 20px, 20);
         @include flex($direction: row, $align: center, $justify: center, $gap: 16);
@@ -155,7 +154,9 @@
             background-color: $button-light;
         }
     }
+}
 
+@include desktop {
     // Keep the desktop rows away from the list edges.
     .user {
         margin: 8px 24px 0 24px;

@@ -9,6 +9,7 @@ import { NotificationService } from '../../../shared/services/notification-servi
 import { ProfileChanges } from '../../../shared/interfaces/profile';
 import { UserBadge } from "../../../shared/components/user-badge/user-badge";
 import { Router } from '@angular/router';
+import { advancedEmailValidator } from '../../../shared/helpers/advancedEmailValidator';
 
 @Component({
     selector: 'app-edit-or-add-contact',
@@ -26,7 +27,7 @@ export class EditOrAddContact {
 
     contactForm = this.fb.nonNullable.group({
         name: ['', [Validators.required, minLengthWithoutSpaces(2), Validators.pattern(/^[\p{L}\p{M}]+(?:[ '’-][\p{L}\p{M}]+)*$/u)]],
-        email: ['', [Validators.required, Validators.email, Validators.pattern(/\.[a-zA-Z]{2,}$/)]],
+        email: ['', [Validators.required, Validators.email, Validators.pattern(/\.[a-zA-Z]{2,}$/), advancedEmailValidator()]],
         phone: ['', [Validators.required, minLengthWithoutSpaces(8), Validators.pattern(/^\+?[0-9 ]+$/)]],
     });
 
@@ -73,6 +74,12 @@ export class EditOrAddContact {
 
     // ### Daniel:Daten an Datenbank schicken
     async formSubmit() {
+        this.contactForm.patchValue({
+            name: (this.name?.value ?? '').replace(/^\s+|\s+$/g, ''),
+            email: (this.email?.value ?? '').replace(/\s+/g, ''),
+            phone: (this.phone?.value ?? '').replace(/\s+/g, ''),
+        });
+
         if (!this.contactForm.valid) {
             this.contactForm.markAllAsTouched();
             return;
