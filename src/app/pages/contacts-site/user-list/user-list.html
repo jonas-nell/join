@@ -24,6 +24,7 @@
                 @for (profile of group.profiles; track profile.id) {
                     <a
                         class="user"
+                        [id]="'contact-' + profile.id"
                         [routerLink]="['/contacts', profile.id]"
                         routerLinkActive="active"
                         #activeLink="routerLinkActive"

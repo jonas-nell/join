@@ -64,6 +64,22 @@ export class UserList {
     //         this.loading.set(false);
     //     }
     // }
+    constructor() {
+        effect(() => {
+            const selected = this.profileService.selectedProfile();
+
+            if (!selected){
+                return;
+            }
+            setTimeout(() => {
+                const contact = document.getElementById(`contact-${selected.id}`);
+
+                contact?.scrollIntoView({
+                    block: 'center'
+                });
+            });
+        });
+    }
 
     // Group the users by the first letter of their name.
     readonly groupedProfiles = computed(() => {
