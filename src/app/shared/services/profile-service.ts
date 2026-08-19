@@ -24,6 +24,7 @@ private readonly database = inject(DatabaseService);
     readonly profilesLoading = signal(false);
     readonly profilesError = signal('');
 
+    scrollToNewContact = signal<string | null>(null);
     // // This number changes whenever the profile list must reload.
     // readonly profilesChanged = signal(0);
 

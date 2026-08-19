@@ -106,6 +106,7 @@ export class EditOrAddContact {
                 this.notificationService.show(`${updated.user_name} was updated`);
             } else {
                 const created = await this.profileService.createProfile(changes);
+                this.profileService.scrollToNewContact.set(created.id);
                 this.notificationService.show(`${created.user_name} was created`);
                 void this.router.navigate(['/contacts', created.id]);
             }

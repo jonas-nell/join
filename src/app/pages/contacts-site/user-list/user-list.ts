@@ -64,6 +64,29 @@ export class UserList {
     //         this.loading.set(false);
     //     }
     // }
+    constructor() {
+        effect(() => {
+            const contactId = this.profileService.scrollToNewContact();
+            const profiles = this.profiles();
+
+            if (!contactId || !profiles.length){
+                return;
+            }
+            setTimeout(() => {
+                const contact = document.getElementById(`contact-${contactId}`);
+
+                if(!contact) {
+                    return;
+                }
+
+                contact.scrollIntoView({
+                    block:'center'
+                });
+
+                this.profileService.scrollToNewContact.set(null);
+            });
+        });
+    }
 
     // Group the users by the first letter of their name.
     readonly groupedProfiles = computed(() => {
