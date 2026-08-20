@@ -1,8 +1,12 @@
+@use './functions' as func;
 $f-weight: (
     regular: 400,
     medium: 600,
     bold: 700,
 );
+
+$fz-h1: bold, 40, 4vw, 61;
+$nav-bar: 250;
 
 $main-color: #2A3647;
 $highlight-color: #091931;
