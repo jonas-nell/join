@@ -1,0 +1,25 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+@import '@ng-select/ng-select/themes/default.theme.css';
+.task-form {
+    padding: distance(40, 16);
+
+    // @include desktop{
+    //     padding: distance($nav-bar);
+    // }
+    h1 {
+        @include font-inter($fz-h1...);
+        color: black;
+    }
+
+    .radio-option {
+        input {
+            display: none;
+        }
+        .prio-wrpr{
+            @include flex($direction: row, $gap: 6);
+            padding: 12px 24px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+    }
+}

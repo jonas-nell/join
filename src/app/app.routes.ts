@@ -4,10 +4,12 @@ import { PrivacyPolicy } from './pages/privacy-policy/privacy-policy';
 import { Help } from './pages/help/help';
 import { ContactsSite } from './pages/contacts-site/contacts-site';
 import { Board } from './pages/board/board';
+import { AddTask } from './pages/add-task/add-task';
 
 
 export const routes: Routes = [
     { path: 'contacts', component: ContactsSite},
+    {path: 'add-task', component: AddTask},
     { path: 'legal-notice', component: LegalNotice },
     { path: 'privacy-policy', component: PrivacyPolicy },
     { path: 'help', component: Help },
