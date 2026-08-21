@@ -1,0 +1,94 @@
+<section class="task-form">
+    <h1>Add Task</h1>
+
+    <form [formGroup]="taskForm" (ngSubmit)="createTask()">
+        <!-- Title -->
+        <div>
+            <label for="title">Title<span>*</span></label>
+            <input id="title" type="text" formControlName="title" />
+        </div>
+
+        <!-- Description -->
+        <div>
+            <label for="description">Description></label>
+            <textarea id="description" formControlName="description"></textarea>
+        </div>
+
+        <!-- due date -->
+        <div>
+            <label for="due-date">Due date<span>*</span></label>
+            <input id="due-date" type="date" formControlName="dueDate"/>
+        </div>
+
+        <!-- priority -->
+        <div>
+            <p>Priority</p>
+            @for (prio of priority; track $index) {
+                <label for="{{ prio.for }}" class="radio-option">
+                    <input type="radio" value="{{ prio.value }}" id="{{ prio.optionId }}" formControlName="priority"/>
+                    <div class="prio-wrpr">
+                        <span>{{ prio.text }}</span>
+                        <img src="{{ prio.imgUrl }}" alt="{{ prio.imgAlt }}" />
+                    </div>
+                </label>
+            }
+            <!-- <label for="option-urgent" class="radio-option">
+                <input type="radio" value="urgent" id="option-urgent" />
+                <div class="prio-wrpr">
+                    <span>Urgent</span>
+                    <img src="./assets/icons/Prio urgent.png" alt="priority urgent icon" />
+                </div>
+            </label>
+            <label for="option-medium" class="radio-option">
+                <input type="radio" value="medium" id="option-medium" />
+                <div class="prio-wrpr">
+                    <span>Medium</span>
+                    <img src="./assets/icons/Prio medium.png" alt="priority medium icon" />
+                </div>
+            </label>
+            <label for="option-low" class="radio-option">
+                <input type="radio" value="low" id="option-low" />
+                <div class="prio-wrpr">
+                    <span>Low</span>
+                    <img src="./assets/icons/Prio low.png" alt="priority low icon" />
+                </div>
+            </label> -->
+        </div>
+
+        <!-- assigned to -->
+        <div>
+            <ng-select
+                [items]="profileService.profiles()"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                bindLabel="name"
+                placeholder="Select contacts to assign"
+                [clearSearchOnAdd]="true"
+                formControlName="member"
+            >
+                <ng-template ng-multi-label-tmp> </ng-template>
+                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                    <input id="item-{{ index }}" type="checkbox" [checked]="item$.selected" />
+
+                    {{ item.user_name }}
+                </ng-template>
+            </ng-select>
+        </div>
+
+        <!-- category -->
+        <div>
+            <p>Category</p>
+            <select formControlName="category">
+                <option value="" disabled>Select a category</option>
+                @for (category of categories; track $index) {
+                    <option [value]="category.name">{{category.name}}</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label for="subtask">Subtask</label>
+            <input id="subtask" type="text" formControlName="subtask" />
+        </div>
+        <button type="submit">Create Task</button>
+    </form>
+</section>
