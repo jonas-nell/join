@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../services/profile-service';
 import { validate } from '@angular/forms/signals';
 import { TaskChanges } from '../../interfaces/task';
-import { Taskmanagement } from '../../../services/taskmanagement';
+import { Taskmanagement } from '../../services/taskmanagement';
 
 @Component({
     selector: 'app-task-form',
@@ -114,10 +114,10 @@ export class TaskForm {
             task_description: values.description,
             task_due_date: values.dueDate,
             task_priority: values.priority,
-            // task_category: this.category,
+            task_category: values.category,
         };
 
-        const created = await this.taskService.createTask(changes);
+        await this.taskService.createTask(changes);
 
         // try {
         //     if (this.dialogService.dialogMode() === 'edit') {

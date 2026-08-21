@@ -21,9 +21,9 @@
         </div>
 
         <!-- priority -->
-        <!-- <div>
+        <div>
             <p>Priority</p>
-            @for (prio of priority; track $index) {
+            @for (prio of priorities; track $index) {
                 <label for="{{ prio.for }}" class="radio-option">
                     <input type="radio" value="{{ prio.value }}" id="{{ prio.optionId }}" formControlName="priority"/>
                     <div class="prio-wrpr">
@@ -31,7 +31,7 @@
                         <img src="{{ prio.imgUrl }}" alt="{{ prio.imgAlt }}" />
                     </div>
                 </label>
-            } -->
+            }
             <!-- <label for="option-urgent" class="radio-option">
                 <input type="radio" value="urgent" id="option-urgent" />
                 <div class="prio-wrpr">
@@ -53,7 +53,7 @@
                     <img src="./assets/icons/Prio low.png" alt="priority low icon" />
                 </div>
             </label> -->
-        <!-- </div> -->
+        </div>
 
         <!-- assigned to -->
         <div>
