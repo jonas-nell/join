@@ -10,10 +10,12 @@ export interface Task {
     // assignedTo: Profile[] | null;
     // task_category: 'User Story' | 'Technical Task';
     task_category: string;
+
     // subtask interface
     // orderIndex
     // subtasks: null;
     // status category
+    task_status: string;
 }
 
 export interface TaskChanges {
@@ -24,7 +26,13 @@ export interface TaskChanges {
     // assignedTo: Profile[] | null;
     // task_category: 'User Story' | 'Technical Task';
     task_category: string;
+  
     // subtask interface
     // orderIndex
     // subtasks: null;
+    task_status: string;
+}
+
+export interface StatusChange {
+    task_status: string;
 }

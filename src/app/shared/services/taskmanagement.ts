@@ -1,10 +1,13 @@
-import { Service, inject, signal } from '@angular/core';
+import { Injectable, Service, inject, signal } from '@angular/core';
 import { DatabaseService } from './database-service';
-import { Task, TaskChanges } from '../interfaces/task';
+import { StatusChange, Task, TaskChanges } from '../interfaces/task';
 
-const TASK_COLUMNS = `TASK_ID, task_title, task_description, task_due_date, task_priority, task_category`;
+const TASK_COLUMNS = `TASK_ID, task_title, task_description, task_due_date, task_priority, task_category, task_status`;
+const STATUS_COLUMNS = `task_status`;
 
-@Service()
+@Injectable({
+    providedIn:'root'
+})
 export class Taskmanagement {
     private readonly database = inject(DatabaseService);
     tasks = signal<Task[]>([]);
@@ -32,7 +35,7 @@ export class Taskmanagement {
         return data as Task;
     }
 
-    private async loadTasks(): Promise<void> {
+    async loadTasks(): Promise<void> {
         this.tasksLoading.set(true);
         this.tasksError.set('');
 
@@ -72,4 +75,48 @@ export class Taskmanagement {
     private notifyTasksChanged(): void {
         void this.ensureTasksLoaded(true);
     }
+
+    async updateTask(taskId: number, changes: TaskChanges): Promise<Task> {
+        const { data, error } = await this.database.client
+                .from('tasks')
+                .update(changes)
+                .eq('id', taskId)
+                .select(TASK_COLUMNS)
+                .single();
+    
+            // Stop when Supabase cannot update the profile.
+            if (error) {
+                console.error('The profile could not be updated:', error);
+    
+                throw error;
+            }
+    
+            // Reload the list so it displays the updated values.
+            this.notifyTasksChanged();
+    
+            // Return the updated profile.
+            return data as Task;
+        }
+    
+    async updateStatus(taskId: number, changes: StatusChange): Promise<Task> {
+        const { data, error } = await this.database.client
+                .from('tasks')
+                .update(changes)
+                .eq('TASK_ID', taskId)
+                .select(STATUS_COLUMNS)
+                .single();
+    
+            // Stop when Supabase cannot update the profile.
+            if (error) {
+                console.error('The profile could not be updated:', error);
+    
+                throw error;
+            }
+    
+            // Reload the list so it displays the updated values.
+            this.notifyTasksChanged();
+    
+            // Return the updated profile.
+            return data as Task;
+        }        
 }
