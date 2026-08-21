@@ -72,7 +72,6 @@ export class EditOrAddContact {
         }
     }
 
-    // ### Daniel:Daten an Datenbank schicken
     async formSubmit() {
         this.contactForm.patchValue({
             name: (this.name?.value ?? '').replace(/^\s+|\s+$/g, ''),
