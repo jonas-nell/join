@@ -17,24 +17,6 @@
     @include flex($direction: row, $align: center, $justify: left, $gap: 20);
 }
 
-// Display the initials inside a colored circle.
-// .profile__badge {
-//     @include font-inter(regular, 28, 28px, 28);
-
-//     display: grid;
-//     width: 48px;
-//     height: 48px;
-//     flex-shrink: 0;
-//     place-items: center;
-
-//     color: #ffffff;
-//     border-radius: 50%;
-
-//     // Add a white ring and a thin grey ring.
-//     box-shadow:
-//         0 0 0 2px #ffffff,
-//         0 0 0 3px #cbd5e1;
-// }
 
 // Style the selected username.
 .profile__name {
@@ -44,7 +26,7 @@
 
 // Show the role below the username.
 .profile__role {
-    margin: 4px 0 0;
+    margin: distance(4, 0, 0);
     color: red;
 }
 
@@ -59,7 +41,7 @@
 
     h3 {
         @include font-inter(regular, 20, 20px, 20);
-        margin: 0 0 16px;
+        margin: distance(0, 0, 16);
     }
 }
 
@@ -92,7 +74,7 @@
     .profile {
         max-width: none;
         margin: 0;
-        padding: 30px 25px;
+        padding: distance(30, 25);
 
         animation: profile-slide-in 0.15s ease-out;
     }
@@ -100,12 +82,6 @@
     .profile__header {
         gap: px-to-rem(40);
     }
-
-    // .profile__badge {
-    //     width: 120px;
-    //     height: 120px;
-    //     @include font-inter(regular, 58, 58px, 58);
-    // }
 
     // Show the Edit and Delete buttons on desktop.
     .profile__actions {
@@ -131,7 +107,7 @@
 
 @media (min-width: 1230px) {
     .profile {
-        padding: 30px 40px;
+        padding: distance(30, 40);
     }
     .profile__header {
         gap: px-to-rem(60);

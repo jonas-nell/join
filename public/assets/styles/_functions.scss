@@ -5,3 +5,7 @@
 @function use-clamp($min, $fluid, $max) {
     @return clamp(px-to-rem($min), $fluid, px-to-rem($max));
 }
+
+@function distance($top, $right : $top, $bottom : $top, $left: $right){
+    @return px-to-rem($top) px-to-rem($right) px-to-rem($bottom) px-to-rem($left);
+}
