@@ -65,6 +65,7 @@ export class TaskForm {
         member: new FormControl('', { nonNullable: true }),
         category: new FormControl('', { nonNullable: true }),
         subtask: new FormControl('', { nonNullable: true }),
+        status: new FormControl('', {nonNullable: true}),
         // eigene submit function, signal mit tasks arr, mit for gerendert
     });
 
@@ -94,6 +95,10 @@ export class TaskForm {
         return this.taskForm.get('category');
     }
 
+    get status() {
+        return this.taskForm.get('status');
+    }
+
     async createTask() {
         this.taskForm.patchValue({
             title: this.title?.value ?? '',
@@ -101,6 +106,7 @@ export class TaskForm {
             dueDate: this.dueDate?.value ?? '',
             priority: this.priority?.value ?? 'medium',
             category: this.category?.value ?? '',
+            status: this.status?.value ?? 'todo',
         });
 
         if (!this.taskForm.valid) {
@@ -114,10 +120,11 @@ export class TaskForm {
             task_description: values.description,
             task_due_date: values.dueDate,
             task_priority: values.priority,
-            // task_category: this.category,
+            task_status: values.status,
+            task_category: values.category,
         };
 
-        const created = await this.taskService.createTask(changes);
+        await this.taskService.createTask(changes);
 
         // try {
         //     if (this.dialogService.dialogMode() === 'edit') {
