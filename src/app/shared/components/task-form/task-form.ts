@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
     NgSelectComponent,
     NgOptionTemplateDirective,
@@ -8,6 +8,9 @@ import {
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../services/profile-service';
+import { validate } from '@angular/forms/signals';
+import { TaskChanges } from '../../interfaces/task';
+import { Taskmanagement } from '../../../services/taskmanagement';
 
 @Component({
     selector: 'app-task-form',
@@ -24,7 +27,7 @@ import { ProfileService } from '../../services/profile-service';
     styleUrl: './task-form.scss',
 })
 export class TaskForm {
-    priority = [
+    priorities = [
         {
             for: 'option-urgent',
             value: 'urgent',
@@ -52,15 +55,16 @@ export class TaskForm {
     ];
     categories = [{ name: 'Technical Task' }, { name: 'User Story' }];
     profileService = inject(ProfileService);
+    taskService = inject(Taskmanagement);
 
     taskForm = new FormGroup({
-        title: new FormControl([]),
-        description: new FormControl([]),
-        dueDate: new FormControl([]),
-        priority: new FormControl([]),
-        member: new FormControl([]),
-        category: new FormControl([]),
-        subtask: new FormControl([]),
+        title: new FormControl('', { nonNullable: true }),
+        description: new FormControl('', { nonNullable: true }),
+        dueDate: new FormControl('', { nonNullable: true }),
+        priority: new FormControl('medium', { nonNullable: true }),
+        member: new FormControl('', { nonNullable: true }),
+        category: new FormControl('', { nonNullable: true }),
+        subtask: new FormControl('', { nonNullable: true }),
         // eigene submit function, signal mit tasks arr, mit for gerendert
     });
 
@@ -68,7 +72,74 @@ export class TaskForm {
         void this.profileService.ensureProfilesLoaded();
     }
 
-    createTask() {
-        console.log(this.taskForm.value);
+    // createTask() {
+    //     console.log(this.taskForm.value);
+    // }
+
+    get title() {
+        return this.taskForm.get('title');
+    }
+
+    get description() {
+        return this.taskForm.get('description');
+    }
+    get dueDate() {
+        return this.taskForm.get('dueDate');
+    }
+
+    get priority() {
+        return this.taskForm.get('priority');
+    }
+    get category() {
+        return this.taskForm.get('category');
+    }
+
+    async createTask() {
+        this.taskForm.patchValue({
+            title: this.title?.value ?? '',
+            description: this.description?.value ?? '',
+            dueDate: this.dueDate?.value ?? '',
+            priority: this.priority?.value ?? 'medium',
+            category: this.category?.value ?? '',
+        });
+
+        if (!this.taskForm.valid) {
+            this.taskForm.markAllAsTouched();
+            return;
+        }
+
+        const values = this.taskForm.getRawValue();
+        const changes: TaskChanges = {
+            task_title: values.title,
+            task_description: values.description,
+            task_due_date: values.dueDate,
+            task_priority: values.priority,
+            // task_category: this.category,
+        };
+
+        const created = await this.taskService.createTask(changes);
+
+        // try {
+        //     if (this.dialogService.dialogMode() === 'edit') {
+        //         const selected = this.profileService.selectedProfile();
+
+        //         if (!selected) {
+        //             return;
+        //         }
+
+        //         const updated = await this.profileService.updateProfile(selected.id, changes);
+        //         this.profileService.selectedProfile.set(updated);
+        //         this.notificationService.show(`${updated.user_name} was updated`);
+        //     } else {
+        //         const created = await this.profileService.createProfile(changes);
+        //         this.profileService.scrollToNewContact.set(created.id);
+        //         this.notificationService.show(`${created.user_name} was created`);
+        //         void this.router.navigate(['/contacts', created.id]);
+        //     }
+
+        //     this.dialogService.closeDialog();
+        // } catch (error) {
+        //     this.notificationService.show('The contact could not be saved. Please try again.');
+        // }
     }
 }
