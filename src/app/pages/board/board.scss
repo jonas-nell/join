@@ -1,0 +1,54 @@
+@use '../../../../public/assets/styles/main.scss' as *;
+
+.board-wrapper {
+    @include font-inter(regular, 22, 2dvh, 22);
+    padding: px-to-rem(18) px-to-rem(42);
+    @include flex($align: start, $gap: 12);
+
+    .board-top {
+        width: 100%;
+        flex-wrap: wrap;
+        @include flex($direction: row, $justify: space-between, $gap: 12);
+
+        app-search-bar {
+            @include flex();
+            order: 3;
+            width: 100%;
+            margin-top: px-to-rem(12);
+        }
+
+        app-add-task-button {
+            order: 2;
+        }
+    }
+
+    h2 {
+        order: 1;
+        margin: 0;
+        @include font-inter(bold, 48, 2dvh, 64);
+    }
+
+    @include desktop {
+        padding-left: calc(px-to-rem(250) + px-to-rem(64));
+        padding-right: px-to-rem(64);
+
+        .board-top {
+            flex-wrap: nowrap;
+            gap: px-to-rem(0);
+
+            h2 {
+                margin-right: auto;
+            }
+
+            app-search-bar {
+                order: 2;
+                width: px-to-rem(380);
+                margin-top: 0;
+            }
+
+            app-add-task-button {
+                order: 3;
+            }
+        }
+    }
+}

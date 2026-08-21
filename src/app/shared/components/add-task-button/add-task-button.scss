@@ -1,0 +1,32 @@
+
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+button {
+  width: px-to-rem(40);
+  height: px-to-rem(40);
+  border-radius: px-to-rem(10);
+  background-color: $main-color;
+  color: white;
+  cursor: pointer;
+
+  span {
+    display: none;
+  }
+
+  img {
+    width: px-to-rem(20);
+    height: px-to-rem(20);
+    object-fit: contain;
+  }
+
+  @include desktop {
+    @include flex($direction: row, $gap: 8);
+
+    width: px-to-rem(160);
+    height: px-to-rem(48);
+
+    span {
+      display: inline;
+    }
+  }
+}

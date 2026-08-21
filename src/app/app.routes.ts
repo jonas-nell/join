@@ -3,6 +3,7 @@ import { LegalNotice } from './pages/legal-notice/legal-notice';
 import { PrivacyPolicy } from './pages/privacy-policy/privacy-policy';
 import { Help } from './pages/help/help';
 import { ContactsSite } from './pages/contacts-site/contacts-site';
+import { Board } from './pages/board/board';
 import { AddTask } from './pages/add-task/add-task';
 
 
@@ -12,6 +13,7 @@ export const routes: Routes = [
     { path: 'legal-notice', component: LegalNotice },
     { path: 'privacy-policy', component: PrivacyPolicy },
     { path: 'help', component: Help },
+    { path: 'board', component: Board},
     // default for part 1 of project is ContactsSite, to be changed later
     { path: '', component: ContactsSite},
     {
