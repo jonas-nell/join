@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SearchBar } from './search-bar/search-bar/search-bar';
 import { AddTaskButton } from '../../shared/components/add-task-button/add-task-button';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem, CdkDropListGroup, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
 import { Task } from '../../shared/interfaces/task';
+import { Taskmanagement } from '../../services/taskmanagement';
 
 @Component({
     selector: 'app-board',
@@ -11,16 +12,43 @@ import { Task } from '../../shared/interfaces/task';
     styleUrl: './board.scss',
 })
 export class Board {
-    todo: Task[] = ['task1', 'task2', 'task3', 'task4', 'task5', 'task6'];
+    readonly taskmanagementService = inject(Taskmanagement);
+
+    allTasks:Task[] = [];
+
+    todo: Task[] = [];
     
     progress: Task[] = [];
     
     feedback: Task[] = [];
     
-    done: Task[] = ['task7', 'task8', 'task9', 'task10'];
+    done: Task[] = [];
+
+    constructor() {
+        this.test();
+        this.allTasks = this.taskmanagementService.tasks();
+        console.log(this.allTasks);
+        
+        
+        // this.sortTasks();
+        
+    }
+
+    async test(){
+        await this.taskmanagementService.ensureTasksLoaded();
+    }
+    
+    //sort and split tasks based on their status form db
+    // async sortTasks() {
+    //     console.log('test');
+        
+    //     this.allTasks = await this.taskmanagementService.ensureTasksLoaded();
+    //     console.log(this.allTasks);
+
+    // }
 
 
-    drop(event: CdkDragDrop<string[]>) {
+    drop(event: CdkDragDrop<Task[]>) {
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {

@@ -1,10 +1,12 @@
-import { Service, inject, signal } from '@angular/core';
+import { Injectable, Service, inject, signal } from '@angular/core';
 import { DatabaseService } from '../shared/services/database-service';
 import { Task, TaskChanges } from '../shared/interfaces/task';
 
 const TASK_COLUMNS = `TASK_ID, task_title, task_description, task_due_date, task_priority, task_category`;
 
-@Service()
+@Injectable({
+    providedIn:'root'
+})
 export class Taskmanagement {
     private readonly database = inject(DatabaseService);
     tasks = signal<Task[]>([]);
@@ -32,7 +34,7 @@ export class Taskmanagement {
         return data as Task;
     }
 
-    private async loadTasks(): Promise<void> {
+    async loadTasks(): Promise<void> {
         this.tasksLoading.set(true);
         this.tasksError.set('');
 
