@@ -2,7 +2,6 @@
 
 .user-list {
     max-width: px-to-rem(400);
-    // margin: 0 auto;
     padding-bottom: px-to-rem(140);
 
     @include tablet {
@@ -29,8 +28,8 @@
 
         // Keep 20px of space on the left and right.
         width: calc(100% - 32px);
-        margin: 0 16px;
-        padding: 20px 0;
+        margin: distance(0, 16);
+        padding: distance(20, 0);
         border-bottom: 1px solid $border-contact-list;
 
         @media (min-width: 440px) {
@@ -54,30 +53,18 @@
 
     min-width: 0;
     max-width: 100%;
-    padding: 10px 55px 10px 0;
+    padding: distance(10, 55, 10, 0);
     text-decoration: none;
-    margin: 8px 16px 0 16px;
+    margin: distance(8, 16, 0, 16);
     overflow: hidden;
 
     @media (min-width: 440px) {
         gap: px-to-rem(20);
-        padding: 10px 20px;
+        padding: distance(10, 20);
         text-decoration: none;
-        margin: 8px 16px 0 16px;
+        margin: distance(8, 16, 0, 16);
     }
 }
-
-// .user__badge {
-//     @include font-inter(regular, 16, 16px, 16);
-
-//     display: grid;
-//     width: 42px;
-//     height: 42px;
-//     place-items: center;
-
-//     color: #ffffff;
-//     border-radius: 50%;
-// }
 
 // Prevent long names and emails from widening the list.
 .user__information {
@@ -117,12 +104,6 @@
         background-color: $main-color;
         margin-top: px-to-rem(8);
 
-        // Add a white ring and a thin grey ring.
-        // .user__badge {
-        //     box-shadow:
-        //         0 0 0 2px #ffffff,
-        //         0 0 0 3px #cbd5e1;
-        // }
         .user__name {
             color: #ffffff;
         }
@@ -140,8 +121,8 @@
         @include flex($direction: row, $align: center, $justify: center, $gap: 16);
 
         width: calc(100% - px-to-rem(48));
-        margin: 0 24px 8px;
-        padding: 10px 16px;
+        margin: distance(0, 24, 8);
+        padding: distance(10, 16);
 
         color: #ffffff;
 
@@ -159,16 +140,16 @@
 @include desktop {
     // Keep the desktop rows away from the list edges.
     .user {
-        margin: 8px 24px 0 24px;
-        padding: 15px 24px;
+        margin: distance(8, 24, 0, 24);
+        padding: distance(15, 24);
     }
 
     .user-group {
         h2 {
             // Match the 12px margin of the desktop user row.
             width: calc(100% - px-to-rem(48));
-            margin: 0 24px;
-            padding: 18px 24px;
+            margin: distance(0, 24);
+            padding: distance(18, 24);
         }
     }
 }

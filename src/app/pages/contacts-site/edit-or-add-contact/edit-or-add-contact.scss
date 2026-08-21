@@ -58,7 +58,7 @@
             @include flex($align: start, $gap: 16);
             height: 100%;
             width: 45%;
-            padding: 0 40px;
+            padding: distance(0, 40);
         }
 
         img {
@@ -153,7 +153,7 @@
 
         @include desktop {
             @include flex($align: end);
-            padding: 16px 40px;
+            padding: distance(16, 40);
         }
     }
 }
@@ -173,7 +173,7 @@ form {
         border-radius: 10px;
         border: 1px #686868 solid;
         height: px-to-rem(40);
-        padding: 13px 21px;
+        padding: distance(13, 21);
         padding-right: px-to-rem(40);
         margin-bottom: px-to-rem(6);
     }

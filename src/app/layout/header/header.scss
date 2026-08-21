@@ -9,7 +9,7 @@ header {
     left: 0;
     z-index: 2;
     background-color: white;
-    @include use-padding(20, 16);
+    padding: distance(20, 16);
 
     @include flex(row, center, space-between, 0);
     box-shadow: 0 -6px 10px 5px rgba(0, 0, 0, 0.3);
@@ -41,7 +41,7 @@ header {
     @include desktop {
         height: px-to-rem(96);
         width: calc(100% - 250px);
-        @include use-padding(20, 36);
+        padding: distance(20, 36);
 
         left: 250px;
 

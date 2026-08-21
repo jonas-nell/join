@@ -3,7 +3,7 @@
 
 .legal-wrapper{
     @include font-inter(regular, 16, 2dvh, 16);
-    padding: 18px 16px;
+    padding: distance(18, 16);
     width: 100%;
     @include flex($align:start, $gap: 12);
 

@@ -46,7 +46,7 @@
     width: 100%;
     max-width: px-to-rem(500);
     margin: 0 auto;
-    padding: 30px 16px 8px;
+    padding: distance(30, 16, 8);
 
     @include tablet {
         padding: px-to-rem(32);
@@ -65,7 +65,7 @@
         @include font-inter(regular, 20, 2.5vw, 27);
 
         width: fit-content;
-        margin: 4px 0 0;
+        margin: distance(4, 0, 0);
 
         color: $dark;
 
@@ -202,7 +202,7 @@
 
             p {
                 margin: 0;
-                padding: 0 0 0 16px;
+                padding: distance(0, 0, 0, 16);
 
                 border-bottom: 0;
                 border-left: 2px solid $button-light;
@@ -217,7 +217,7 @@
 
     @media (min-width: 1300px) {
         .contacts-header {
-            padding: 0 40px 16px;
+            padding: distance(0, 40, 16);
         }
     }
 
@@ -289,7 +289,7 @@
     button {
         @include flex(row, $align: center, $justify: start, $gap: 12);
         width: 100%;
-        padding: 12px 16px;
+        padding: distance(12, 16);
         cursor: pointer;
 
         @include font-inter(regular, 16, 16px, 16);
