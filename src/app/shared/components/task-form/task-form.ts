@@ -106,7 +106,7 @@ export class TaskForm {
             dueDate: this.dueDate?.value ?? '',
             priority: this.priority?.value ?? 'medium',
             category: this.category?.value ?? '',
-            status: this.status?.value ?? 'todo',
+            status: this.status?.value ?? 'To do',
         });
 
         if (!this.taskForm.valid) {
@@ -120,9 +120,13 @@ export class TaskForm {
             task_description: values.description,
             task_due_date: values.dueDate,
             task_priority: values.priority,
-            task_status: values.status,
+            task_status: 'To do',
             task_category: values.category,
+            order_index: this.taskService.todo().length
+            
         };
+            console.log(this.taskService.todo().length);
+
 
         await this.taskService.createTask(changes);
 

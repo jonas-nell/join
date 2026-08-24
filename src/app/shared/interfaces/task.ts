@@ -16,6 +16,7 @@ export interface Task {
     // subtasks: null;
     // status category
     task_status: string;
+    order_index: number;
 }
 
 export interface TaskChanges {
@@ -31,6 +32,7 @@ export interface TaskChanges {
     // orderIndex
     // subtasks: null;
     task_status: string;
+    order_index: number;
 }
 
 export interface StatusChange {
