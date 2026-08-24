@@ -1,7 +1,7 @@
 import { Profile } from './profile';
 
 export interface Task {
-    TASK_ID: string;
+    TASK_ID: number;
     task_title: string;
     task_description: string | null;
     task_due_date: string;
@@ -12,7 +12,7 @@ export interface Task {
     task_category: string;
 
     // subtask interface
-    // orderIndex
+    order_index: number;
     // subtasks: null;
     // status category
     task_status: string;
@@ -26,7 +26,6 @@ export interface TaskChanges {
     // assignedTo: Profile[] | null;
     // task_category: 'User Story' | 'Technical Task';
     task_category: string;
-  
     // subtask interface
     // orderIndex
     // subtasks: null;
