@@ -40,7 +40,10 @@ export class Taskmanagement {
         this.tasksError.set('');
 
         try {
-            const { data, error } = await this.database.client.from('tasks').select(TASK_COLUMNS);
+            const { data: sessionData } = await this.database.client.auth.getSession();
+            console.log('session AFTER await:', sessionData.session);
+            const { data, error } = await this.database.client.from('tasks').select(TASK_COLUMNS);            
+            console.log('query result:', data, 'error:', error);
             // .order('user_name');
 
             if (error) {
@@ -49,8 +52,10 @@ export class Taskmanagement {
             }
 
             this.tasks.set(data ?? []);
+            this.tasksRequested = true; //prevent loading issues
         } catch (error) {
             this.tasksError.set('The tasks could not be loaded');
+            this.tasksRequested = false; //allow retry on failure
         } finally {
             this.tasksLoading.set(false);
             this.tasksRequest = null;
