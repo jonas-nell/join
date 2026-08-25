@@ -3,7 +3,7 @@ import { SearchBar } from './search-bar/search-bar/search-bar';
 import { AddTaskButton } from '../../shared/components/add-task-button/add-task-button';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem, CdkDropListGroup, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
 import { Task } from '../../shared/interfaces/task';
-import { Taskmanagement } from '../../services/taskmanagement';
+import { Taskmanagement } from '../../shared/services/taskmanagement';
 import { StatusChange } from '../../shared/interfaces/task';
 
 

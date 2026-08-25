@@ -17,7 +17,7 @@
         <!-- due date -->
         <div>
             <label for="due-date">Due date<span>*</span></label>
-            <input id="due-date" type="date" formControlName="dueDate"/>
+            <input id="due-date" type="date" formControlName="dueDate" />
         </div>
 
         <!-- priority -->
@@ -25,7 +25,12 @@
             <p>Priority</p>
             @for (prio of priorities; track $index) {
                 <label for="{{ prio.for }}" class="radio-option">
-                    <input type="radio" value="{{ prio.value }}" id="{{ prio.optionId }}" formControlName="priority"/>
+                    <input
+                        type="radio"
+                        value="{{ prio.value }}"
+                        id="{{ prio.optionId }}"
+                        formControlName="priority"
+                    />
                     <div class="prio-wrpr">
                         <span>{{ prio.text }}</span>
                         <img src="{{ prio.imgUrl }}" alt="{{ prio.imgAlt }}" />
@@ -81,14 +86,28 @@
             <select formControlName="category">
                 <option value="" disabled>Select a category</option>
                 @for (category of categories; track $index) {
-                    <option [value]="category.name">{{category.name}}</option>
+                    <option [value]="category.name">{{ category.name }}</option>
                 }
             </select>
         </div>
-        <div>
-            <label for="subtask">Subtask</label>
-            <input id="subtask" type="text" formControlName="subtask" />
+        <div class="subtask-input">
+            <div>
+                <label for="subtask">Subtask</label>
+                <input id="subtask" type="text" placeholder="Add new subtask" formControlName="subtask" />
+                <button (click)="clearSubtaskInput($event)" >
+                    <img src="./assets/icons/btn-close-blue.svg" alt="button clear field" />
+                </button>
+                <button (click)="addSubtask($event)"><img src="./assets/icons/check.png" alt=""></button>
+            </div>
         </div>
+        <!-- <div class="search-bar">
+    <input type="text" placeholder="Find Tasks" aria-label="Find task" />
+
+    <button type="button" aria-label="Search">
+        <img src="./assets/icons/search-icon.png" alt="" />
+    </button>
+</div> -->
+
         <button type="submit">Create Task</button>
     </form>
 </section>

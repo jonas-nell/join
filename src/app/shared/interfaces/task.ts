@@ -1,9 +1,9 @@
 import { Profile } from './profile';
 
 export interface Task {
-    TASK_ID: string;
+    TASK_ID: number;
     task_title: string;
-    task_description: string | null;
+    task_description: string;
     task_due_date: string;
     // genau angeben
     task_priority: string;
@@ -20,7 +20,7 @@ export interface Task {
 
 export interface TaskChanges {
     task_title: string;
-    task_description: string | null;
+    task_description: string;
     task_due_date: string;
     task_priority: string;
     // assignedTo: Profile[] | null;
@@ -35,4 +35,9 @@ export interface TaskChanges {
 
 export interface StatusChange {
     task_status: string;
+}
+
+export interface Subtask{
+    subtask_title: string;
+    task_id: number;
 }
