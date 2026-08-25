@@ -16,31 +16,61 @@ export class Taskmanagement {
     tasksRequested = false;
     private tasksRequest: Promise<void> | null = null;
     taskInsertChannel;
+    taskUpdateChannel;
 
     readonly tasksLoading = signal(false);
     readonly tasksError = signal('');
 
-    todo = computed(
-        () => [...this.tasks()].filter((t) => t.task_status === 'To do'),
+    todo = computed(() =>
+        [...this.tasks()]
+            .filter((t) => t.task_status === 'To do')
+            .sort((a, b) => a.order_index - b.order_index),
     );
-    progress = computed(
-        () => [...this.tasks()].filter((t) => t.task_status === 'In progress'),
+    progress = computed(() =>
+        [...this.tasks()]
+            .filter((t) => t.task_status === 'In progress')
+            .sort((a, b) => a.order_index - b.order_index),
     );
-    feedback = computed(
-        () => [...this.tasks()].filter((t) => t.task_status === 'Await feedback'),
+    feedback = computed(() =>
+        [...this.tasks()]
+            .filter((t) => t.task_status === 'Await feedback')
+            .sort((a, b) => a.order_index - b.order_index),
     );
-    done = computed(
-        () => [...this.tasks()].filter((t) => t.task_status === 'Done'),
+    done = computed(() =>
+        [...this.tasks()]
+            .filter((t) => t.task_status === 'Done')
+            .sort((a, b) => a.order_index - b.order_index),
     );
 
     constructor() {
         this.taskInsertChannel = this.database.client
             .channel('custom-insert-channel')
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'tasks' }, (payload) => {
-                let tmpTask = new TaskModel(payload.new)
-                this.tasks.update(list => [...list, tmpTask])
-                console.log('Change received!', payload);
-            })
+            .on(
+                'postgres_changes',
+                { event: 'INSERT', schema: 'public', table: 'tasks' },
+                (payload) => {
+                    let tmpTask = new TaskModel(payload.new);
+                    this.tasks.update((list) => [...list, tmpTask]);
+                    console.log('Change received!', payload);
+                },
+            )
+            .subscribe();
+
+        this.taskUpdateChannel = this.database.client
+            .channel('custom-update-channel')
+            .on(
+                'postgres_changes',
+                { event: 'UPDATE', schema: 'public', table: 'tasks' },
+                (payload) => {
+                    this.tasks.update((tasks) =>
+                        tasks.map((task) =>
+                            task.TASK_ID === payload.new['TASK_ID']
+                                ? new TaskModel(payload.new)
+                                : task,
+                        ),
+                    );
+                },
+            )
             .subscribe();
     }
 
@@ -65,7 +95,6 @@ export class Taskmanagement {
             this.addSubtasks(subtasks, task.TASK_ID);
         }
 
-        // this.notifyTasksChanged();
         console.log(changes);
 
         return task as Task;
@@ -122,7 +151,6 @@ export class Taskmanagement {
             const { data, error } = await this.database.client
                 .from('tasks')
                 .select(TASK_COLUMNS)
-                .order('order_index', { ascending: true });
 
             if (error) {
                 console.error('Supabase error:', error);
@@ -154,10 +182,6 @@ export class Taskmanagement {
 
         await this.tasksRequest;
     }
-    // Tell the tasks that its data has changed.
-    // private notifyTasksChanged(): void {
-    //     void this.ensureTasksLoaded(true);
-    // }
 
     async updateTask(taskId: number, changes: TaskChanges): Promise<Task> {
         const { data, error } = await this.database.client
@@ -174,9 +198,6 @@ export class Taskmanagement {
             throw error;
         }
 
-        // Reload the list so it displays the updated values.
-        // this.notifyTasksChanged();
-// 
         // Return the updated profile.
         return data as Task;
     }
@@ -197,28 +218,17 @@ export class Taskmanagement {
         }
 
         // Reload the list so it displays the updated values.
-        // this.notifyTasksChanged();
 
         // Return the updated profile.
         return data as Task;
     }
 
     async updateOrderIndices(updates: { TASK_ID: number; order_index: number }[]): Promise<void> {
-        const results = await Promise.all(
-            updates.map(({ TASK_ID, order_index }) =>
-                this.database.client.from('tasks').update({ order_index }).eq('TASK_ID', TASK_ID),
-            ),
-        );
+        const { error } = await this.database.client.rpc('update_task_order', { updates });
 
-        const failed = results.find((r) => r.error);
-        if(failed?.error) {
-            console.error('could not be updated:', failed.error);
-            throw failed.error;
+        if (error) {
+            console.error('Could not update task order:', error);
+            throw error;
         }
-        // this.notifyTasksChanged();
     }
-}    
-
-// function checkDoubleTask(task_title: string) {
-//     throw new Error('Function not implemented.');
-// }
+}
