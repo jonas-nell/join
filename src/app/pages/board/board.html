@@ -9,14 +9,15 @@
             <h3>to do</h3>
             <div
                 cdkDropList
-                [cdkDropListData]="todo"
+                [cdkDropListData]="taskmanagementService.todo()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
+                id="todo"
             >
-                @for (task of todo; track task) {
+                @for (task of taskmanagementService.todo(); track task.TASK_ID) {
                     <div class="task" cdkDrag>
                         <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                        {{ task }}
+                        {{ task.task_title }}
                     </div>
                 }
             </div>
@@ -26,14 +27,15 @@
             <h3>In progress</h3>
             <div
                 cdkDropList
-                [cdkDropListData]="progress"
+                [cdkDropListData]="taskmanagementService.progress()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
+                id="progress"
             >
-                @for (task of progress; track task) {
+                @for (task of taskmanagementService.progress(); track task.TASK_ID) {
                     <div class="task" cdkDrag>
                         <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                        {{ task }}
+                        {{ task.task_title }}
                     </div>
                 }
             </div>
@@ -43,14 +45,15 @@
             <h3>Await feedback</h3>
             <div
                 cdkDropList
-                [cdkDropListData]="feedback"
+                [cdkDropListData]="taskmanagementService.feedback()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
+                id="feedback"
             >
-                @for (task of feedback; track task) {
+                @for (task of taskmanagementService.feedback(); track task.TASK_ID) {
                     <div class="task" cdkDrag>
                         <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                        {{ task }}
+                        {{ task.task_title }}
                     </div>
                 }
             </div>
@@ -60,14 +63,15 @@
             <h3>done</h3>
             <div
                 cdkDropList
-                [cdkDropListData]="done"
+                [cdkDropListData]="taskmanagementService.done()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
+                id="done"
             >
-                @for (task of done; track task) {
+                @for (task of taskmanagementService.done(); track task.TASK_ID) {
                     <div class="task" cdkDrag>
                         <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                        {{ task }}
+                        {{ task.task_title }}
                     </div>
                 }
             </div>
