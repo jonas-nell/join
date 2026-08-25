@@ -23,3 +23,45 @@
         }
     }
 }
+
+// .subtask-input{
+
+// }
+
+.search-bar {
+    width: 100%;
+
+    @include desktop {
+        width: px-to-rem(320);
+    }
+
+    height: px-to-rem(48);
+    border: 1px solid $main-color;
+    border-radius: px-to-rem(10);
+    background-color: white;
+    overflow: hidden;
+    @include flex($direction: row);
+
+    input {
+        width: 100%;
+        padding: px-to-rem(16);
+
+        @include font-inter(regular, 20, 2dvh, 20);
+    }
+
+    button {
+        height: px-to-rem(32);
+        padding: px-to-rem(16);
+        border: none;
+        border-left: 1px solid $main-color;
+        background-color: white;
+        cursor: pointer;
+        @include flex();
+
+        img {
+            width: px-to-rem(32);
+            height: px-to-rem(32);
+        }
+    }
+}
+

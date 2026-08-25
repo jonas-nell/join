@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+//#region imports
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
     NgSelectComponent,
@@ -8,9 +9,10 @@ import {
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../services/profile-service';
-import { validate } from '@angular/forms/signals';
 import { TaskChanges } from '../../interfaces/task';
 import { Taskmanagement } from '../../services/taskmanagement';
+import { Profile } from '../../interfaces/profile';
+//#endregion
 
 @Component({
     selector: 'app-task-form',
@@ -27,6 +29,13 @@ import { Taskmanagement } from '../../services/taskmanagement';
     styleUrl: './task-form.scss',
 })
 export class TaskForm {
+    //#region properties
+
+    //#region properties services
+    profileService = inject(ProfileService);
+    taskService = inject(Taskmanagement);
+    //#endregion
+
     priorities = [
         {
             for: 'option-urgent',
@@ -54,29 +63,31 @@ export class TaskForm {
         },
     ];
     categories = [{ name: 'Technical Task' }, { name: 'User Story' }];
-    profileService = inject(ProfileService);
-    taskService = inject(Taskmanagement);
+    subtasks: string[] = [];
 
     taskForm = new FormGroup({
-        title: new FormControl('', { nonNullable: true }),
-        description: new FormControl('', { nonNullable: true }),
-        dueDate: new FormControl('', { nonNullable: true }),
-        priority: new FormControl('medium', { nonNullable: true }),
-        member: new FormControl('', { nonNullable: true }),
+        title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+        description: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+        dueDate: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+        priority: new FormControl('medium', {
+            nonNullable: true,
+            validators: [Validators.required],
+        }),
+        member: new FormControl(null),
         category: new FormControl('', { nonNullable: true }),
         subtask: new FormControl('', { nonNullable: true }),
-        status: new FormControl('', {nonNullable: true}),
-        // eigene submit function, signal mit tasks arr, mit for gerendert
+        status: new FormControl('To do', { nonNullable: true }),
     });
+    //#endregion
 
     constructor() {
+        // sicherstellen, dass kontakte geladen sind wenn das taskform geöffnet ist
         void this.profileService.ensureProfilesLoaded();
     }
 
-    // createTask() {
-    //     console.log(this.taskForm.value);
-    // }
+    //#region methods
 
+    //#region getter functions
     get title() {
         return this.taskForm.get('title');
     }
@@ -99,32 +110,67 @@ export class TaskForm {
         return this.taskForm.get('status');
     }
 
-    async createTask() {
-        this.taskForm.patchValue({
-            title: this.title?.value ?? '',
-            description: this.description?.value ?? '',
-            dueDate: this.dueDate?.value ?? '',
-            priority: this.priority?.value ?? 'medium',
-            category: this.category?.value ?? '',
-            status: this.status?.value ?? 'todo',
-        });
+    get subtask() {
+        return this.taskForm.get('subtask');
+    }
+    //#endregion
 
-        if (!this.taskForm.valid) {
-            this.taskForm.markAllAsTouched();
-            return;
+    //#region create subtask
+
+    addSubtask(event: Event): void {
+        // verhindert default submit eigentschaft (button)
+        event.preventDefault();
+        // subtask input value kommt in array für datenbank
+        const subtask = this.subtask?.value;
+        // abfrage ob subtask title schon existiert
+        if (subtask && !this.ckeckDoubleSubtask(subtask)) {
+            this.subtasks.push(subtask);
+        }
+        this.clearSubtaskInput(event);
+    }
+
+    ckeckDoubleSubtask(subtask: string) {
+        const doubleSubtask: boolean = this.subtasks.includes(subtask);
+        return doubleSubtask;
+    }
+
+    clearSubtaskInput(event: Event): void {
+        event.preventDefault();
+        this.subtask?.reset();
+    }
+    //#endregion
+
+    //#region create task
+    async createTask() {
+        this.taskService.ensureTasksLoaded();
+        // abfrage ob ein titel vorhanden + ob eine andere task den title schon hat
+        if (this.title && !this.taskService.isDoubleTask(this.title?.value)) {
+            // if (!this.taskForm.valid) {
+            //     this.taskForm.markAllAsTouched();
+            //     return;
+            // }
+
+            const changes: TaskChanges = {
+                task_title: this.title.value,
+                task_description: this.description?.value ?? '',
+                task_due_date: this.dueDate?.value ?? '',
+                task_priority: this.priority?.value ?? 'medium',
+                task_status: this.status?.value ?? 'To do',
+                task_category: this.category?.value ?? '',
+            };
+
+            await this.taskService.createTask(changes, this.memberArray(), this.subtasks);
+            this.clearTaskaskInput();
         }
 
-        const values = this.taskForm.getRawValue();
-        const changes: TaskChanges = {
-            task_title: values.title,
-            task_description: values.description,
-            task_due_date: values.dueDate,
-            task_priority: values.priority,
-            task_status: values.status,
-            task_category: values.category,
-        };
-
-        await this.taskService.createTask(changes);
+        // this.taskForm.patchValue({
+        //     title: this.title?.value ?? '',
+        //     description: this.description?.value ?? '',
+        //     dueDate: this.dueDate?.value ?? '',
+        //     priority: this.priority?.value ?? 'medium',
+        //     category: this.category?.value ?? '',
+        //     status: this.status?.value ?? 'To do',
+        // });
 
         // try {
         //     if (this.dialogService.dialogMode() === 'edit') {
@@ -149,4 +195,20 @@ export class TaskForm {
         //     this.notificationService.show('The contact could not be saved. Please try again.');
         // }
     }
+
+    // array mit objects von task zugewiesenen kontakten wird zurückgegeben
+    memberArray(): Profile[] {
+        let memberArr: Profile[] = [];
+        if (this.taskForm.value.member) {
+            memberArr = this.taskForm.value.member;
+        }
+        return memberArr;
+    }
+
+    clearTaskaskInput(): void {
+        this.subtask?.reset();
+    }
+    //#endregion
+
+    //#endregion
 }

@@ -1,24 +1,38 @@
-import { Injectable, Service, inject, signal } from '@angular/core';
+import { Injectable, Service, inject, signal, computed } from '@angular/core';
 import { DatabaseService } from './database-service';
-import { StatusChange, Task, TaskChanges } from '../interfaces/task';
+import { StatusChange, Subtask, Task, TaskChanges } from '../interfaces/task';
+import { Profile } from '../interfaces/profile';
+import { TaskModel } from '../models/task-model';
 
 const TASK_COLUMNS = `TASK_ID, task_title, task_description, task_due_date, task_priority, task_category, task_status`;
 const STATUS_COLUMNS = `task_status`;
 
 @Injectable({
-    providedIn:'root'
+    providedIn: 'root',
 })
 export class Taskmanagement {
     private readonly database = inject(DatabaseService);
     tasks = signal<Task[]>([]);
     tasksRequested = false;
     private tasksRequest: Promise<void> | null = null;
+    taskInsertChannel;
 
     readonly tasksLoading = signal(false);
     readonly tasksError = signal('');
 
-    async createTask(changes: TaskChanges): Promise<Task> {
-        const { data, error } = await this.database.client
+    constructor() {
+        this.taskInsertChannel = this.database.client
+            .channel('custom-insert-channel')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'tasks' }, (payload) => {
+                let tmpTask = new TaskModel(payload.new)
+                this.tasks.update(list => [...list, tmpTask])
+                console.log('Change received!', payload);
+            })
+            .subscribe();
+    }
+
+    async createTask(changes: TaskChanges, members: Profile[], subtasks: string[]): Promise<Task> {
+        const { data: task, error } = await this.database.client
             .from('tasks')
             .insert({ ...changes })
             .select(TASK_COLUMNS)
@@ -30,9 +44,61 @@ export class Taskmanagement {
             throw error;
         }
 
-        this.notifyTasksChanged();
+        if (members.length > 0) {
+            this.filterTaskMembers(members, task.TASK_ID);
+        }
 
-        return data as Task;
+        if (subtasks.length > 0) {
+            this.addSubtasks(subtasks, task.TASK_ID);
+        }
+
+        this.notifyTasksChanged();
+        console.log(changes);
+
+        return task as Task;
+    }
+
+    // verhindern, dass ein title mehrfach vergeben werden kann
+    isDoubleTask(taskTitle: string) {
+        const doubleTask = this.tasks().some((task) => task.task_title === taskTitle);
+        console.log(doubleTask);
+        return doubleTask;
+    }
+
+    async addSubtasks(subtasks: string[], taskId: number) {
+        const subtaskArr: Subtask[] = subtasks.map((subtask) => ({
+            task_id: taskId,
+            subtask_title: subtask,
+        }));
+
+        const { error: assignmentError } = await this.database.client
+            .from('subtasks')
+            .insert(subtaskArr);
+
+        if (assignmentError) {
+            console.error('The subtasks could not be assigned to the task:', assignmentError);
+            throw assignmentError;
+        }
+    }
+
+    // nach erstellung von task (wenn task id verfügbar)
+    // prüfung ob members zu task hunzugefügt
+    // arr mit objekten (task id + user id) wird erstellt und in datenbanktabelle geschrieben
+    async filterTaskMembers(members: Profile[], taskId: number) {
+        const assignments: { task_id: number; user_id: string }[] = members.map((member) => ({
+            task_id: taskId,
+            user_id: member.id,
+        }));
+
+        const { error: assignmentError } = await this.database.client
+            .from('tasks_profiles')
+            .insert(assignments);
+
+        if (assignmentError) {
+            console.error('The users could not be assigned to the task:', assignmentError);
+            throw assignmentError;
+        }
+        console.log(assignments);
     }
 
     async loadTasks(): Promise<void> {
@@ -78,45 +144,48 @@ export class Taskmanagement {
 
     async updateTask(taskId: number, changes: TaskChanges): Promise<Task> {
         const { data, error } = await this.database.client
-                .from('tasks')
-                .update(changes)
-                .eq('id', taskId)
-                .select(TASK_COLUMNS)
-                .single();
-    
-            // Stop when Supabase cannot update the profile.
-            if (error) {
-                console.error('The profile could not be updated:', error);
-    
-                throw error;
-            }
-    
-            // Reload the list so it displays the updated values.
-            this.notifyTasksChanged();
-    
-            // Return the updated profile.
-            return data as Task;
+            .from('tasks')
+            .update(changes)
+            .eq('id', taskId)
+            .select(TASK_COLUMNS)
+            .single();
+
+        // Stop when Supabase cannot update the profile.
+        if (error) {
+            console.error('The profile could not be updated:', error);
+
+            throw error;
         }
-    
+
+        // Reload the list so it displays the updated values.
+        this.notifyTasksChanged();
+
+        // Return the updated profile.
+        return data as Task;
+    }
+
     async updateStatus(taskId: number, changes: StatusChange): Promise<Task> {
         const { data, error } = await this.database.client
-                .from('tasks')
-                .update(changes)
-                .eq('TASK_ID', taskId)
-                .select(STATUS_COLUMNS)
-                .single();
-    
-            // Stop when Supabase cannot update the profile.
-            if (error) {
-                console.error('The profile could not be updated:', error);
-    
-                throw error;
-            }
-    
-            // Reload the list so it displays the updated values.
-            this.notifyTasksChanged();
-    
-            // Return the updated profile.
-            return data as Task;
-        }        
+            .from('tasks')
+            .update(changes)
+            .eq('TASK_ID', taskId)
+            .select(STATUS_COLUMNS)
+            .single();
+
+        // Stop when Supabase cannot update the profile.
+        if (error) {
+            console.error('The profile could not be updated:', error);
+
+            throw error;
+        }
+
+        // Reload the list so it displays the updated values.
+        this.notifyTasksChanged();
+
+        // Return the updated profile.
+        return data as Task;
+    }
 }
+// function checkDoubleTask(task_title: string) {
+//     throw new Error('Function not implemented.');
+// }
