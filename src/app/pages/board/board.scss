@@ -2,8 +2,8 @@
 
 .board-wrapper {
     @include font-inter(regular, 22, 2dvh, 22);
-    padding: px-to-rem(18) px-to-rem(42);
-    @include flex($align: start, $gap: 12);
+    padding: px-to-rem(16);
+    @include flex($align: start, $gap: 24);
 
     .board-top {
         width: 100%;
@@ -20,13 +20,34 @@
         app-add-task-button {
             order: 2;
         }
+
+        h2 {
+            order: 1;
+            margin: 0;
+            @include font-inter(bold, 48, 2dvh, 64);
+        }
     }
 
-    h2 {
-        order: 1;
-        margin: 0;
-        @include font-inter(bold, 48, 2dvh, 64);
+    .board-main{
+        @include desktop{
+            width: 100%;
+            @include flex($direction: row, $align:start, $justify: space-around, $gap: 42)
+        }
+
+        .task-container{
+            @include flex($align: start, $gap: 18);
+    
+            .task-list{
+                @include flex($align: start, $gap: 18);
+            }
+        }
+    
+    
+        h3 {
+            @include font-inter(bold, 28, 2dvh, 28)
+        }        
     }
+
 
     @include desktop {
         padding-left: calc(px-to-rem(250) + px-to-rem(64));
@@ -51,11 +72,4 @@
             }
         }
     }
-}
-
-.drag-placeholder {
-    background: #ccc;
-    border: dotted 3px #999;
-    min-height: 20px;
-    transition: transform 50ms cubic-bezier(0, 0, 0.2, 1);
 }

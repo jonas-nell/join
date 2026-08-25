@@ -4,7 +4,7 @@ import { Task } from '../../../shared/interfaces/task';
 
 @Component({
     selector: 'app-task-card',
-    imports: [CdkDrag ,CdkDragPlaceholder],
+    imports: [CdkDrag, CdkDragPlaceholder],
     templateUrl: './task-card.html',
     styleUrl: './task-card.scss',
 })

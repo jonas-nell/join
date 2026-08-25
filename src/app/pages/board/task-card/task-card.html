@@ -1,4 +1,8 @@
-<div class="task-card" cdkDrag cdkDragPreviewContainer="parent">
+<div class="task-card" cdkDrag >
     <div class="drag-placeholder" *cdkDragPlaceholder></div>
-    {{ task().task_title }}
+    <div>{{ task().task_category }}</div>
+    <div>{{ task().task_title }}</div>
+    <div>{{ task().task_description }}</div>
+    <div>progressbar</div>
+    <div>assigned to + prio icon</div>
 </div>

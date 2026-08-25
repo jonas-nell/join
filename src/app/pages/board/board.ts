@@ -18,7 +18,7 @@ import { TaskCard } from './task-card/task-card';
 
 @Component({
     selector: 'app-board',
-    imports: [AddTaskButton, SearchBar, CdkDrag, CdkDropList, CdkDropListGroup, CdkDragPlaceholder, TaskCard],
+    imports: [AddTaskButton, SearchBar, CdkDropList, CdkDropListGroup, TaskCard],
     templateUrl: './board.html',
     styleUrl: './board.scss',
 })
