@@ -44,7 +44,7 @@ export class Taskmanagement {
             .subscribe();
     }
 
-    async createTask(changes: TaskChanges, members: Profile[], subtasks: string[]): Promise<Task> {
+    async addTaskDB(changes: TaskChanges, members: Profile[], subtasks: string[]): Promise<Task> {
         const { data: task, error } = await this.database.client
             .from('tasks')
             .insert({ ...changes })
@@ -65,7 +65,7 @@ export class Taskmanagement {
             this.addSubtasks(subtasks, task.TASK_ID);
         }
 
-        this.notifyTasksChanged();
+        // this.notifyTasksChanged();
         console.log(changes);
 
         return task as Task;
@@ -155,9 +155,9 @@ export class Taskmanagement {
         await this.tasksRequest;
     }
     // Tell the tasks that its data has changed.
-    private notifyTasksChanged(): void {
-        void this.ensureTasksLoaded(true);
-    }
+    // private notifyTasksChanged(): void {
+    //     void this.ensureTasksLoaded(true);
+    // }
 
     async updateTask(taskId: number, changes: TaskChanges): Promise<Task> {
         const { data, error } = await this.database.client
@@ -175,8 +175,8 @@ export class Taskmanagement {
         }
 
         // Reload the list so it displays the updated values.
-        this.notifyTasksChanged();
-
+        // this.notifyTasksChanged();
+// 
         // Return the updated profile.
         return data as Task;
     }
@@ -197,7 +197,7 @@ export class Taskmanagement {
         }
 
         // Reload the list so it displays the updated values.
-        this.notifyTasksChanged();
+        // this.notifyTasksChanged();
 
         // Return the updated profile.
         return data as Task;
@@ -215,7 +215,7 @@ export class Taskmanagement {
             console.error('could not be updated:', failed.error);
             throw failed.error;
         }
-        this.notifyTasksChanged();
+        // this.notifyTasksChanged();
     }
 }    
 
