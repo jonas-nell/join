@@ -22,7 +22,7 @@ import { StatusChange } from '../../shared/interfaces/task';
 })
 export class Board {
     readonly taskmanagementService = inject(Taskmanagement);
-    
+
     constructor() {
         this.taskmanagementService.ensureTasksLoaded();
     }
@@ -31,26 +31,33 @@ export class Board {
         const task = event.previousContainer.data[event.previousIndex];
 
         if (event.previousContainer === event.container) {
-            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-            const updates = this.calculateNewOrderIndices(event.container.data);
+            //reoder within a column: making local copy to avoid directly mutating computed array
+            const reordered = [...event.container.data];
+            moveItemInArray(reordered, event.previousIndex, event.currentIndex);
+            const updates = this.calculateNewOrderIndices(reordered);
+            // useing optimistically so UI updates happen immediately (no waiting for db echoing)
+            this.taskmanagementService.reorderLocally(task.TASK_ID, null, updates);
             await this.taskmanagementService.updateOrderIndices(updates);
             return;
         }
 
-        transferArrayItem(
-            event.previousContainer.data,
-            event.container.data,
-            event.previousIndex,
-            event.currentIndex,
-        );
+        // move over columns; same as above, but source and destination copies
+        const sourceData = [...event.previousContainer.data];
+        const destData = [...event.container.data];
+        transferArrayItem(sourceData, destData, event.previousIndex, event.currentIndex);
 
         const status = this.getStatusFromContainer(event.container.id);
-        const sourceUpdates = this.calculateNewOrderIndices(event.previousContainer.data);
-        const destUpdates = this.calculateNewOrderIndices(event.container.data);
+        const sourceUpdates = this.calculateNewOrderIndices(sourceData);
+        const destUpdates = this.calculateNewOrderIndices(destData);
+
+        //local update before pushing to DB
+        this.taskmanagementService.reorderLocally(task.TASK_ID, status, [
+            ...sourceUpdates,
+            ...destUpdates,
+        ]);
 
         await this.taskmanagementService.updateStatus(task.TASK_ID, { task_status: status });
         await this.taskmanagementService.updateOrderIndices([...sourceUpdates, ...destUpdates]);
-        
     }
 
     private getStatusFromContainer(containerId: string): StatusChange['task_status'] {
@@ -68,7 +75,9 @@ export class Board {
         }
     }
 
-    private calculateNewOrderIndices(containerData: Task[]): { TASK_ID: number; order_index: number }[] {
+    private calculateNewOrderIndices(
+        containerData: Task[],
+    ): { TASK_ID: number; order_index: number }[] {
         return containerData.map((task, index) => ({
             TASK_ID: task.TASK_ID,
             order_index: index,
