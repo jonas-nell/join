@@ -148,9 +148,7 @@ export class Taskmanagement {
         this.tasksError.set('');
 
         try {
-            const { data, error } = await this.database.client
-                .from('tasks')
-                .select(TASK_COLUMNS)
+            const { data, error } = await this.database.client.from('tasks').select(TASK_COLUMNS);
 
             if (error) {
                 console.error('Supabase error:', error);
@@ -230,5 +228,24 @@ export class Taskmanagement {
             console.error('Could not update task order:', error);
             throw error;
         }
+    }
+    //reordering the task signals (dragndrop), keeps arrays in sync, avoids flicker from realtime subscription vs drag
+    reorderLocally(
+        movedTaskId: number,
+        newStatus: StatusChange['task_status'] | null,
+        orderUpdates: { TASK_ID: number; order_index: number }[],
+    ): void {
+        const orderMap = new Map(orderUpdates.map((u) => [u.TASK_ID, u.order_index]));
+
+        this.tasks.update((tasks) =>
+            tasks.map((task) => {
+                if (!orderMap.has(task.TASK_ID)) return task;
+                const patched = { ...task, order_index: orderMap.get(task.TASK_ID) };
+                if (newStatus && task.TASK_ID === movedTaskId) {
+                    patched.task_status = newStatus;
+                }
+                return patched as Task;
+            }),
+        );
     }
 }
