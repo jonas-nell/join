@@ -13,10 +13,12 @@ import {
 import { Task } from '../../shared/interfaces/task';
 import { Taskmanagement } from '../../shared/services/taskmanagement';
 import { StatusChange } from '../../shared/interfaces/task';
+import { TaskCard } from './task-card/task-card';
+
 
 @Component({
     selector: 'app-board',
-    imports: [AddTaskButton, SearchBar, CdkDrag, CdkDropList, CdkDropListGroup, CdkDragPlaceholder],
+    imports: [AddTaskButton, SearchBar, CdkDrag, CdkDropList, CdkDropListGroup, CdkDragPlaceholder, TaskCard],
     templateUrl: './board.html',
     styleUrl: './board.scss',
 })

@@ -15,10 +15,7 @@
                 id="todo"
             >
                 @for (task of taskmanagementService.todo(); track task.TASK_ID) {
-                    <div class="task" cdkDrag>
-                        <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                        {{ task.task_title }}
-                    </div>
+                    <app-task-card [task]="task" />
                 }
             </div>
         </div>
@@ -33,10 +30,7 @@
                 id="progress"
             >
                 @for (task of taskmanagementService.progress(); track task.TASK_ID) {
-                    <div class="task" cdkDrag>
-                        <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                        {{ task.task_title }}
-                    </div>
+                    <app-task-card [task]="task" />
                 }
             </div>
         </div>
@@ -51,10 +45,7 @@
                 id="feedback"
             >
                 @for (task of taskmanagementService.feedback(); track task.TASK_ID) {
-                    <div class="task" cdkDrag>
-                        <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                        {{ task.task_title }}
-                    </div>
+                    <app-task-card [task]="task" />
                 }
             </div>
         </div>
@@ -69,10 +60,7 @@
                 id="done"
             >
                 @for (task of taskmanagementService.done(); track task.TASK_ID) {
-                    <div class="task" cdkDrag>
-                        <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                        {{ task.task_title }}
-                    </div>
+                    <app-task-card [task]="task" />
                 }
             </div>
         </div>
