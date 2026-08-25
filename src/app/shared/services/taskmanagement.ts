@@ -11,16 +11,22 @@ const STATUS_COLUMNS = `task_status`;
     providedIn: 'root',
 })
 export class Taskmanagement {
+    //#region properties
+
+    //#region properties DB
     private readonly database = inject(DatabaseService);
-    tasks = signal<Task[]>([]);
-    tasksRequested = false;
-    private tasksRequest: Promise<void> | null = null;
     taskInsertChannel;
     taskUpdateChannel;
+    //#endregion
 
+    tasksRequested = false;
+    private tasksRequest: Promise<void> | null = null;
     readonly tasksLoading = signal(false);
     readonly tasksError = signal('');
 
+    tasks = signal<Task[]>([]);
+
+    //#region taskstatus computed
     todo = computed(() =>
         [...this.tasks()]
             .filter((t) => t.task_status === 'To do')
@@ -41,6 +47,8 @@ export class Taskmanagement {
             .filter((t) => t.task_status === 'Done')
             .sort((a, b) => a.order_index - b.order_index),
     );
+    //#endregion
+    //#endregion
 
     constructor() {
         this.taskInsertChannel = this.database.client
@@ -74,6 +82,20 @@ export class Taskmanagement {
             .subscribe();
     }
 
+    //#region methods
+
+    //#region realtime
+
+    //#region subscribe
+
+    //#endregion
+
+    //#region unsubscribe
+    //#endregion
+
+    //#endregion
+
+    //#region add
     async addTaskDB(changes: TaskChanges, members: Profile[], subtasks: string[]): Promise<Task> {
         const { data: task, error } = await this.database.client
             .from('tasks')
@@ -142,15 +164,15 @@ export class Taskmanagement {
         }
         console.log(assignments);
     }
+    //#endregion
 
+    //#region load
     async loadTasks(): Promise<void> {
         this.tasksLoading.set(true);
         this.tasksError.set('');
 
         try {
-            const { data, error } = await this.database.client
-                .from('tasks')
-                .select(TASK_COLUMNS)
+            const { data, error } = await this.database.client.from('tasks').select(TASK_COLUMNS);
 
             if (error) {
                 console.error('Supabase error:', error);
@@ -182,7 +204,9 @@ export class Taskmanagement {
 
         await this.tasksRequest;
     }
+    //#endregion
 
+    //#region update data
     async updateTask(taskId: number, changes: TaskChanges): Promise<Task> {
         const { data, error } = await this.database.client
             .from('tasks')
@@ -217,8 +241,6 @@ export class Taskmanagement {
             throw error;
         }
 
-        // Reload the list so it displays the updated values.
-
         // Return the updated profile.
         return data as Task;
     }
@@ -231,4 +253,7 @@ export class Taskmanagement {
             throw error;
         }
     }
+    //#endregion
+
+    //#endregion
 }
