@@ -14,5 +14,5 @@
     border-radius: 24px;
 
     padding: distance(16, 12);
-    @include flex($justify: space-between);
+    @include flex($align: start, $justify: space-between);
 }

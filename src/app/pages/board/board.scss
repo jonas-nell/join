@@ -4,11 +4,16 @@
     @include font-inter(regular, 22, 2dvh, 22);
     padding: px-to-rem(16);
     @include flex($align: start, $gap: 24);
+    
+    @include desktop{
+        @include flex($gap: 52);
+    }
 
     .board-top {
         width: 100%;
         flex-wrap: wrap;
         @include flex($direction: row, $justify: space-between, $gap: 12);
+
 
         app-search-bar {
             @include flex();
@@ -44,7 +49,11 @@
     
     
         h3 {
-            @include font-inter(bold, 28, 2dvh, 28)
+            @include font-inter(bold, 28, 2dvh, 28);
+
+            @include desktop{
+                margin-left: px-to-rem(12);
+            }
         }        
     }
 
