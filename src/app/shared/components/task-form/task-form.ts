@@ -157,9 +157,12 @@ export class TaskForm {
                 task_priority: this.priority?.value ?? 'medium',
                 task_status: this.status?.value ?? 'To do',
                 task_category: this.category?.value ?? '',
+                order_index: this.taskService.todo().length
             };
+            console.log(this.taskService.todo().length);
+            
 
-            await this.taskService.createTask(changes, this.memberArray(), this.subtasks);
+            await this.taskService.addTaskDB(changes, this.memberArray(), this.subtasks);
             this.clearTaskaskInput();
         }
 
