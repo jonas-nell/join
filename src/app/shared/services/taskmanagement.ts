@@ -253,7 +253,27 @@ export class Taskmanagement {
             throw error;
         }
     }
-    //#endregion
 
-    //#endregion
+    //reordering the task signals (dragndrop), keeps arrays in sync, avoids flicker from realtime subscription vs drag
+    reorderLocally(
+        movedTaskId: number,
+        newStatus: StatusChange['task_status'] | null,
+        orderUpdates: { TASK_ID: number; order_index: number }[],
+    ): void {
+        const orderMap = new Map(orderUpdates.map((u) => [u.TASK_ID, u.order_index]));
+
+        this.tasks.update((tasks) =>
+            tasks.map((task) => {
+                if (!orderMap.has(task.TASK_ID)) return task;
+                const patched = { ...task, order_index: orderMap.get(task.TASK_ID) };
+                if (newStatus && task.TASK_ID === movedTaskId) {
+                    patched.task_status = newStatus;
+                }
+                return patched as Task;
+            }),
+        );
+    }
+        //#endregion
+        //#endregion
 }
+
