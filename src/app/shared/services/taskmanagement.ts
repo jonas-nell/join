@@ -3,6 +3,7 @@ import { DatabaseService } from './database-service';
 import { StatusChange, Subtask, Task, TaskChanges } from '../interfaces/task';
 import { Profile } from '../interfaces/profile';
 import { TaskModel } from '../models/task-model';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 const TASK_COLUMNS = `TASK_ID, task_title, task_description, task_due_date, task_priority, task_category, task_status, order_index`;
 const STATUS_COLUMNS = `task_status`;
@@ -15,8 +16,8 @@ export class Taskmanagement {
 
     //#region properties DB
     private readonly database = inject(DatabaseService);
-    taskInsertChannel;
-    taskUpdateChannel;
+    taskInsertChannel: RealtimeChannel | undefined;
+    taskUpdateChannel: RealtimeChannel | undefined;
     //#endregion
 
     tasksRequested = false;
@@ -51,6 +52,22 @@ export class Taskmanagement {
     //#endregion
 
     constructor() {
+        this.subscribeInsert();
+        this.subscribeUpdate();
+    }
+
+    ngOnDestroy() {
+        console.log('unsubscribe works');
+        this.unsubscribeInsert();
+        this.unsubscribeUpdate();
+    }
+    
+    //#region methods
+
+    //#region realtime
+
+    //#region subscribe
+    subscribeInsert() {
         this.taskInsertChannel = this.database.client
             .channel('custom-insert-channel')
             .on(
@@ -63,7 +80,9 @@ export class Taskmanagement {
                 },
             )
             .subscribe();
+    }
 
+    subscribeUpdate() {
         this.taskUpdateChannel = this.database.client
             .channel('custom-update-channel')
             .on(
@@ -81,16 +100,20 @@ export class Taskmanagement {
             )
             .subscribe();
     }
-
-    //#region methods
-
-    //#region realtime
-
-    //#region subscribe
-
     //#endregion
 
     //#region unsubscribe
+    unsubscribeInsert(){
+        if (this.taskInsertChannel) {
+            this.database.client.removeChannel(this.taskInsertChannel)
+        }
+    }
+
+    unsubscribeUpdate(){
+        if (this.taskUpdateChannel) {
+            this.database.client.removeChannel(this.taskUpdateChannel)
+        }
+    }
     //#endregion
 
     //#endregion
