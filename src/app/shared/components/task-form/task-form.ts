@@ -12,6 +12,7 @@ import { ProfileService } from '../../services/profile-service';
 import { TaskChanges } from '../../interfaces/task';
 import { Taskmanagement } from '../../services/taskmanagement';
 import { Profile } from '../../interfaces/profile';
+import { TaskModel } from '../../models/task-model';
 //#endregion
 
 @Component({
@@ -66,17 +67,24 @@ export class TaskForm {
     subtasks: string[] = [];
 
     taskForm = new FormGroup({
-        title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-        description: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-        dueDate: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-        priority: new FormControl('medium', {
+        task_title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+        task_description: new FormControl('', {
+            nonNullable: true,
+        }),
+        task_due_date: new FormControl('', {
             nonNullable: true,
             validators: [Validators.required],
         }),
-        member: new FormControl(null),
-        category: new FormControl('', { nonNullable: true }),
+        task_priority: new FormControl('medium', {
+            nonNullable: true,
+        }),
+        member: new FormControl(null, { nonNullable: true }),
+        task_category: new FormControl('', {
+            nonNullable: true,
+            validators: [Validators.required],
+        }),
         subtask: new FormControl('', { nonNullable: true }),
-        status: new FormControl('To do', { nonNullable: true }),
+        // task_status: new FormControl('To do', { nonNullable: true }),
     });
     //#endregion
 
@@ -88,26 +96,26 @@ export class TaskForm {
     //#region methods
 
     //#region getter functions
-    get title() {
-        return this.taskForm.get('title');
+    get task_title() {
+        return this.taskForm.get('task_title');
     }
 
-    get description() {
-        return this.taskForm.get('description');
+    get task_description() {
+        return this.taskForm.get('task_description');
     }
-    get dueDate() {
-        return this.taskForm.get('dueDate');
-    }
-
-    get priority() {
-        return this.taskForm.get('priority');
-    }
-    get category() {
-        return this.taskForm.get('category');
+    get task_due_date() {
+        return this.taskForm.get('dtask_due_date');
     }
 
-    get status() {
-        return this.taskForm.get('status');
+    get task_priority() {
+        return this.taskForm.get('task_priority');
+    }
+    get task_category() {
+        return this.taskForm.get('task_category');
+    }
+
+    get task_status() {
+        return this.taskForm.get('task_status');
     }
 
     get subtask() {
@@ -144,25 +152,20 @@ export class TaskForm {
     async createTask() {
         this.taskService.ensureTasksLoaded();
         // abfrage ob ein titel vorhanden + ob eine andere task den title schon hat
-        if (this.title && !this.taskService.isDoubleTask(this.title?.value)) {
+        if (this.task_title && !this.taskService.isDoubleTask(this.task_title?.value)) {
             // if (!this.taskForm.valid) {
             //     this.taskForm.markAllAsTouched();
             //     return;
             // }
 
-            const changes: TaskChanges = {
-                task_title: this.title.value,
-                task_description: this.description?.value ?? '',
-                task_due_date: this.dueDate?.value ?? '',
-                task_priority: this.priority?.value ?? 'medium',
-                task_status: this.status?.value ?? 'To do',
-                task_category: this.category?.value ?? '',
-                order_index: this.taskService.todo().length
-            };
-            console.log(this.taskService.todo().length);
-            
+            // task ganz unten in liste einfügen
+            const orderIndex = this.taskService.todo().length;
+            const taskValues = new TaskModel(this.taskForm.value, orderIndex);
 
-            await this.taskService.addTaskDB(changes, this.memberArray(), this.subtasks);
+            // TASK_ID nicht mitgeben, da von DB erstellt
+            const { TASK_ID, ...taskValuesNeeded } = taskValues;
+
+            await this.taskService.addTaskDB(taskValuesNeeded, this.memberArray(), this.subtasks);
             this.clearTaskaskInput();
         }
 
