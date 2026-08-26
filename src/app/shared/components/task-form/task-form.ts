@@ -12,6 +12,7 @@ import { ProfileService } from '../../services/profile-service';
 import { TaskChanges } from '../../interfaces/task';
 import { Taskmanagement } from '../../services/taskmanagement';
 import { Profile } from '../../interfaces/profile';
+import { TaskModel } from '../../models/task-model';
 //#endregion
 
 @Component({
@@ -67,8 +68,14 @@ export class TaskForm {
 
     taskForm = new FormGroup({
         task_title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-        task_description: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-        task_due_date: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+        task_description: new FormControl('', {
+            nonNullable: true,
+            validators: [Validators.required],
+        }),
+        task_due_date: new FormControl('', {
+            nonNullable: true,
+            validators: [Validators.required],
+        }),
         task_priority: new FormControl('medium', {
             nonNullable: true,
             validators: [Validators.required],
@@ -150,19 +157,14 @@ export class TaskForm {
             //     return;
             // }
 
-            const changes: TaskChanges = {
-                task_title: this.task_title.value,
-                task_description: this.task_description?.value ?? '',
-                task_due_date: this.task_due_date?.value ?? '',
-                task_priority: this.task_priority?.value ?? 'medium',
-                task_status: this.task_status?.value ?? 'To do',
-                task_category: this.task_category?.value ?? '',
-                order_index: this.taskService.todo().length
-            };
-            console.log(this.taskService.todo().length);
-            
+            // task ganz unten in liste einfügen
+            const orderIndex = this.taskService.todo().length;
+            const taskValues = new TaskModel(this.taskForm.value, orderIndex);
 
-            await this.taskService.addTaskDB(changes, this.memberArray(), this.subtasks);
+            // TASK_ID nicht mitgeben, da von DB erstellt
+            const { TASK_ID, ...taskValuesNeeded } = taskValues;
+
+            await this.taskService.addTaskDB(taskValuesNeeded, this.memberArray(), this.subtasks);
             this.clearTaskaskInput();
         }
 
