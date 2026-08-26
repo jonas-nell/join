@@ -1,4 +1,4 @@
-import { Component, effect, inject, computed } from '@angular/core';
+import { Component, effect, inject, computed, signal } from '@angular/core';
 import { SearchBar } from './search-bar/search-bar/search-bar';
 import { AddTaskButton } from '../../shared/components/add-task-button/add-task-button';
 import {
@@ -13,19 +13,24 @@ import {
 import { Task } from '../../shared/interfaces/task';
 import { Taskmanagement } from '../../shared/services/taskmanagement';
 import { StatusChange } from '../../shared/interfaces/task';
+import { SingleTaskView } from './single-task-view/single-task-view';
 
 @Component({
     selector: 'app-board',
-    imports: [AddTaskButton, SearchBar, CdkDrag, CdkDropList, CdkDropListGroup, CdkDragPlaceholder],
+    imports: [AddTaskButton, SearchBar, CdkDrag, CdkDropList, CdkDropListGroup, CdkDragPlaceholder, SingleTaskView],
     templateUrl: './board.html',
     styleUrl: './board.scss',
 })
 export class Board {
+
+    
     readonly taskmanagementService = inject(Taskmanagement);
     
     constructor() {
         this.taskmanagementService.ensureTasksLoaded();
     }
+
+    readonly selectedTask = signal<Task | null>(null);
 
     async drop(event: CdkDragDrop<Task[]>) {
         const task = event.previousContainer.data[event.previousIndex];
@@ -74,4 +79,18 @@ export class Board {
             order_index: index,
         }));
     }
+
+    openTask(task: Task): void {
+        this.selectedTask.set(task);
+    }
+
+    closeTask(): void {
+        this.selectedTask.set(null);
+    }
+
+    openEditTask(task: Task): void {
+        // The edit dialog will be added later.
+        console.log('Edit task:', task);
+    }
 }
+

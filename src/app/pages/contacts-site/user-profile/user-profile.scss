@@ -17,6 +17,16 @@
     @include flex($direction: row, $align: center, $justify: left, $gap: 20);
 }
 
+app-user-badge {
+    --badge-size: #{px-to-rem(80)};
+    --badge-font-size: #{px-to-rem(28)};
+
+    @include desktop {
+        --badge-size: #{px-to-rem(120)};
+        --badge-font-size: #{px-to-rem(48)};
+    }
+}
+
 
 // Style the selected username.
 .profile__name {

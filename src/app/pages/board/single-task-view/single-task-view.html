@@ -1,0 +1,114 @@
+<div class="dialog-backdrop">
+    <article
+        class="task-dialog"
+        role="dialog"
+    >
+        <header class="dialog-header">
+            <span
+                class="category"
+                [class.user-story]="task().task_category.toLowerCase() === 'user story'"
+                [class.technical-task]="task().task_category.toLowerCase() === 'technical task'"
+            >
+                {{ task().task_category }}
+            </span>
+
+            <button
+                class="close-button"
+                type="button"
+                (click)="closed.emit()"
+            >
+                ×
+            </button>
+        </header>
+
+        <h2 id="task-dialog-title">
+            {{ task().task_title }}
+        </h2>
+
+        <p class="description">
+            {{ task().task_description }}
+        </p>
+
+        <div class="task-details">
+            <div class="task-detail">
+                <span>Due date:</span>
+                <span>
+                    {{ task().task_due_date | date: 'dd/MM/yyyy' }}
+                </span>
+            </div>
+
+            <div class="task-detail">
+                <span>Priority:</span>
+
+                <span>
+                    {{ task().task_priority }}
+
+                    <span class="priority">
+                        @switch (task().task_priority) {
+                            @case ('low') {
+                                <img src="./assets/icons/Prio low.png" alt="" />
+                            }
+
+                            @case ('medium') {
+                                <img src="./assets/icons/Prio medium.png" alt="" />
+                            }
+
+                            @case ('urgent') {
+                                <img src="./assets/icons/Prio urgent.png" alt="" />
+                            }
+                        }
+                    </span>
+                </span>
+            </div>
+        </div>
+
+        <section class="section-assignedTo">
+            <h3>Assigned To:</h3>
+
+            <div class="profile-list">
+                @for (profile of profiles(); track profile.id) {
+                    <div class="profile">
+                        <app-user-badge
+                            [userId]="profile.id"
+                            [userName]="profile.user_name"
+                        />
+
+                        <span>{{ profile.user_name }}</span>
+                    </div>
+                }
+            </div>
+        </section>
+
+        <section  class="section-subtaskList">
+            <h3>Subtasks</h3>
+
+            <div class="subtask-list">
+                @for (subtask of subtasks(); track subtask.id) {
+                    <label class="subtask">
+                        <input
+                            type="checkbox"
+                            [checked]="subtask.subtask_done"
+                            (change)="changeSubtask(subtask, $event)"
+                        />
+
+                        <span>{{ subtask.subtask_title }}</span>
+                    </label>
+                }
+            </div>
+        </section>
+
+        <footer class="dialog-actions">
+            <button type="button" (click)="deleteTask()" [disabled]="deleting()">
+                <img src="./assets/icons/delete.png" alt="" />
+                {{ deleting() ? 'Deleting…' : 'Delete' }}
+            </button>
+
+            <span class="divider"></span>
+
+            <button type="button" (click)="requestEdit()">
+                <img src="./assets/icons/edit.png" alt="" />
+                Edit
+            </button>
+        </footer>
+    </article>
+</div>

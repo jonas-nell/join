@@ -1,6 +1,9 @@
 <div
     class="user-badge"
+    
     [class.user-badge--large]="size() === 'large'"
+    [class.user-badge--xsmall]="size() === 'xsmall'"
+    [class.user-badge--small]="size() === 'small'"
     [class.user-badge--dialog]="size() === 'dialog'"
     [class.user-badge--active]="active()"
     [style.background-color]="getProfileColor(userId())"
