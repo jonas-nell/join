@@ -1,4 +1,4 @@
-<div class="task-card" cdkDrag >
+<div class="task-card" cdkDrag (click)="openTask(task)">
     <div class="drag-placeholder" *cdkDragPlaceholder></div>
     <app-category-badge [category]="task().task_category" />
     <div class="title">{{ task().task_title }}</div>
