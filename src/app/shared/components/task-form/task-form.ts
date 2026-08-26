@@ -70,7 +70,6 @@ export class TaskForm {
         task_title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
         task_description: new FormControl('', {
             nonNullable: true,
-            validators: [Validators.required],
         }),
         task_due_date: new FormControl('', {
             nonNullable: true,
@@ -78,12 +77,14 @@ export class TaskForm {
         }),
         task_priority: new FormControl('medium', {
             nonNullable: true,
+        }),
+        member: new FormControl(null, { nonNullable: true }),
+        task_category: new FormControl('', {
+            nonNullable: true,
             validators: [Validators.required],
         }),
-        member: new FormControl(null),
-        task_category: new FormControl('', { nonNullable: true }),
         subtask: new FormControl('', { nonNullable: true }),
-        task_status: new FormControl('To do', { nonNullable: true }),
+        // task_status: new FormControl('To do', { nonNullable: true }),
     });
     //#endregion
 
