@@ -15,11 +15,11 @@ import { Taskmanagement } from '../../shared/services/taskmanagement';
 import { StatusChange } from '../../shared/interfaces/task';
 import { TaskCard } from './task-card/task-card';
 
-import { SingleTaskView } from './single-task-view/single-task-view';
+
 
 @Component({
     selector: 'app-board',
-    imports: [AddTaskButton, SearchBar, CdkDropList, CdkDropListGroup, TaskCard, SingleTaskView],
+    imports: [AddTaskButton, SearchBar, CdkDropList, CdkDropListGroup, TaskCard],
     templateUrl: './board.html',
     styleUrl: './board.scss',
 })
@@ -31,8 +31,6 @@ export class Board {
     constructor() {
         this.taskmanagementService.ensureTasksLoaded();
     }
-
-    readonly selectedTask = signal<Task | null>(null);
 
     async drop(event: CdkDragDrop<Task[]>) {
         const task = event.previousContainer.data[event.previousIndex];
@@ -89,19 +87,6 @@ export class Board {
             TASK_ID: task.TASK_ID,
             order_index: index,
         }));
-    }
-
-    openTask(task: Task): void {
-        this.selectedTask.set(task);
-    }
-
-    closeTask(): void {
-        this.selectedTask.set(null);
-    }
-
-    openEditTask(task: Task): void {
-        // The edit dialog will be added later.
-        console.log('Edit task:', task);
     }
 }
 

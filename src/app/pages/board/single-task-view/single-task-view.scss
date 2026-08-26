@@ -31,21 +31,6 @@
         .dialog-header {
             @include flex($direction: row, $justify: space-between);
 
-            .category {
-                padding: px-to-rem(5) px-to-rem(20);
-                border-radius: px-to-rem(5);
-                color: white;
-                @include font-inter(regular, 16, 2dvh, 24);
-
-                &.user-story {
-                    background: #0038ff;
-                }
-
-                &.technical-task {
-                    background: #1fd7c1;
-                }
-            }
-
             .close-button {
                 font-size: px-to-rem(24);
                 cursor: pointer;

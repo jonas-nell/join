@@ -4,13 +4,8 @@
         role="dialog"
     >
         <header class="dialog-header">
-            <span
-                class="category"
-                [class.user-story]="task().task_category.toLowerCase() === 'user story'"
-                [class.technical-task]="task().task_category.toLowerCase() === 'technical task'"
-            >
-                {{ task().task_category }}
-            </span>
+            <app-category-badge [category]="task().task_category" />
+        
 
             <button
                 class="close-button"

@@ -73,11 +73,4 @@
             </div>
         </div>
     </div>
-    @if (selectedTask(); as task) {
-        <app-single-task-view
-            [task]="task"
-            (closed)="closeTask()"
-            (editRequested)="openEditTask($event)"
-        />
-    }
 </div>

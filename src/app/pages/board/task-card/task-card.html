@@ -1,4 +1,5 @@
-<div class="task-card" cdkDrag>
+
+<div class="task-card" cdkDrag (click)="openTask()">
     <div class="drag-placeholder" *cdkDragPlaceholder></div>
     <app-category-badge [category]="task().task_category" />
     <div class="title">{{ task().task_title }}</div>
@@ -6,3 +7,11 @@
     <div>progressbar</div>
     <div>assigned to + prio icon</div>
 </div>
+
+@if (taskOpen()) {
+    <app-single-task-view
+        [task]="task()"
+        (closed)="closeTask()"
+        (editRequested)="openEditTask($event)"
+    />
+}

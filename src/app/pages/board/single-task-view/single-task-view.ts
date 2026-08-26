@@ -5,10 +5,11 @@ import { Profile } from '../../../shared/interfaces/profile';
 import { Subtask, Task } from '../../../shared/interfaces/task';
 import { UserBadge } from '../../../shared/components/user-badge/user-badge';
 import { ProfileService } from '../../../shared/services/profile-service';
+import { CategoryBadge } from '../../../shared/category-badge/category-badge';
 
 @Component({
     selector: 'app-single-task-view',
-    imports: [DatePipe, UserBadge],
+    imports: [DatePipe, UserBadge, CategoryBadge],
     templateUrl: './single-task-view.html',
     styleUrl: './single-task-view.scss',
 })
