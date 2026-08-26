@@ -3,6 +3,7 @@ import { DatabaseService } from './database-service';
 import { StatusChange, Subtask, Task, TaskChanges } from '../interfaces/task';
 import { Profile } from '../interfaces/profile';
 import { TaskModel } from '../models/task-model';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 const TASK_COLUMNS = `TASK_ID, task_title, task_description, task_due_date, task_priority, task_category, task_status, order_index`;
 const STATUS_COLUMNS = `task_status`;
@@ -11,16 +12,22 @@ const STATUS_COLUMNS = `task_status`;
     providedIn: 'root',
 })
 export class Taskmanagement {
+    //#region properties
+
+    //#region properties DB
     private readonly database = inject(DatabaseService);
-    tasks = signal<Task[]>([]);
+    taskInsertChannel: RealtimeChannel | undefined;
+    taskUpdateChannel: RealtimeChannel | undefined;
+    //#endregion
+
     tasksRequested = false;
     private tasksRequest: Promise<void> | null = null;
-    taskInsertChannel;
-    taskUpdateChannel;
-
     readonly tasksLoading = signal(false);
     readonly tasksError = signal('');
 
+    tasks = signal<Task[]>([]);
+
+    //#region taskstatus computed
     todo = computed(() =>
         [...this.tasks()]
             .filter((t) => t.task_status === 'To do')
@@ -41,8 +48,26 @@ export class Taskmanagement {
             .filter((t) => t.task_status === 'Done')
             .sort((a, b) => a.order_index - b.order_index),
     );
+    //#endregion
+    //#endregion
 
     constructor() {
+        this.subscribeInsert();
+        this.subscribeUpdate();
+    }
+
+    ngOnDestroy() {
+        console.log('unsubscribe works');
+        this.unsubscribeInsert();
+        this.unsubscribeUpdate();
+    }
+    
+    //#region methods
+
+    //#region realtime
+
+    //#region subscribe
+    subscribeInsert() {
         this.taskInsertChannel = this.database.client
             .channel('custom-insert-channel')
             .on(
@@ -55,7 +80,9 @@ export class Taskmanagement {
                 },
             )
             .subscribe();
+    }
 
+    subscribeUpdate() {
         this.taskUpdateChannel = this.database.client
             .channel('custom-update-channel')
             .on(
@@ -73,7 +100,25 @@ export class Taskmanagement {
             )
             .subscribe();
     }
+    //#endregion
 
+    //#region unsubscribe
+    unsubscribeInsert(){
+        if (this.taskInsertChannel) {
+            this.database.client.removeChannel(this.taskInsertChannel)
+        }
+    }
+
+    unsubscribeUpdate(){
+        if (this.taskUpdateChannel) {
+            this.database.client.removeChannel(this.taskUpdateChannel)
+        }
+    }
+    //#endregion
+
+    //#endregion
+
+    //#region add
     async addTaskDB(changes: TaskChanges, members: Profile[], subtasks: string[]): Promise<Task> {
         const { data: task, error } = await this.database.client
             .from('tasks')
@@ -142,7 +187,9 @@ export class Taskmanagement {
         }
         console.log(assignments);
     }
+    //#endregion
 
+    //#region load
     async loadTasks(): Promise<void> {
         this.tasksLoading.set(true);
         this.tasksError.set('');
@@ -180,7 +227,9 @@ export class Taskmanagement {
 
         await this.tasksRequest;
     }
+    //#endregion
 
+    //#region update data
     async updateTask(taskId: number, changes: TaskChanges): Promise<Task> {
         const { data, error } = await this.database.client
             .from('tasks')
@@ -215,8 +264,6 @@ export class Taskmanagement {
             throw error;
         }
 
-        // Reload the list so it displays the updated values.
-
         // Return the updated profile.
         return data as Task;
     }
@@ -229,6 +276,7 @@ export class Taskmanagement {
             throw error;
         }
     }
+
     //reordering the task signals (dragndrop), keeps arrays in sync, avoids flicker from realtime subscription vs drag
     reorderLocally(
         movedTaskId: number,
@@ -248,4 +296,7 @@ export class Taskmanagement {
             }),
         );
     }
+        //#endregion
+        //#endregion
 }
+
