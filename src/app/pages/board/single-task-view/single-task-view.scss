@@ -1,0 +1,217 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+.dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.5);
+    @include flex();
+
+    .task-dialog {
+        width: px-to-rem(300);
+        height: px-to-rem(600);
+        padding: px-to-rem(15);
+        background: white;
+        color: $dark;
+        border-radius: px-to-rem(20);
+        @include font-inter(regular, 16, 2dvh, 20);
+        @include flex($direction: column, $justify: start, $align: stretch);
+
+        @include tablet {
+            width: px-to-rem(400);
+            height: px-to-rem(700);
+        }
+
+        @include desktop {
+            width: px-to-rem(525);
+            height: px-to-rem(900);
+            padding: px-to-rem(30);
+        }
+
+        .dialog-header {
+            @include flex($direction: row, $justify: space-between);
+
+            .category {
+                padding: px-to-rem(5) px-to-rem(20);
+                border-radius: px-to-rem(5);
+                color: white;
+                @include font-inter(regular, 16, 2dvh, 24);
+
+                &.user-story {
+                    background: #0038ff;
+                }
+
+                &.technical-task {
+                    background: #1fd7c1;
+                }
+            }
+
+            .close-button {
+                font-size: px-to-rem(24);
+                cursor: pointer;
+            }
+        }
+
+        h2 {
+            margin: px-to-rem(10) 0 px-to-rem(15);
+            color: black;
+            line-height: 1;
+            @include font-inter(bold, 26, 5vw, 60);
+
+            // Title max 3 lines and then shortened 3 dots...
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+        }
+
+        .description {
+            height: px-to-rem(50);
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin-bottom: px-to-rem(5);
+            padding: px-to-rem(5);
+            box-shadow: inset 0 px-to-rem(1) px-to-rem(7) rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+
+            @include tablet {
+                height: px-to-rem(60);
+            }
+        }
+
+        .task-details {
+            .task-detail {
+                margin-top: px-to-rem(10);
+                // margin-bottom: px-to-rem(5);
+
+                @include desktop {
+                    margin-bottom: px-to-rem(25);
+                }
+            }
+        }
+
+        .section-assignedTo {
+            h3 {
+                @include font-inter(regular, 16, 2dvh, 20);
+                margin: px-to-rem(16) 0 px-to-rem(10);
+
+                @include desktop {
+                    margin: px-to-rem(10) px-to-rem(0);
+                }
+            }
+
+            .profile-list {
+                height: px-to-rem(135);
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding: px-to-rem(10);
+                box-shadow: inset 0 px-to-rem(1) px-to-rem(7) rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                @include flex($align: start, $justify: start, $gap: 10);
+
+                @include desktop {
+                    height: px-to-rem(200);
+                    @include flex($align: start, $justify: start, $gap: 25);
+                }
+            }
+
+            .profile {
+                width: 240px;
+
+                @include desktop {
+                    width: 340px;
+                }
+                padding-left: px-to-rem(5);
+                @include flex($direction: row, $justify: start, $gap: 10);
+
+                // Name max 1 line and then shortened with 3 dots...
+                span {
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+
+                app-user-badge {
+                    --badge-size: #{px-to-rem(32)};
+                    --badge-font-size: #{px-to-rem(16)};
+
+                    @include desktop {
+                        --badge-size: #{px-to-rem(42)};
+                        --badge-font-size: #{px-to-rem(16)};
+                    }
+                }
+            }
+        }
+        .section-subtaskList {
+            h3 {
+                @include font-inter(regular, 16, 2dvh, 20);
+                margin: px-to-rem(10) 0 px-to-rem(10);
+            }
+
+            .subtask-list {
+                padding-top: px-to-rem(10);
+                height: px-to-rem(60);
+                overflow-y: auto;
+                overflow-x: hidden;
+                box-shadow: inset 0 px-to-rem(1) px-to-rem(7) rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                @include flex($align: start, $justify: start, $gap: 5);
+
+                @include tablet {
+                    height: px-to-rem(90);
+                }
+
+                @include desktop {
+                    height: px-to-rem(150);
+                }
+            }
+        }
+
+        .subtask {
+            @include flex($direction: row, $align: start, $justify: start, $gap: 20);
+            padding-left: px-to-rem(20);
+            cursor: pointer;
+
+            @include desktop {
+                height: px-to-rem(140);
+            }
+
+            input {
+                width: px-to-rem(15);
+                height: px-to-rem(15);
+                margin: 0;
+                accent-color: $dark;
+                cursor: pointer;
+            }
+        }
+
+        .dialog-actions {
+            margin-top: auto;
+
+            @include flex($direction: row, $justify: end, $gap: 8);
+
+            button {
+                padding: 0;
+                border: 0;
+                background: transparent;
+                color: #2a3647;
+                cursor: pointer;
+                @include flex($direction: row, $align: center, $gap: 7);
+                @include font-inter(regular, 16, 2dvh, 20);
+
+                img {
+                    width: px-to-rem(16);
+                    height: px-to-rem(16);
+                    object-fit: contain;
+                }
+            }
+
+            .divider {
+                width: px-to-rem(1);
+                height: px-to-rem(22);
+                background: #d1d1d1;
+            }
+        }
+    }
+}

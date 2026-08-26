@@ -154,8 +154,10 @@ export class Taskmanagement {
 
     async addSubtasks(subtasks: string[], taskId: number) {
         const subtaskArr: Subtask[] = subtasks.map((subtask) => ({
+            id: 0,
             task_id: taskId,
             subtask_title: subtask,
+            subtask_done: false,
         }));
 
         const { error: assignmentError } = await this.database.client
@@ -211,6 +213,61 @@ export class Taskmanagement {
             this.tasksLoading.set(false);
             this.tasksRequest = null;
         }
+    }
+
+    // Get profile IDs assigned to the task
+    async loadTaskProfileIds(taskId: number): Promise<string[]> {
+        const { data, error } = await this.database.client
+            .from('tasks_profiles')
+            .select('user_id')
+            .eq('task_id', taskId);
+
+        if (error) {
+            console.error('The assignments could not be loaded:', error);
+            throw error;
+        }
+
+        return (data ?? []).map((assignment) => assignment.user_id);
+    }
+
+    // Get subtasks assigned to the task
+    async loadSubtasks(taskId: number): Promise<Subtask[]> {
+        const { data, error } = await this.database.client
+            .from('subtasks')
+            .select('*')
+            .eq('task_id', taskId)
+            .order('id');
+
+        if (error) {
+            console.error('The subtasks could not be loaded:', error);
+            throw error;
+        }
+
+        return data ?? [];
+    }
+
+    async updateSubtaskDone(subtaskId: number, subtaskDone: boolean): Promise<void> {
+        const { error } = await this.database.client
+            .from('subtasks')
+            .update({ subtask_done: subtaskDone })
+            .eq('id', subtaskId);
+
+        if (error) {
+            console.error('The subtask could not be updated:', error);
+            throw error;
+        }
+    }
+
+    async deleteTask(taskId: number): Promise<void> {
+        const { error } = await this.database.client.from('tasks').delete().eq('TASK_ID', taskId);
+
+        if (error) {
+            console.error('The task could not be deleted:', error);
+            throw error;
+        }
+
+        // Remove the deleted task from the board signal...
+        this.tasks.update((tasks) => tasks.filter((task) => task.TASK_ID !== taskId));
     }
 
     async ensureTasksLoaded(forceReload = false): Promise<void> {

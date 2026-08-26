@@ -1,47 +1,96 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-// Display the reusable user badge.
-.user-badge {
-    @include font-inter(regular, 16, 16px, 16);
 
+
+.user-badge {
     display: grid;
-    width: px-to-rem(42);
-    height: px-to-rem(42);
+    width: var(--badge-size, #{px-to-rem(42)});
+    height: var(--badge-size, #{px-to-rem(42)});
     flex-shrink: 0;
     place-items: center;
 
-    color: #ffffff;
+    color: white;
     border-radius: 50%;
+    font-size: var(--badge-font-size, #{px-to-rem(16)});
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
 }
 
-// Add the rings only when the profile is active.
 .user-badge--active {
     box-shadow:
-        0 0 0 2px #ffffff,
+        0 0 0 2px white,
         0 0 0 3px #cbd5e1;
 }
 
-// Use a larger badge in the profile view.
-.user-badge--large {
-    @include font-inter(regular, 28, 28px, 28);
 
-    width: px-to-rem(60);
-    height: px-to-rem(60);
-}
 
-// Increase the large badge on desktop.
-@include desktop {
-    .user-badge--large {
-        @include font-inter(regular, 47, 47px, 47);
 
-        width: px-to-rem(120);
-        height: px-to-rem(120);
-    }
-}
 
-.user-badge--dialog {
-    @include font-inter(regular, 47, 47px, 47);
+// // Display the reusable user badge.
+// .user-badge {
+//     @include font-inter(regular, 16, 16px, 16);
 
-    width: px-to-rem(120);
-    height: px-to-rem(120);
-}
+//     display: grid;
+//     width: px-to-rem(42);
+//     height: px-to-rem(42);
+//     flex-shrink: 0;
+//     place-items: center;
+
+//     color: #ffffff;
+//     border-radius: 50%;
+// }
+
+// // Add the rings only when the profile is active.
+// .user-badge--active {
+//     box-shadow:
+//         0 0 0 2px #ffffff,
+//         0 0 0 3px #cbd5e1;
+// }
+
+// // Use a larger badge in the profile view.
+// .user-badge--large {
+//     @include font-inter(regular, 28, 28px, 28);
+
+//     width: px-to-rem(60);
+//     height: px-to-rem(60);
+    
+//     @include desktop {
+//         @include font-inter(regular, 47, 47px, 47);
+
+//         width: px-to-rem(120);
+//         height: px-to-rem(120);
+//     }
+// }
+
+// // Use a smaller badge in the single-task-view.
+// .user-badge--xsmall {
+//     @include font-inter(regular, 16, 16px, 16);
+
+//     width: px-to-rem(32);
+//     height: px-to-rem(32);
+// }
+
+// // Use a smaller badge in the single-task-view.
+// .user-badge--small {
+//     @include font-inter(regular, 16, 16px, 16);
+
+//     width: px-to-rem(42);
+//     height: px-to-rem(42);
+// }
+
+// // Increase the large badge on desktop.
+// // @include desktop {
+// //     .user-badge--large {
+// //         @include font-inter(regular, 47, 47px, 47);
+
+// //         width: px-to-rem(120);
+// //         height: px-to-rem(120);
+// //     }
+// // }
+
+// .user-badge--dialog {
+//     @include font-inter(regular, 47, 47px, 47);
+
+//     width: px-to-rem(120);
+//     height: px-to-rem(120);
+// }

@@ -38,6 +38,8 @@ export interface StatusChange {
 }
 
 export interface Subtask{
+    id: number;
     subtask_title: string;
     task_id: number;
+    subtask_done: boolean;
 }
