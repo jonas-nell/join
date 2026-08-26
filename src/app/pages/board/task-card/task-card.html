@@ -1,6 +1,6 @@
 <div class="task-card" cdkDrag >
     <div class="drag-placeholder" *cdkDragPlaceholder></div>
-    <div>{{ task().task_category }}</div>
+    <app-category-badge [category]="task().task_category" />
     <div>{{ task().task_title }}</div>
     <div>{{ task().task_description }}</div>
     <div>progressbar</div>

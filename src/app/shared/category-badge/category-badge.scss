@@ -1,0 +1,17 @@
+@use '../../../../public/assets/styles/main.scss' as *;
+
+.category {
+    @include flex();
+    padding: distance(4, 16);
+    border-radius: 10px;
+    color: white;
+    @include font-inter(regular, 16, 2dvh, 16);
+
+    &.user-story {
+        background-color: $badge-blue;
+    }
+
+    &.technical-task {
+        background-color: $badge-green;
+    }
+}

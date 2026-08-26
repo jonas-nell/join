@@ -1,10 +1,12 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
 .drag-placeholder {
-    background: #ccc;
-    border: dotted 3px #999;
-    min-height: px-to-rem(20);
+    background: $light-gray;
+    border: dotted 3px $font-dirty-white;
+    height: px-to-rem(260);
+    width: px-to-rem(250);
     transition: transform 50ms cubic-bezier(0, 0, 0.2, 1);
+    border-radius: 24px;
 }
 
 .task-card{
@@ -15,4 +17,8 @@
 
     padding: distance(16, 12);
     @include flex($align: start, $justify: space-between);
+}
+
+.cdk-drag{
+    
 }
