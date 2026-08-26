@@ -1,0 +1,38 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+.drag-placeholder {
+    background: $light-gray;
+    border: dotted 3px $font-light;
+    height: px-to-rem(260);
+    width: px-to-rem(250);
+    transition: transform 50ms cubic-bezier(0, 0, 0.2, 1);
+    border-radius: 24px;
+}
+
+.task-card{
+    height: px-to-rem(260);
+    width: px-to-rem(250);
+    box-shadow: 0px 0px 10px 3px rgba(0,0,0,0.08);
+    border-radius: 24px;
+
+    padding: distance(16, 12);
+    @include flex($align: start, $justify: space-between);
+
+    .title{
+        @include font-inter(bold, 18, 2%, 18);
+    }
+
+    .description{
+        @include font-inter(regular, 16, 2%, 16);
+        color: $font-light;
+        display: -webkit-box;
+        line-clamp: 2;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;        
+    }
+}
+
+// .cdk-drag-dragging{
+//     height: 500px;
+// }

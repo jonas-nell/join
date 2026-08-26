@@ -2,13 +2,29 @@
 
 .board-wrapper {
     @include font-inter(regular, 22, 2dvh, 22);
-    padding: px-to-rem(18) px-to-rem(42);
-    @include flex($align: start, $gap: 12);
+    padding: px-to-rem(16);
+    @include flex($align: start, $gap: 24);
+    
+    @include desktop{
+        @include flex($gap: 52);
+        padding-left: calc(px-to-rem(250) + px-to-rem(64));
+        padding-right: px-to-rem(64);
+    }
 
     .board-top {
         width: 100%;
         flex-wrap: wrap;
         @include flex($direction: row, $justify: space-between, $gap: 12);
+
+        h2 {
+            order: 1;
+            margin: 0;
+            @include font-inter(bold, 48, 2dvh, 64);
+        }
+
+        app-add-task-button {
+            order: 2;
+        }
 
         app-search-bar {
             @include flex();
@@ -17,28 +33,13 @@
             margin-top: px-to-rem(12);
         }
 
-        app-add-task-button {
-            order: 2;
-        }
-    }
-
-    h2 {
-        order: 1;
-        margin: 0;
-        @include font-inter(bold, 48, 2dvh, 64);
-    }
-
-    @include desktop {
-        padding-left: calc(px-to-rem(250) + px-to-rem(64));
-        padding-right: px-to-rem(64);
-
-        .board-top {
+        @include desktop{
             flex-wrap: nowrap;
-            gap: px-to-rem(0);
+            gap: 0;
 
-            h2 {
-                margin-right: auto;
-            }
+            // h2 {
+            //     margin-right: auto;
+            // }
 
             app-search-bar {
                 order: 2;
@@ -50,12 +51,62 @@
                 order: 3;
             }
         }
-    }
-}
 
-.drag-placeholder {
-    background: #ccc;
-    border: dotted 3px #999;
-    min-height: 20px;
-    transition: transform 50ms cubic-bezier(0, 0, 0.2, 1);
+
+    }
+
+    .board-middle{
+        width: 100%;
+        @include flex($align: start, $gap: 18);
+
+        @include desktop{
+            @include flex($direction: row, $align: start, $justify:space-around, $gap:42);
+        }
+
+        .task-container {
+            width: 100%;
+            @include flex($align: start, $gap: 18);
+
+            @include desktop {
+                max-width: 300px;
+            }
+
+            h3 {
+                @include font-inter (bold, 28, 2dvh, 28);
+                color: $board-text-color;
+
+                @include desktop{
+                    margin-left: px-to-rem(12);
+                }
+            }
+
+            .task-list{
+                width: 100%;
+                @include flex($direction: row, $justify:start, $gap: 18);
+                overflow-x: auto;
+                padding: distance(12, 12);
+                
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+
+                @include desktop {
+                    @include flex($direction: column);
+                    overflow-x: visible;
+                }
+            }
+
+            .no-tasks-placeholder {
+                flex: 0 0 auto;
+                height: px-to-rem(100);
+                width: px-to-rem(250);
+                background: $light-gray;
+                border: dotted 3px $font-light;
+                border-radius: 24px;
+
+                @include flex();
+                color: $font-light;
+            }
+        }
+    }
 }

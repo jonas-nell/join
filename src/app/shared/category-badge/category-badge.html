@@ -1,0 +1,7 @@
+<span
+    class="category"
+    [class.user-story]="category().toLowerCase() === 'user story'"
+    [class.technical-task]="category().toLowerCase() === 'technical task'"
+>
+    {{ category() }}
+</span>
