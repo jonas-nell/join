@@ -4,7 +4,7 @@
         <app-search-bar></app-search-bar>
         <app-add-task-button></app-add-task-button>
     </div>
-    <div class="board-main" cdkDropListGroup>
+    <div class="board-middle" cdkDropListGroup>
         <div class="task-container">
             <h3>To do</h3>
             <div
@@ -16,6 +16,8 @@
             >
                 @for (task of taskmanagementService.todo(); track task.TASK_ID) {
                     <app-task-card [task]="task" />
+                } @empty {
+                    <div class="no-tasks-placeholder">No tasks To do</div>
                 }
             </div>
         </div>
@@ -31,6 +33,8 @@
             >
                 @for (task of taskmanagementService.progress(); track task.TASK_ID) {
                     <app-task-card [task]="task" />
+                } @empty {
+                    <div class="no-tasks-placeholder">No tasks In progress</div>
                 }
             </div>
         </div>
@@ -46,6 +50,8 @@
             >
                 @for (task of taskmanagementService.feedback(); track task.TASK_ID) {
                     <app-task-card [task]="task" />
+                } @empty {
+                    <div class="no-tasks-placeholder">No tasks Await feedback</div>
                 }
             </div>
         </div>
@@ -61,6 +67,8 @@
             >
                 @for (task of taskmanagementService.done(); track task.TASK_ID) {
                     <app-task-card [task]="task" />
+                } @empty {
+                    <div class="no-tasks-placeholder">No tasks Done</div>
                 }
             </div>
         </div>
