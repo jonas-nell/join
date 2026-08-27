@@ -63,6 +63,10 @@ aside {
         padding: distance(0, 8);
         @include flex();
 
+        a span {
+            text-align: center;
+        }
+
         &.active {
             background: $highlight-color;
             border-radius: 16px;
