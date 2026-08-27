@@ -4,25 +4,25 @@
     <div class="title">{{ task().task_title }}</div>
     <div class="description">{{ task().task_description }}</div>
 
-        <div class="progress" [class.progress-hidden]="totalSubtasks() === 0">
-            <div class="progress-bar">
-                <div class="progress-bar-fill" [style.width.%]="progressPercent()"></div>
-            </div>
-            <span class="progress-text">{{ doneSubtasks() }}/{{totalSubtasks()}} Subtasks</span>
+    <div class="progress" [class.progress-hidden]="totalSubtasks() === 0">
+        <div class="progress-bar">
+            <div class="progress-bar-fill" [style.width.%]="progressPercent()"></div>
         </div>
+        <span class="progress-text">{{ doneSubtasks() }}/{{ totalSubtasks() }} Subtasks</span>
+    </div>
 
     <div class="card-bottom">
         <div class="assigned-to">
             @for (profile of visibleProfiles(); track profile.id) {
                 <app-user-badge
-                class="badge"
-                [userId]="profile.id"
-                [userName]="profile.user_name"
-                size="small"
+                    class="badge"
+                    [userId]="profile.id"
+                    [userName]="profile.user_name"
+                    size="small"
                 />
             }
             @if (hiddenProfilesCount() > 0) {
-                <div class="badge more-indicator">...</div>
+                <div class="badge more-indicator">+{{ hiddenProfilesCount() }}</div>
             }
         </div>
         <img class="priority-icon" [src]="priorityIcon()" alt="" />
