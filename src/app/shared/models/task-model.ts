@@ -1,4 +1,5 @@
 import { Task, TaskChanges } from '../interfaces/task';
+import { Subtask } from '../interfaces/task';
 
 export class TaskModel implements Task {
     TASK_ID: number;
@@ -9,6 +10,7 @@ export class TaskModel implements Task {
     task_category: string;
     task_status: string;
     order_index: number;
+    subtasks: Subtask[] | [];
 
     constructor(data: Partial<Task> = {}, _order_index?: number) {
         this.TASK_ID = data.TASK_ID ?? 0;
@@ -18,6 +20,7 @@ export class TaskModel implements Task {
         this.task_priority = data.task_priority ?? 'medium';
         this.task_category = data.task_category ?? '';
         this.task_status = data.task_status ?? 'To do';
-        this.order_index = _order_index ?? data.order_index ??  0;
+        this.order_index = _order_index ?? data.order_index ?? 0;
+        this.subtasks = data.subtasks ?? [];
     }
 }
