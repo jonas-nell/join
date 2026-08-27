@@ -1,0 +1,41 @@
+@use '../../../../../../public/assets/styles/main.scss' as *;
+
+.confirmation-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+    @include flex();
+
+    .confirmation-dialog {
+    @include font-inter(bold, 20, 20px, 20);
+    position: fixed;
+    right: 50%;
+
+
+    width: min(calc(100% - px-to-rem(32)), px-to-rem(500));
+    padding: px-to-rem(24);
+
+    color: $dark;
+    text-align: center;
+
+    background-color: #dcfce7;
+    border: 2px solid #07481f;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+
+    transform: translateX(50%);
+
+        .confirmation-actions {
+            
+            margin-top: px-to-rem(20);
+            @include flex($direction: row, $gap: 16);
+
+            button {
+                padding: px-to-rem(5);
+                border-radius: 12px;
+                border: 2px solid #07481f;
+            }
+        }
+    }
+}

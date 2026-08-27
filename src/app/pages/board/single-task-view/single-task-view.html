@@ -1,3 +1,5 @@
+<!-- Loading signal to show dialog after loading all data -->
+@if (!loading()) {
 <div class="dialog-backdrop">
     <article
         class="task-dialog"
@@ -107,3 +109,4 @@
         </footer>
     </article>
 </div>
+}

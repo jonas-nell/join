@@ -153,12 +153,13 @@ export class Taskmanagement {
     }
 
     async addSubtasks(subtasks: string[], taskId: number) {
-        const subtaskArr: Subtask[] = subtasks.map((subtask) => ({
-            id: 0,
+        // Omit: Use the Subtask interface but leave out the id...
+        const subtaskArr: Omit<Subtask, 'id'>[] = subtasks.map(
+        (subtask) => ({
             task_id: taskId,
             subtask_title: subtask,
             subtask_done: false,
-        }));
+        }),);
 
         const { error: assignmentError } = await this.database.client
             .from('subtasks')

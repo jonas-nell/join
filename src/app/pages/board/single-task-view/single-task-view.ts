@@ -6,6 +6,8 @@ import { Subtask, Task } from '../../../shared/interfaces/task';
 import { UserBadge } from '../../../shared/components/user-badge/user-badge';
 import { ProfileService } from '../../../shared/services/profile-service';
 import { CategoryBadge } from '../../../shared/category-badge/category-badge';
+import { NotificationService } from '../../../shared/services/notification-service';
+import { ConfirmationService } from '../../../shared/services/confirmation-service';
 
 @Component({
     selector: 'app-single-task-view',
@@ -16,6 +18,11 @@ import { CategoryBadge } from '../../../shared/category-badge/category-badge';
 export class SingleTaskView implements OnInit {
     private readonly taskmanagement = inject(Taskmanagement);
     private readonly profileService = inject(ProfileService);
+    private readonly confirmationService = inject(ConfirmationService);
+    private readonly notificationService = inject(NotificationService);
+
+    // Loading signal to show dialog after loading all data
+    readonly loading = signal(true);
 
     // Get task from parent component
     readonly task = input.required<Task>();
@@ -37,23 +44,29 @@ export class SingleTaskView implements OnInit {
     async ngOnInit(): Promise<void> {
         await this.loadDialogData();
     }
-
     async loadDialogData(): Promise<void> {
-    // Make sure the profile cache has been loaded.
-    await this.profileService.ensureProfilesLoaded();
+        this.loading.set(true);
 
-    const [profileIds, subtasks] = await Promise.all([
-        this.taskmanagement.loadTaskProfileIds(this.task().TASK_ID),
-        this.taskmanagement.loadSubtasks(this.task().TASK_ID),
-    ]);
+        try {
+            await this.profileService.ensureProfilesLoaded();
 
-    const profiles = profileIds
-        .map((id) => this.profileService.getCachedProfileById(id))
-        .filter((profile): profile is Profile => profile !== undefined);
+            const [profileIds, subtasks] = await Promise.all([
+                this.taskmanagement.loadTaskProfileIds(this.task().TASK_ID),
+                this.taskmanagement.loadSubtasks(this.task().TASK_ID),
+            ]);
 
-    this.profiles.set(profiles);
-    this.subtasks.set(subtasks);
-}
+            const profiles = profileIds
+                .map((id) => this.profileService.getCachedProfileById(id))
+                .filter((profile): profile is Profile => profile !== undefined);
+
+            this.profiles.set(profiles);
+            this.subtasks.set(subtasks);
+        } catch {
+            this.errorMessage.set('The task details could not be loaded.');
+        } finally {
+            this.loading.set(false);
+        }
+    }
 
     async changeSubtask(subtask: Subtask, event: Event): Promise<void> {
         const checkbox = event.target as HTMLInputElement;
@@ -85,20 +98,20 @@ export class SingleTaskView implements OnInit {
     }
 
     async deleteTask(): Promise<void> {
-        if (this.deleting()) {
+        const confirmed = await this.confirmationService.confirm(
+            'Do you really want to delete this task?',
+        );
+
+        if (!confirmed) {
             return;
         }
 
-        this.deleting.set(true);
-        this.errorMessage.set('');
-
         try {
             await this.taskmanagement.deleteTask(this.task().TASK_ID);
+            this.notificationService.success('Task deleted.');
             this.closed.emit();
         } catch {
-            this.errorMessage.set('The task could not be deleted.');
-        } finally {
-            this.deleting.set(false);
+            this.notificationService.error('The task could not be deleted.');
         }
     }
 }

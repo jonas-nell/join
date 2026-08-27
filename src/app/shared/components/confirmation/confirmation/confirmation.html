@@ -1,0 +1,27 @@
+@if (confirmationService.message()) {
+    <div class="confirmation-backdrop">
+        <div class="confirmation-dialog" role="dialog">
+            <p>{{ confirmationService.message() }}</p>
+
+            <div class="confirmation-actions">
+
+                <button
+                    type="button"
+                    (click)="confirmationService.answer(true)"
+                >
+                    Yes
+                </button>
+
+                
+                <button
+                    type="button"
+                    (click)="confirmationService.answer(false)"
+                >
+                    No
+                </button>
+
+                
+            </div>
+        </div>
+    </div>
+}

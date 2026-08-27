@@ -4,186 +4,208 @@
     position: fixed;
     inset: 0;
     z-index: 100;
+    box-sizing: border-box;
+    padding: px-to-rem(16);
     background: rgba(0, 0, 0, 0.5);
     @include flex();
 
     .task-dialog {
-        width: px-to-rem(300);
-        height: px-to-rem(600);
+        box-sizing: border-box;
+        width: 100%;
+        max-width: px-to-rem(525);
+        max-height: calc(100dvh - px-to-rem(32));
+        overflow-y: auto;
+        overflow-x: hidden;
         padding: px-to-rem(15);
         background: white;
         color: $dark;
-        border-radius: px-to-rem(20);
+        border-radius: px-to-rem(30);
         @include font-inter(regular, 16, 2dvh, 20);
         @include flex($direction: column, $justify: start, $align: stretch);
 
-        @include tablet {
-            width: px-to-rem(400);
-            height: px-to-rem(700);
-        }
-
         @include desktop {
-            width: px-to-rem(525);
-            height: px-to-rem(900);
-            padding: px-to-rem(30);
+            padding: px-to-rem(40);
         }
 
         .dialog-header {
-            @include flex($direction: row, $justify: space-between);
+            flex-shrink: 0;
+            @include flex($direction: row, $justify: space-between, $align: center);
 
             .close-button {
+                padding: 0;
+                border: 0;
+                background: transparent;
+                color: $dark;
                 font-size: px-to-rem(24);
                 cursor: pointer;
             }
         }
 
         h2 {
-            margin: px-to-rem(10) 0 px-to-rem(15);
-            color: black;
-            line-height: 1;
-            @include font-inter(bold, 26, 5vw, 60);
-
-            // Title max 3 lines and then shortened 3 dots...
             display: -webkit-box;
+            width: 100%;
+            max-height: px-to-rem(130);
             overflow: hidden;
+            overflow-wrap: anywhere;
+            margin-top: px-to-rem(10);
+            padding-bottom: px-to-rem(5);
+            color: black;
+            font-size: clamp(px-to-rem(26), 5vw, px-to-rem(48));
+            font-weight: 700;
+            line-height: 1;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
             line-clamp: 3;
+
+            @include desktop {
+                max-height: px-to-rem(220);
+            }
         }
 
         .description {
-            height: px-to-rem(50);
+            width: 100%;
+            max-height: 3.9em;
             overflow-y: auto;
             overflow-x: hidden;
-            margin-bottom: px-to-rem(5);
-            padding: px-to-rem(5);
-            box-shadow: inset 0 px-to-rem(1) px-to-rem(7) rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            overflow-wrap: anywhere;
+            margin: 0 0 px-to-rem(14);
+            color: black;
+            line-height: 1;
 
-            @include tablet {
-                height: px-to-rem(60);
+            @include desktop {
+                max-height: px-to-rem(150);
             }
         }
 
         .task-details {
+            display: grid;
+            grid-template-columns: px-to-rem(95) 1fr;
+            grid-template-rows: 1fr 1fr;
+            height: px-to-rem(70);
+            flex-shrink: 0;
+
             .task-detail {
-                margin-top: px-to-rem(10);
-                // margin-bottom: px-to-rem(5);
+                display: contents;
 
-                @include desktop {
-                    margin-bottom: px-to-rem(25);
-                }
-            }
-        }
-
-        .section-assignedTo {
-            h3 {
-                @include font-inter(regular, 16, 2dvh, 20);
-                margin: px-to-rem(16) 0 px-to-rem(10);
-
-                @include desktop {
-                    margin: px-to-rem(10) px-to-rem(0);
-                }
-            }
-
-            .profile-list {
-                height: px-to-rem(135);
-                overflow-y: auto;
-                overflow-x: hidden;
-                padding: px-to-rem(10);
-                box-shadow: inset 0 px-to-rem(1) px-to-rem(7) rgba(0, 0, 0, 0.1);
-                border-radius: 10px;
-                @include flex($align: start, $justify: start, $gap: 10);
-
-                @include desktop {
-                    height: px-to-rem(200);
-                    @include flex($align: start, $justify: start, $gap: 25);
-                }
-            }
-
-            .profile {
-                width: 240px;
-
-                @include desktop {
-                    width: 340px;
-                }
-                padding-left: px-to-rem(5);
-                @include flex($direction: row, $justify: start, $gap: 10);
-
-                // Name max 1 line and then shortened with 3 dots...
-                span {
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    overflow: hidden;
+                > span {
+                    align-self: center;
                 }
 
-                app-user-badge {
-                    --badge-size: #{px-to-rem(32)};
-                    --badge-font-size: #{px-to-rem(16)};
+                .priority {
+                    display: inline-flex;
+                    align-items: center;
+                    margin-left: px-to-rem(5);
 
-                    @include desktop {
-                        --badge-size: #{px-to-rem(42)};
-                        --badge-font-size: #{px-to-rem(16)};
+                    img {
+                        width: px-to-rem(18);
+                        height: px-to-rem(18);
+                        object-fit: contain;
                     }
                 }
             }
         }
-        .section-subtaskList {
+
+        section {
             h3 {
+                margin: px-to-rem(10) 0;
                 @include font-inter(regular, 16, 2dvh, 20);
-                margin: px-to-rem(10) 0 px-to-rem(10);
+            }
+        }
+
+        .profile-list {
+            width: 100%;
+            max-height: px-to-rem(150);
+            overflow-y: auto;
+            overflow-x: hidden;
+            @include flex($direction: column, $justify: start, $align: stretch, $gap: 0);
+
+            @include desktop {
+                max-height: px-to-rem(210);
+            }
+        }
+
+        .profile {
+            width: 100%;
+            min-width: 0;
+            min-height: px-to-rem(50);
+            flex-shrink: 0;
+            padding-left: px-to-rem(5);
+            @include flex($direction: row, $justify: start, $align: center, $gap: 10);
+
+            @include desktop {
+                min-height: px-to-rem(63);
             }
 
-            .subtask-list {
-                padding-top: px-to-rem(10);
-                height: px-to-rem(60);
-                overflow-y: auto;
-                overflow-x: hidden;
-                box-shadow: inset 0 px-to-rem(1) px-to-rem(7) rgba(0, 0, 0, 0.1);
-                border-radius: 10px;
-                @include flex($align: start, $justify: start, $gap: 5);
+            app-user-badge {
+                --badge-size: #{px-to-rem(42)};
+                --badge-font-size: #{px-to-rem(16)};
+            }
 
-                @include tablet {
-                    height: px-to-rem(90);
-                }
+            span {
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
 
-                @include desktop {
-                    height: px-to-rem(150);
-                }
+        .subtask-list {
+            width: 100%;
+            max-height: px-to-rem(95);
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+
+            @include desktop {
+                max-height: px-to-rem(100);
+            }
+
+            .subtask + .subtask {
+                margin-top: px-to-rem(5);
             }
         }
 
         .subtask {
-            @include flex($direction: row, $align: start, $justify: start, $gap: 20);
-            padding-left: px-to-rem(20);
+            width: 100%;
+            min-height: px-to-rem(28);
+            flex-shrink: 0;
+            padding-left: px-to-rem(12);
             cursor: pointer;
+            @include flex($direction: row, $justify: start, $align: center, $gap: 10);
 
             @include desktop {
-                height: px-to-rem(140);
+                min-height: px-to-rem(30);
             }
 
             input {
-                width: px-to-rem(15);
-                height: px-to-rem(15);
+                width: px-to-rem(16);
+                height: px-to-rem(16);
+                flex-shrink: 0;
                 margin: 0;
                 accent-color: $dark;
                 cursor: pointer;
             }
+
+            span {
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
         }
 
         .dialog-actions {
-            margin-top: auto;
-
-            @include flex($direction: row, $justify: end, $gap: 8);
+            flex-shrink: 0;
+            margin-top: px-to-rem(20);
+            @include flex($direction: row, $justify: end, $align: center, $gap: 8);
 
             button {
                 padding: 0;
                 border: 0;
                 background: transparent;
-                color: #2a3647;
+                color: $dark;
                 cursor: pointer;
                 @include flex($direction: row, $align: center, $gap: 7);
-                @include font-inter(regular, 16, 2dvh, 20);
 
                 img {
                     width: px-to-rem(16);
