@@ -10,6 +10,7 @@
             <div
                 cdkDropList
                 [cdkDropListData]="taskmanagementService.todo()"
+                [cdkDropListDisabled]="!isDesktop()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
                 id="todo"
@@ -27,6 +28,7 @@
             <div
                 cdkDropList
                 [cdkDropListData]="taskmanagementService.progress()"
+                [cdkDropListDisabled]="!isDesktop()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
                 id="progress"
@@ -44,6 +46,7 @@
             <div
                 cdkDropList
                 [cdkDropListData]="taskmanagementService.feedback()"
+                [cdkDropListDisabled]="!isDesktop()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
                 id="feedback"
@@ -61,6 +64,7 @@
             <div
                 cdkDropList
                 [cdkDropListData]="taskmanagementService.done()"
+                [cdkDropListDisabled]="!isDesktop()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
                 id="done"
