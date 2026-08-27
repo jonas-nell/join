@@ -93,11 +93,72 @@
         <div class="subtask-input">
             <div>
                 <label for="subtask">Subtask</label>
-                <input id="subtask" type="text" placeholder="Add new subtask" formControlName="subtask" />
-                <button (click)="clearSubtaskInput($event)" >
+                <input
+                    id="subtask"
+                    type="text"
+                    placeholder="Add new subtask"
+                    formControlName="subtaskInput"
+                />
+                <button (click)="clearSubtaskInput($event)">
                     <img src="./assets/icons/btn-close-blue.svg" alt="button clear field" />
                 </button>
-                <button (click)="addSubtask($event)"><img src="./assets/icons/check.png" alt=""></button>
+                <button (click)="addSubtaskk($event)">
+                    <img src="./assets/icons/check.png" alt="add subtask" />
+                </button>
+            </div>
+            <div>
+                <div class="subtasks" formArrayName="subtasks">
+                    @for (subtask of subTasks.controls; track subtask; let i = $index) {
+                        <div class="subtask" [formGroupName]="i">
+                            <!-- edit mode -->
+                            @if (editingSubtaskIndex === i) {
+                                <input
+                                    type="text"
+                                    formControlName="subtask_title"
+                                    class="subtask-edit-input"
+                                    (keydown)="onEditSubtaskKeydown($event, i)"
+                                />
+
+                                <div class="subtask-actions">
+                                    <button type="button" (click)="saveSubtask(i)">
+                                        <img
+                                            src="./assets/icons/check.png"
+                                            alt="save edited subtask"
+                                        />
+                                    </button>
+                                    <button type="button" (click)="removeSubtask(i)">
+                                        <img
+                                            src="./assets/icons/delete.png"
+                                            alt="remove subtask icon"
+                                        />
+                                    </button>
+                                </div>
+                            }
+
+                            <!-- view mode -->
+                            @else {
+                                <span class="subtask-title">
+                                    {{ subtask.controls.subtask_title.value }}
+                                </span>
+
+                                <div class="subtask-actions">
+                                    <button type="button" (click)="editSubtask(i)">
+                                        <img
+                                            src="./assets/icons/edit.png"
+                                            alt="edit subtask icon"
+                                        />
+                                    </button>
+                                    <button type="button" (click)="removeSubtask(i)">
+                                        <img
+                                            src="./assets/icons/delete.png"
+                                            alt="remove subtask icon"
+                                        />
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
             </div>
         </div>
         <!-- <div class="search-bar">

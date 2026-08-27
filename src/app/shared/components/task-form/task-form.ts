@@ -1,6 +1,13 @@
 //#region imports
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+    FormArray,
+    FormBuilder,
+} from '@angular/forms';
 import {
     NgSelectComponent,
     NgOptionTemplateDirective,
@@ -13,7 +20,14 @@ import { TaskChanges } from '../../interfaces/task';
 import { Taskmanagement } from '../../services/taskmanagement';
 import { Profile } from '../../interfaces/profile';
 import { TaskModel } from '../../models/task-model';
+import { validate } from '@angular/forms/signals';
 //#endregion
+
+interface SubtaskForm {
+    subtask_title: FormControl<string>;
+    completed: FormControl<boolean>;
+    // task_id :
+}
 
 @Component({
     selector: 'app-task-form',
@@ -32,9 +46,10 @@ import { TaskModel } from '../../models/task-model';
 export class TaskForm {
     //#region properties
 
-    //#region properties services
+    //#region inject
     profileService = inject(ProfileService);
     taskService = inject(Taskmanagement);
+    fb = inject(FormBuilder);
     //#endregion
 
     priorities = [
@@ -64,7 +79,9 @@ export class TaskForm {
         },
     ];
     categories = [{ name: 'Technical Task' }, { name: 'User Story' }];
-    subtasks: string[] = [];
+
+    editingSubtaskIndex: number | null = null;
+    originalSubtaskTitle = '';
 
     taskForm = new FormGroup({
         task_title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -83,8 +100,8 @@ export class TaskForm {
             nonNullable: true,
             validators: [Validators.required],
         }),
-        subtask: new FormControl('', { nonNullable: true }),
-        // task_status: new FormControl('To do', { nonNullable: true }),
+        subtaskInput: new FormControl('', { nonNullable: true }),
+        subtasks: this.fb.array<FormGroup<SubtaskForm>>([]),
     });
     //#endregion
 
@@ -119,33 +136,105 @@ export class TaskForm {
     }
 
     get subtask() {
-        return this.taskForm.get('subtask');
+        return this.taskForm.get('subtaskInput');
+    }
+
+    get subTasks(): FormArray<FormGroup<SubtaskForm>> {
+        return this.taskForm.controls.subtasks;
     }
     //#endregion
 
-    //#region create subtask
+    //#region subtask
+    //#region add subtask
+    createSubtask(title: string): FormGroup<SubtaskForm> {
+        return this.fb.group({
+            subtask_title: this.fb.nonNullable.control(title || '', {
+                validators: [Validators.required],
+            }),
+            completed: this.fb.nonNullable.control(false),
+        });
+    }
 
-    addSubtask(event: Event): void {
-        // verhindert default submit eigentschaft (button)
+    // value aus add subtask input auslesen (title) und weitergeben an createSubtask()
+    addSubtaskk(event: Event): void {
         event.preventDefault();
-        // subtask input value kommt in array für datenbank
-        const subtask = this.subtask?.value;
-        // abfrage ob subtask title schon existiert
-        if (subtask && !this.ckeckDoubleSubtask(subtask)) {
-            this.subtasks.push(subtask);
+        const newSubtask = this.subtask?.value.trim();
+        if (newSubtask && !this.isDoubleSubtask(newSubtask)) {
+            this.subTasks.push(this.createSubtask(newSubtask));
+            this.clearSubtaskInput(event);
+            console.log(this.subTasks.value);
         }
-        this.clearSubtaskInput(event);
     }
 
-    ckeckDoubleSubtask(subtask: string) {
-        const doubleSubtask: boolean = this.subtasks.includes(subtask);
-        return doubleSubtask;
+    isDoubleSubtask(subtaskTitle: string): boolean {
+        return this.subTasks.value.some((subtask) => subtask.subtask_title === subtaskTitle);
+    }
+    //#endregion
+
+    //#region edit subtask
+    editSubtask(subtaskIndex: number) {
+        const subtask = this.subTasks.at(subtaskIndex);
+        // titel vor bearbeitung zwischenspeichern
+        this.originalSubtaskTitle = subtask.controls.subtask_title.value;
+        // vergeben, damit im html entsprechendes input geladen wird
+        this.editingSubtaskIndex = subtaskIndex;
     }
 
+    // speichert bearbeiteten subtask
+    saveSubtask(subtaskIndex: number) {
+        const subtask = this.subTasks.at(subtaskIndex);
+        const title = subtask.controls.subtask_title.value;
+        // if (!title) {
+        //     subtask.controls.title.markAsTouched();
+        //     return
+        // }
+        subtask.controls.subtask_title.setValue(title);
+
+        this.editingSubtaskIndex = null;
+        this.originalSubtaskTitle = '';
+    }
+
+    // bearbeiten abbrechen, subtask bekommt ursprünglichen titel
+    cancelEditSubtask() {
+        if (this.editingSubtaskIndex === null) {
+            return;
+        }
+
+        const subtask = this.subTasks.at(this.editingSubtaskIndex);
+
+        subtask.controls.subtask_title.setValue(this.originalSubtaskTitle);
+
+        this.editingSubtaskIndex = null;
+        this.originalSubtaskTitle = '';
+    }
+
+    // speichert editierten subtask auf enter
+    // bricht bearbeiten ab bei esc
+    onEditSubtaskKeydown(event: KeyboardEvent, index: number): void {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            this.saveSubtask(index);
+        }
+
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            this.cancelEditSubtask();
+        }
+    }
+    //#endregion
+
+    //#region remove subtask
+    removeSubtask(subtaskIndex: number) {
+        this.subTasks.removeAt(subtaskIndex);
+    }
+    //#endregion
+
+    //#region clear subtask input
     clearSubtaskInput(event: Event): void {
         event.preventDefault();
         this.subtask?.reset();
     }
+    //#endregion
     //#endregion
 
     //#region create task
@@ -160,12 +249,15 @@ export class TaskForm {
 
             // task ganz unten in liste einfügen
             const orderIndex = this.taskService.todo().length;
-            const taskValues = new TaskModel(this.taskForm.value, orderIndex);
+            const rawValues = this.taskForm.getRawValue();
+            const taskValues = new TaskModel(rawValues, orderIndex);
 
             // TASK_ID nicht mitgeben, da von DB erstellt
-            const { TASK_ID, ...taskValuesNeeded } = taskValues;
+            const { TASK_ID, subtasks, ...taskValuesNeeded } = taskValues;
+            console.log(taskValuesNeeded);
+            console.log(taskValues);
 
-            await this.taskService.addTaskDB(taskValuesNeeded, this.memberArray(), this.subtasks);
+            await this.taskService.addTaskDB(taskValuesNeeded, this.memberArray(), subtasks);
             this.clearTaskaskInput();
         }
 
@@ -215,6 +307,5 @@ export class TaskForm {
         this.subtask?.reset();
     }
     //#endregion
-
     //#endregion
 }

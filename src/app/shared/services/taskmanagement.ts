@@ -61,7 +61,7 @@ export class Taskmanagement {
         this.unsubscribeInsert();
         this.unsubscribeUpdate();
     }
-    
+
     //#region methods
 
     //#region realtime
@@ -103,15 +103,15 @@ export class Taskmanagement {
     //#endregion
 
     //#region unsubscribe
-    unsubscribeInsert(){
+    unsubscribeInsert() {
         if (this.taskInsertChannel) {
-            this.database.client.removeChannel(this.taskInsertChannel)
+            this.database.client.removeChannel(this.taskInsertChannel);
         }
     }
 
-    unsubscribeUpdate(){
+    unsubscribeUpdate() {
         if (this.taskUpdateChannel) {
-            this.database.client.removeChannel(this.taskUpdateChannel)
+            this.database.client.removeChannel(this.taskUpdateChannel);
         }
     }
     //#endregion
@@ -119,7 +119,7 @@ export class Taskmanagement {
     //#endregion
 
     //#region add
-    async addTaskDB(changes: TaskChanges, members: Profile[], subtasks: string[]): Promise<Task> {
+    async addTaskDB(changes: TaskChanges, members: Profile[], subtasks: Subtask[]): Promise<Task> {
         const { data: task, error } = await this.database.client
             .from('tasks')
             .insert({ ...changes })
@@ -152,10 +152,10 @@ export class Taskmanagement {
         return doubleTask;
     }
 
-    async addSubtasks(subtasks: string[], taskId: number) {
+    async addSubtasks(subtasks: Subtask[], taskId: number) {
         const subtaskArr: Subtask[] = subtasks.map((subtask) => ({
             task_id: taskId,
-            subtask_title: subtask,
+            subtask_title: subtask.subtask_title,
         }));
 
         const { error: assignmentError } = await this.database.client
@@ -296,7 +296,6 @@ export class Taskmanagement {
             }),
         );
     }
-        //#endregion
-        //#endregion
+    //#endregion
+    //#endregion
 }
-

@@ -16,6 +16,7 @@ export interface Task {
     // subtasks: null;
     // status category
     task_status: string;
+    subtasks?: Subtask[];
 }
 
 export interface TaskChanges {
@@ -37,7 +38,8 @@ export interface StatusChange {
     task_status: string;
 }
 
-export interface Subtask{
+export interface Subtask {
     subtask_title: string;
-    task_id: number;
+    // task_id: number;
+    completed?: boolean;
 }
