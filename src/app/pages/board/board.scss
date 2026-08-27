@@ -3,9 +3,10 @@
 .board-wrapper {
     @include font-inter(regular, 22, 2dvh, 22);
     padding: px-to-rem(16);
+    padding-bottom: 0;
     @include flex($align: start, $gap: 24);
-    
-    @include desktop{
+
+    @include desktop {
         @include flex($gap: 52);
         padding-left: calc(px-to-rem(250) + px-to-rem(64));
         padding-right: px-to-rem(64);
@@ -33,13 +34,13 @@
             margin-top: px-to-rem(12);
         }
 
-        @include desktop{
+        @include desktop {
             flex-wrap: nowrap;
             gap: 0;
 
-            // h2 {
-            //     margin-right: auto;
-            // }
+            h2 {
+                margin-right: auto;
+            }
 
             app-search-bar {
                 order: 2;
@@ -51,16 +52,14 @@
                 order: 3;
             }
         }
-
-
     }
 
-    .board-middle{
+    .board-middle {
         width: 100%;
         @include flex($align: start, $gap: 18);
 
-        @include desktop{
-            @include flex($direction: row, $align: start, $justify:space-around, $gap:42);
+        @include desktop {
+            @include flex($direction: row, $align: start, $justify: space-around, $gap: 42);
         }
 
         .task-container {
@@ -72,27 +71,50 @@
             }
 
             h3 {
-                @include font-inter (bold, 28, 2dvh, 28);
+                @include font-inter(bold, 28, 2dvh, 28);
                 color: $board-text-color;
 
-                @include desktop{
-                    margin-left: px-to-rem(12);
+                @include desktop {
+                    margin-left: 10%;
                 }
             }
 
-            .task-list{
+            .task-list {
                 width: 100%;
-                @include flex($direction: row, $justify:start, $gap: 18);
+                @include flex($direction: row, $justify: start, $gap: 18);
                 overflow-x: auto;
-                padding: distance(12, 12);
-                
-                &::-webkit-scrollbar {
-                    display: none;
+                margin-inline: calc(-1 * px-to-rem(16));
+                width: calc(100% + px-to-rem(32));
+                padding: px-to-rem(16);
+
+                @media screen and (max-width: 1023px) {
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
                 }
 
+
                 @include desktop {
-                    @include flex($direction: column);
+                    @include flex($direction: column, $justify: start, $gap: 24);
+                    height: 69dvh;
+                    overflow-y: auto;
                     overflow-x: visible;
+                    margin-inline: 0;
+                    width: 100%;
+                    padding: px-to-rem(12);
+
+                    &::-webkit-scrollbar {
+                        width: px-to-rem(5);
+                    }
+
+                    &::-webkit-scrollbar-track{
+                        background: transparent;
+                    }
+
+                    &::-webkit-scrollbar-thumb{
+                        background: $font-light;
+                        border-radius: 8px;
+                    }
                 }
             }
 

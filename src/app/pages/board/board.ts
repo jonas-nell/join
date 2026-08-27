@@ -14,8 +14,10 @@ import { Task } from '../../shared/interfaces/task';
 import { Taskmanagement } from '../../shared/services/taskmanagement';
 import { StatusChange } from '../../shared/interfaces/task';
 import { TaskCard } from './task-card/task-card';
-
 import { SingleTaskView } from './single-task-view/single-task-view';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
     selector: 'app-board',
@@ -28,12 +30,20 @@ export class Board {
     
     readonly taskmanagementService = inject(Taskmanagement);
 
+    private breakpointObserver = inject(BreakpointObserver);
+
+    readonly selectedTask = signal<Task | null>(null);
+    
     constructor() {
         this.taskmanagementService.ensureTasksLoaded();
     }
-
-    readonly selectedTask = signal<Task | null>(null);
-
+    
+    isDesktop = toSignal(
+        this.breakpointObserver.observe('(min-width: 1024px)').pipe(map(result => result.matches)),
+        { initialValue: false }
+    );
+    
+    
     async drop(event: CdkDragDrop<Task[]>) {
         const task = event.previousContainer.data[event.previousIndex];
 
