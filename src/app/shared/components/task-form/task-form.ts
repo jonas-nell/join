@@ -25,7 +25,7 @@ import { validate } from '@angular/forms/signals';
 
 interface SubtaskForm {
     subtask_title: FormControl<string>;
-    completed: FormControl<boolean>;
+    subtask_done: FormControl<boolean>;
     // task_id :
 }
 
@@ -151,7 +151,7 @@ export class TaskForm {
             subtask_title: this.fb.nonNullable.control(title || '', {
                 validators: [Validators.required],
             }),
-            completed: this.fb.nonNullable.control(false),
+            subtask_done: this.fb.nonNullable.control(false),
         });
     }
 

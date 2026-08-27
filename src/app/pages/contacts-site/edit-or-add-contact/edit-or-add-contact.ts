@@ -102,17 +102,17 @@ export class EditOrAddContact {
 
                 const updated = await this.profileService.updateProfile(selected.id, changes);
                 this.profileService.selectedProfile.set(updated);
-                this.notificationService.show(`${updated.user_name} was updated`);
+                this.notificationService.success(`${updated.user_name} was updated`);
             } else {
                 const created = await this.profileService.createProfile(changes);
                 this.profileService.scrollToNewContact.set(created.id);
-                this.notificationService.show(`${created.user_name} was created`);
+                this.notificationService.success(`${created.user_name} was created`);
                 void this.router.navigate(['/contacts', created.id]);
             }
 
             this.dialogService.closeDialog();
         } catch (error) {
-            this.notificationService.show('The contact could not be saved. Please try again.');
+            this.notificationService.error('The contact could not be saved. Please try again.');
         }
     }
 }

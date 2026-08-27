@@ -70,13 +70,13 @@ export class DeleteProfile {
             await this.profileService.deleteDummyProfile(selectedProfile.id);
 
             // Show the success notification.
-            this.notificationService.show(`${selectedProfile.user_name} was deleted.`);
-            
+            this.notificationService.success(`${selectedProfile.user_name} was deleted.`);
+
             // Return to the normal Contacts view.
             await this.router.navigate(['/contacts']);
         } catch (error) {
             console.error('The profile could not be deleted:', error);
-
+            this.notificationService.error(`${selectedProfile.user_name} could not be deleted.`);
             this.errorMessage.set('The profile could not be deleted.');
         } finally {
             // The delete request has finished.

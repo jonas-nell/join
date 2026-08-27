@@ -1,4 +1,4 @@
-import { Component, effect, inject, computed } from '@angular/core';
+import { Component, effect, inject, computed, signal } from '@angular/core';
 import { SearchBar } from './search-bar/search-bar/search-bar';
 import { AddTaskButton } from '../../shared/components/add-task-button/add-task-button';
 import {
@@ -13,14 +13,19 @@ import {
 import { Task } from '../../shared/interfaces/task';
 import { Taskmanagement } from '../../shared/services/taskmanagement';
 import { StatusChange } from '../../shared/interfaces/task';
+import { TaskCard } from './task-card/task-card';
+
+
 
 @Component({
     selector: 'app-board',
-    imports: [AddTaskButton, SearchBar, CdkDrag, CdkDropList, CdkDropListGroup, CdkDragPlaceholder],
+    imports: [AddTaskButton, SearchBar, CdkDropList, CdkDropListGroup, TaskCard],
     templateUrl: './board.html',
     styleUrl: './board.scss',
 })
 export class Board {
+
+    
     readonly taskmanagementService = inject(Taskmanagement);
 
     constructor() {
@@ -84,3 +89,5 @@ export class Board {
         }));
     }
 }
+
+

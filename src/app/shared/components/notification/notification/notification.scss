@@ -1,0 +1,33 @@
+@use '../../../../../../public/assets/styles/main.scss' as *;
+
+.notification {
+    @include font-inter(bold, 20, 20px, 20);
+
+    position: fixed;
+    right: 50%;
+    bottom: calc(12dvh + px-to-rem(24));
+    z-index: 15;
+
+    width: min(calc(100% - px-to-rem(32)), px-to-rem(500));
+    padding: px-to-rem(24);
+
+    text-align: center;
+
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+
+    transform: translateX(50%);
+
+    &.success {
+         color: #166534;
+        border: 1px solid #86efac;
+        background-color: #dcfce7;
+    }
+
+    &.error {
+         color: #df2c38;
+        border: 1px solid #fc1b2a;
+        background: #faabab;
+    }
+}
+

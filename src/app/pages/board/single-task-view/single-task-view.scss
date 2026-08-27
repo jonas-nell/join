@@ -1,0 +1,224 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+.dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    box-sizing: border-box;
+    padding: px-to-rem(16);
+    background: rgba(0, 0, 0, 0.5);
+    @include flex();
+
+    .task-dialog {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: px-to-rem(525);
+        max-height: calc(100dvh - px-to-rem(32));
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: px-to-rem(15);
+        background: white;
+        color: $dark;
+        border-radius: px-to-rem(30);
+        @include font-inter(regular, 16, 2dvh, 20);
+        @include flex($direction: column, $justify: start, $align: stretch);
+
+        @include desktop {
+            padding: px-to-rem(40);
+        }
+
+        .dialog-header {
+            flex-shrink: 0;
+            @include flex($direction: row, $justify: space-between, $align: center);
+
+            .close-button {
+                padding: 0;
+                border: 0;
+                background: transparent;
+                color: $dark;
+                font-size: px-to-rem(24);
+                cursor: pointer;
+            }
+        }
+
+        h2 {
+            display: -webkit-box;
+            width: 100%;
+            max-height: px-to-rem(130);
+            overflow: hidden;
+            overflow-wrap: anywhere;
+            margin-top: px-to-rem(10);
+            padding-bottom: px-to-rem(5);
+            color: black;
+            font-size: clamp(px-to-rem(26), 5vw, px-to-rem(48));
+            font-weight: 700;
+            line-height: 1;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+
+            @include desktop {
+                max-height: px-to-rem(220);
+            }
+        }
+
+        .description {
+            width: 100%;
+            max-height: 3.9em;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overflow-wrap: anywhere;
+            margin: 0 0 px-to-rem(14);
+            color: black;
+            line-height: 1;
+
+            @include desktop {
+                max-height: px-to-rem(150);
+            }
+        }
+
+        .task-details {
+            display: grid;
+            grid-template-columns: px-to-rem(95) 1fr;
+            grid-template-rows: 1fr 1fr;
+            height: px-to-rem(70);
+            flex-shrink: 0;
+
+            .task-detail {
+                display: contents;
+
+                > span {
+                    align-self: center;
+                }
+
+                .priority {
+                    display: inline-flex;
+                    align-items: center;
+                    margin-left: px-to-rem(5);
+
+                    img {
+                        width: px-to-rem(18);
+                        height: px-to-rem(18);
+                        object-fit: contain;
+                    }
+                }
+            }
+        }
+
+        section {
+            h3 {
+                margin: px-to-rem(10) 0;
+                @include font-inter(regular, 16, 2dvh, 20);
+            }
+        }
+
+        .profile-list {
+            width: 100%;
+            max-height: px-to-rem(150);
+            overflow-y: auto;
+            overflow-x: hidden;
+            @include flex($direction: column, $justify: start, $align: stretch, $gap: 0);
+
+            @include desktop {
+                max-height: px-to-rem(210);
+            }
+        }
+
+        .profile {
+            width: 100%;
+            min-width: 0;
+            min-height: px-to-rem(50);
+            flex-shrink: 0;
+            padding-left: px-to-rem(5);
+            @include flex($direction: row, $justify: start, $align: center, $gap: 10);
+
+            @include desktop {
+                min-height: px-to-rem(63);
+            }
+
+            app-user-badge {
+                --badge-size: #{px-to-rem(42)};
+                --badge-font-size: #{px-to-rem(16)};
+            }
+
+            span {
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+
+        .subtask-list {
+            width: 100%;
+            max-height: px-to-rem(95);
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+
+            @include desktop {
+                max-height: px-to-rem(100);
+            }
+
+            .subtask + .subtask {
+                margin-top: px-to-rem(5);
+            }
+        }
+
+        .subtask {
+            width: 100%;
+            min-height: px-to-rem(28);
+            flex-shrink: 0;
+            padding-left: px-to-rem(12);
+            cursor: pointer;
+            @include flex($direction: row, $justify: start, $align: center, $gap: 10);
+
+            @include desktop {
+                min-height: px-to-rem(30);
+            }
+
+            input {
+                width: px-to-rem(16);
+                height: px-to-rem(16);
+                flex-shrink: 0;
+                margin: 0;
+                accent-color: $dark;
+                cursor: pointer;
+            }
+
+            span {
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+
+        .dialog-actions {
+            flex-shrink: 0;
+            margin-top: px-to-rem(20);
+            @include flex($direction: row, $justify: end, $align: center, $gap: 8);
+
+            button {
+                padding: 0;
+                border: 0;
+                background: transparent;
+                color: $dark;
+                cursor: pointer;
+                @include flex($direction: row, $align: center, $gap: 7);
+
+                img {
+                    width: px-to-rem(16);
+                    height: px-to-rem(16);
+                    object-fit: contain;
+                }
+            }
+
+            .divider {
+                width: px-to-rem(1);
+                height: px-to-rem(22);
+                background: #d1d1d1;
+            }
+        }
+    }
+}
