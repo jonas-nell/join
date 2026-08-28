@@ -4,38 +4,33 @@
     position: fixed;
     inset: 0;
     z-index: 100;
-    box-sizing: border-box;
     padding: px-to-rem(16);
     background: rgba(0, 0, 0, 0.5);
     @include flex();
 
     .task-dialog {
-        box-sizing: border-box;
         width: 100%;
         max-width: px-to-rem(525);
         max-height: calc(100dvh - px-to-rem(32));
-        overflow-y: auto;
-        overflow-x: hidden;
         padding: px-to-rem(15);
         background: white;
-        color: $dark;
-        border-radius: px-to-rem(30);
+        color: black;
+        border-radius: px-to-rem(20);
         @include font-inter(regular, 16, 2dvh, 20);
         @include flex($direction: column, $justify: start, $align: stretch);
 
-        @include desktop {
-            padding: px-to-rem(40);
+        @include tablet {
+            padding: px-to-rem(25);
         }
 
         .dialog-header {
             flex-shrink: 0;
-            @include flex($direction: row, $justify: space-between, $align: center);
+            @include flex($direction: row, $justify: space-between);
 
             .close-button {
                 padding: 0;
                 border: 0;
                 background: transparent;
-                color: $dark;
                 font-size: px-to-rem(24);
                 cursor: pointer;
             }
@@ -44,134 +39,194 @@
         h2 {
             display: -webkit-box;
             width: 100%;
-            max-height: px-to-rem(130);
-            overflow: hidden;
-            overflow-wrap: anywhere;
-            margin-top: px-to-rem(10);
-            padding-bottom: px-to-rem(5);
+            min-width: 0;
+            flex: 0 0 auto;
+
+            font-size: clamp(px-to-rem(24), calc(px-to-rem(10) + 3vw), px-to-rem(48));
+            padding-bottom: px-to-rem(2);
+            margin: px-to-rem(10) 0 px-to-rem(10);
+
             color: black;
-            font-size: clamp(px-to-rem(26), 5vw, px-to-rem(48));
-            font-weight: 700;
-            line-height: 1;
+
+            line-height: 1.1;
+
+            // Max three lines, and after three dots...
+            overflow: clip;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
             line-clamp: 3;
+        }
 
-            @include desktop {
-                max-height: px-to-rem(220);
+        .tooltip-host {
+            &::after {
+                content: attr(data-tooltip-label) '\A' attr(data-tooltip);
+                position: absolute;
+                z-index: 100;
+
+                top: calc(100% + px-to-rem(8));
+
+                max-width: min(px-to-rem(420), calc(100vw - px-to-rem(48)));
+                padding: px-to-rem(10);
+
+                background: $dark;
+                color: white;
+                border-radius: px-to-rem(10);
+                box-shadow: 0 px-to-rem(4) px-to-rem(14) rgba(0, 0, 0, 0.5);
+
+                line-height: 1.2;
+
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition:
+                    opacity 120ms ease,
+                    transform 120ms ease,
+                    visibility 120ms ease;
+            }
+
+            &:hover::after,
+            &:focus-visible::after {
+                opacity: 1;
+                visibility: visible;
             }
         }
 
         .description {
             width: 100%;
-            max-height: 3.9em;
-            overflow-y: auto;
-            overflow-x: hidden;
-            overflow-wrap: anywhere;
-            margin: 0 0 px-to-rem(14);
-            color: black;
-            line-height: 1;
+            min-height: 0;
+            min-width: 0;
+            flex: 0 0 auto;
 
-            @include desktop {
-                max-height: px-to-rem(150);
+            padding: px-to-rem(5);
+
+            @include tablet {
+                padding: px-to-rem(5) px-to-rem(10);
             }
+
+            // padding: px-to-rem(10);
+            // Short content occupies only one, two, or three lines.
+            // Content exceeding three lines becomes scrollable.
+            max-height: 4em;
+            overflow: auto;
+
+            margin: 0 0 px-to-rem(7);
+            color: black;
+            line-height: 1.2;
+            box-shadow: inset 0 0 px-to-rem(1) rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
         }
 
-        .task-details {
-            display: grid;
-            grid-template-columns: px-to-rem(95) 1fr;
-            grid-template-rows: 1fr 1fr;
-            height: px-to-rem(70);
-            flex-shrink: 0;
-
-            .task-detail {
-                display: contents;
-
-                > span {
-                    align-self: center;
-                }
-
-                .priority {
-                    display: inline-flex;
-                    align-items: center;
-                    margin-left: px-to-rem(5);
-
-                    img {
-                        width: px-to-rem(18);
-                        height: px-to-rem(18);
-                        object-fit: contain;
-                    }
-                }
-            }
+        .description.is-empty {
+            box-shadow: none;
         }
 
         section {
             h3 {
-                margin: px-to-rem(10) 0;
-                @include font-inter(regular, 16, 2dvh, 20);
+                margin-top: px-to-rem(5);
+                margin-bottom: px-to-rem(5);
+                @include font-inter(bold, 16, 2dvh, 20);
+                color: $board-text-color;
+            }
+        }
+
+        .task-details {
+            border-collapse: separate;
+            border-spacing: 0 px-to-rem(10); // horizontal gap, vertical row gap
+
+            td:first-child {
+                color: $board-text-color;
+                width: px-to-rem(140);
+            }
+
+            .priority-value {
+                @include flex($direction: row, $justify: start);
+                gap: px-to-rem(10); // Distance between priority word and icon
+            }
+
+            // Center the icon to the text
+            .priority img {
+                display: block;
             }
         }
 
         .profile-list {
+            box-shadow: inset 0 0 px-to-rem(1) rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
             width: 100%;
-            max-height: px-to-rem(150);
-            overflow-y: auto;
-            overflow-x: hidden;
-            @include flex($direction: column, $justify: start, $align: stretch, $gap: 0);
-
-            @include desktop {
-                max-height: px-to-rem(210);
+            max-height: px-to-rem(125);
+            @include tablet {
+                max-height: px-to-rem(160);
             }
+
+            overflow-y: auto;
         }
 
         .profile {
             width: 100%;
-            min-width: 0;
-            min-height: px-to-rem(50);
-            flex-shrink: 0;
-            padding-left: px-to-rem(5);
-            @include flex($direction: row, $justify: start, $align: center, $gap: 10);
+            // min-height: px-to-rem(20);
+            padding: px-to-rem(5);
+            // padding-left: px-to-rem(10);
 
-            @include desktop {
-                min-height: px-to-rem(63);
+            @include tablet {
+                // min-height: px-to-rem(30);
+                padding-left: px-to-rem(10);
+                padding-top: px-to-rem(6);
             }
 
+            @include flex($direction: row, $justify: start, $gap: 10);
+
             app-user-badge {
-                --badge-size: #{px-to-rem(42)};
+                --badge-size: #{px-to-rem(32)};
                 --badge-font-size: #{px-to-rem(16)};
+
+                @include tablet {
+                    --badge-size: #{px-to-rem(42)};
+                    --badge-font-size: #{px-to-rem(16)};
+                }
             }
 
             span {
                 min-width: 0;
-                overflow: hidden;
+                overflow-x: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
         }
 
         .subtask-list {
+            min-height: 0;
+            box-shadow: inset 0 0 px-to-rem(1) rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
             width: 100%;
-            max-height: px-to-rem(95);
+            max-height: px-to-rem(60);
             overflow-y: auto;
             overflow-x: hidden;
             overscroll-behavior: contain;
 
+            padding: px-to-rem(5);
+
             @include desktop {
                 max-height: px-to-rem(100);
             }
+        }
 
-            .subtask + .subtask {
-                margin-top: px-to-rem(5);
-            }
+        .subtask-list:not(:has(.subtask)) {
+            box-shadow: none;
         }
 
         .subtask {
             width: 100%;
-            min-height: px-to-rem(28);
+            min-height: px-to-rem(26);
             flex-shrink: 0;
-            padding-left: px-to-rem(12);
+            // padding-top: px-to-rem(2);
+            padding: px-to-rem(3);
             cursor: pointer;
-            @include flex($direction: row, $justify: start, $align: center, $gap: 10);
+            @include flex($direction: row, $justify: start, $gap: 10);
+
+            @include tablet {
+                padding-top: px-to-rem(0);
+                padding-left: px-to-rem(10);
+            }
 
             @include desktop {
                 min-height: px-to-rem(30);
@@ -188,16 +243,15 @@
 
             span {
                 min-width: 0;
-                overflow: hidden;
+                overflow-x: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
         }
 
         .dialog-actions {
-            flex-shrink: 0;
             margin-top: px-to-rem(20);
-            @include flex($direction: row, $justify: end, $align: center, $gap: 8);
+            @include flex($direction: row, $justify: end, $gap: 10);
 
             button {
                 padding: 0;
@@ -205,12 +259,18 @@
                 background: transparent;
                 color: $dark;
                 cursor: pointer;
-                @include flex($direction: row, $align: center, $gap: 7);
+                transition: transform 150ms ease;
+                @include flex($direction: row, $gap: 5);
 
                 img {
                     width: px-to-rem(16);
                     height: px-to-rem(16);
                     object-fit: contain;
+                }
+
+                &:hover {
+                    font-weight: bold;
+                    transform: scale(1.08);
                 }
             }
 

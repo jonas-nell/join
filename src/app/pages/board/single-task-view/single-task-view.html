@@ -1,112 +1,107 @@
 <!-- Loading signal to show dialog after loading all data -->
 @if (!loading()) {
-<div class="dialog-backdrop">
-    <article
-        class="task-dialog"
-        role="dialog"
-    >
-        <header class="dialog-header">
-            <app-category-badge [category]="task().task_category" />
-        
+    <div class="dialog-backdrop" (click)="closed.emit()">
+        <article class="task-dialog" role="dialog" (click)="$event.stopPropagation()">
+            <header class="dialog-header">
+                <app-category-badge [category]="task().task_category" />
 
-            <button
-                class="close-button"
-                type="button"
-                (click)="closed.emit()"
+                <button class="close-button" type="button" (click)="closed.emit()">×</button>
+            </header>
+
+            <div
+                class="tooltip-host"
+                data-tooltip-label="Title:"
+                tabindex="0"
+                [attr.data-tooltip]="task().task_title"
             >
-                ×
-            </button>
-        </header>
-
-        <h2 id="task-dialog-title">
-            {{ task().task_title }}
-        </h2>
-
-        <p class="description">
-            {{ task().task_description }}
-        </p>
-
-        <div class="task-details">
-            <div class="task-detail">
-                <span>Due date:</span>
-                <span>
-                    {{ task().task_due_date | date: 'dd/MM/yyyy' }}
-                </span>
+                <h2 id="task-dialog-title">
+                    {{ task().task_title }}
+                </h2>
             </div>
 
-            <div class="task-detail">
-                <span>Priority:</span>
+            <p class="description" [class.is-empty]="!task().task_description">
+                {{ task().task_description }}
+            </p>
 
-                <span>
-                    {{ task().task_priority }}
+            <table class="task-details">
+                <tbody>
+                    <tr>
+                        <td><strong>Due date:</strong></td>
+                        <td class="detail-value">
+                            {{ task().task_due_date | date: 'dd/MM/yyyy' }}
+                        </td>
+                    </tr>
 
-                    <span class="priority">
-                        @switch (task().task_priority) {
-                            @case ('low') {
-                                <img src="./assets/icons/Prio low.png" alt="" />
-                            }
+                    <tr>
+                        <td><strong>Priority:</strong></td>
+                        <td class="detail-value priority-value">
+                            <span>{{ task().task_priority }}</span>
 
-                            @case ('medium') {
-                                <img src="./assets/icons/Prio medium.png" alt="" />
-                            }
+                            <span class="priority">
+                                @switch (task().task_priority) {
+                                    @case ('low') {
+                                        <img src="./assets/icons/Prio low.png" alt="" />
+                                    }
 
-                            @case ('urgent') {
-                                <img src="./assets/icons/Prio urgent.png" alt="" />
-                            }
-                        }
-                    </span>
-                </span>
-            </div>
-        </div>
+                                    @case ('medium') {
+                                        <img src="./assets/icons/Prio medium.png" alt="" />
+                                    }
 
-        <section class="section-assignedTo">
-            <h3>Assigned To:</h3>
+                                    @case ('urgent') {
+                                        <img src="./assets/icons/Prio urgent.png" alt="" />
+                                    }
+                                }
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <div class="profile-list">
-                @for (profile of profiles(); track profile.id) {
-                    <div class="profile">
-                        <app-user-badge
-                            [userId]="profile.id"
-                            [userName]="profile.user_name"
-                        />
+            <section class="section-assignedTo">
+                <h3>Assigned To:</h3>
 
-                        <span>{{ profile.user_name }}</span>
-                    </div>
-                }
-            </div>
-        </section>
+                <div class="profile-list">
+                    @for (profile of profiles(); track profile.id) {
+                        <div class="profile">
+                            <app-user-badge [userId]="profile.id" [userName]="profile.user_name" />
 
-        <section  class="section-subtaskList">
-            <h3>Subtasks</h3>
+                            <span>{{ profile.user_name }}</span>
+                        </div>
+                    }
+                </div>
+            </section>
 
-            <div class="subtask-list">
-                @for (subtask of subtasks(); track subtask.id) {
-                    <label class="subtask">
-                        <input
-                            type="checkbox"
-                            [checked]="subtask.subtask_done"
-                            (change)="changeSubtask(subtask, $event)"
-                        />
+            <section class="section-subtaskList">
+                <h3>Subtasks:</h3>
 
-                        <span>{{ subtask.subtask_title }}</span>
-                    </label>
-                }
-            </div>
-        </section>
+                <div class="subtask-list">
+                    @for (subtask of subtasks(); track subtask.id) {
+                        <label class="subtask">
+                            <input
+                                type="checkbox"
+                                [checked]="subtask.subtask_done"
+                                (change)="changeSubtask(subtask, $event)"
+                            />
 
-        <footer class="dialog-actions">
-            <button type="button" (click)="deleteTask()" [disabled]="deleting()">
-                <img src="./assets/icons/delete.png" alt="" />
-                {{ deleting() ? 'Deleting…' : 'Delete' }}
-            </button>
+                            <span>{{ subtask.subtask_title }}</span>
+                        </label>
+                    }
+                </div>
+            </section>
 
-            <span class="divider"></span>
+            <footer class="dialog-actions">
+                <button type="button" (click)="deleteTask()" [disabled]="deleting()">
+                    <img src="./assets/icons/delete.png" alt="" />
+                    {{ deleting() ? 'Deleting…' : 'Delete' }}
+                </button>
 
-            <button type="button" (click)="requestEdit()">
-                <img src="./assets/icons/edit.png" alt="" />
-                Edit
-            </button>
-        </footer>
-    </article>
-</div>
+                <span class="divider"></span>
+
+                <button type="button" (click)="requestEdit()">
+                    <img src="./assets/icons/edit.png" alt="" />
+                    Edit
+                </button>
+            </footer>
+        </article>
+    </div>
 }
