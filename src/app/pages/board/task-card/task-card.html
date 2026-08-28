@@ -29,11 +29,3 @@
         <img class="priority-icon" [src]="priorityIcon()" alt="" />
     </div>
 </div>
-
-@if (taskOpen()) {
-    <app-single-task-view
-        [task]="task()"
-        (closed)="closeTask()"
-        (editRequested)="openEditTask($event)"
-    />
-}

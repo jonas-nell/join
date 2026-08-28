@@ -1,27 +1,31 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-.dialog-backdrop {
+dialog {
+    max-width: 100vw;
+    max-height: 100dvh;
+    margin: auto;
     position: fixed;
     inset: 0;
-    z-index: 100;
-    box-sizing: border-box;
-    padding: px-to-rem(16);
-    background: rgba(0, 0, 0, 0.5);
-    @include flex();
 
-    .task-dialog {
-        box-sizing: border-box;
-        width: 100%;
-        max-width: px-to-rem(525);
-        max-height: calc(100dvh - px-to-rem(32));
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding: px-to-rem(15);
-        background: white;
-        color: $dark;
-        border-radius: px-to-rem(30);
-        @include font-inter(regular, 16, 2dvh, 20);
-        @include flex($direction: column, $justify: start, $align: stretch);
+    &::backdrop {
+        background: rgb(0 0 0 / 20%);
+    }
+}
+
+.task-dialog {
+    margin: auto;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: px-to-rem(525);
+    max-height: calc(100dvh - px-to-rem(32));
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: px-to-rem(15);
+    background: white;
+    color: $dark;
+    border-radius: px-to-rem(30);
+    @include font-inter(regular, 16, 2dvh, 20);
+    @include flex($direction: column, $justify: start, $align: stretch);
 
         @include desktop {
             padding: px-to-rem(40);
@@ -221,4 +225,4 @@
             }
         }
     }
-}
+

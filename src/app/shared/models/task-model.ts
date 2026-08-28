@@ -10,6 +10,7 @@ export class TaskModel implements Task {
     task_category: string;
     task_status: string;
     order_index: number;
+    task_id?: number;
     subtasks: Subtask[] | [];
 
     constructor(data: Partial<Task> = {}, _order_index?: number) {
