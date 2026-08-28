@@ -1,4 +1,4 @@
-import { Injectable, Service, inject, signal, computed } from '@angular/core';
+import { Injectable, Service, inject, signal, computed, WritableSignal } from '@angular/core';
 import { DatabaseService } from './database-service';
 import { StatusChange, Subtask, Task, TaskChanges } from '../interfaces/task';
 import { Profile } from '../interfaces/profile';
@@ -26,6 +26,7 @@ export class Taskmanagement {
     readonly tasksError = signal('');
 
     tasks = signal<Task[]>([]);
+    currentTask = signal<Task | null>(null);
 
     //#region taskstatus computed
     todo = computed(() =>
@@ -154,12 +155,11 @@ export class Taskmanagement {
 
     async addSubtasks(subtasks: Subtask[], taskId: number) {
         // Omit: Use the Subtask interface but leave out the id...
-        const subtaskArr: Omit<Subtask, 'id'>[] = subtasks.map(
-        (subtask) => ({
+        const subtaskArr: Omit<Subtask, 'id'>[] = subtasks.map((subtask) => ({
             task_id: taskId,
             subtask_title: subtask.subtask_title,
             subtask_done: false,
-        }),);
+        }));
 
         const { error: assignmentError } = await this.database.client
             .from('subtasks')
@@ -206,6 +206,9 @@ export class Taskmanagement {
             }
 
             this.tasks.set(data ?? []);
+            await this.setSubtasks();
+            console.log(this.tasks());
+
             this.tasksRequested = true; //prevent loading issues
         } catch (error) {
             this.tasksError.set('The tasks could not be loaded');
@@ -231,6 +234,23 @@ export class Taskmanagement {
         return (data ?? []).map((assignment) => assignment.user_id);
     }
 
+    // holt für jeden task die subtasks von der DB und speichert sie lokal im signal tasks
+    async setSubtasks() {
+        const tasksWithSubtasks = await Promise.all(
+            this.tasks().map(async (task) => ({
+                ...task,
+                subtasks: await this.loadSubtasks(task.TASK_ID),
+            })),
+        );
+        this.tasks.set(tasksWithSubtasks);
+    }
+
+    setCurrentTask(taskId: number){
+        let tmpTask = this.tasks().find((taskk) => taskk.TASK_ID == taskId);
+        if (tmpTask) {
+            this.currentTask.set(tmpTask);           
+        }
+    }
     // Get subtasks assigned to the task
     async loadSubtasks(taskId: number): Promise<Subtask[]> {
         const { data, error } = await this.database.client
