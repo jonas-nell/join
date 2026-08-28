@@ -20,13 +20,12 @@ const MAX_VISIBLE_PROFILES = 3;
 export class TaskCard {
     readonly taskmanagement = inject(Taskmanagement);
     readonly profileServicce = inject(ProfileService);
-    dialogService = inject(DialogService);
-    task = input.required<Task>();
+    readonly dialogService = inject(DialogService);
+    readonly task = input.required<Task>();
 
-    readonly subtasks = signal<Subtask[]>([]);
-    readonly totalSubtasks = computed(() => this.subtasks().length);
+    readonly totalSubtasks = computed(() => this.task().subtasks?.length ?? 0);
     readonly doneSubtasks = computed(
-        () => this.subtasks().filter((subtask) => subtask.subtask_done).length,
+        () => this.task().subtasks?.filter((subtask) => subtask.subtask_done).length ?? 0
     );
     readonly progressPercent = computed(() =>
         this.totalSubtasks() === 0 ? 0 : (this.doneSubtasks() / this.totalSubtasks()) * 100,
@@ -41,27 +40,29 @@ export class TaskCard {
         () => this.priorityIcons[this.task().task_priority] ?? this.priorityIcons['medium'],
     );
 
-    readonly profiles = signal<Profile[]>([]);
-    readonly visibleProfiles = computed(() => this.profiles().slice(0, MAX_VISIBLE_PROFILES));
-    readonly hiddenProfilesCount = computed(() =>
-        Math.max(0, this.profiles().length - MAX_VISIBLE_PROFILES),
-    );
+    // #region ###### umschreiben #######
+    // readonly profiles = signal<Profile[]>([]);
+    // readonly visibleProfiles = computed(() => this.profiles().slice(0, MAX_VISIBLE_PROFILES));
+    // readonly hiddenProfilesCount = computed(() =>
+    //     Math.max(0, this.profiles().length - MAX_VISIBLE_PROFILES),
+    // );
+    //#endregion
 
-    async ngOnInit(): Promise<void> {
-        await this.profileServicce.ensureProfilesLoaded();
+    // async ngOnInit(): Promise<void> {
+    //     await this.profileServicce.ensureProfilesLoaded();
 
-        const [profileIds, subtasks] = await Promise.all([
-            this.taskmanagement.loadTaskProfileIds(this.task().TASK_ID),
-            this.taskmanagement.loadSubtasks(this.task().TASK_ID),
-        ]);
+    //     const [profileIds, subtasks] = await Promise.all([
+    //         this.taskmanagement.loadTaskProfileIds(this.task().TASK_ID),
+    //         this.taskmanagement.loadSubtasks(this.task().TASK_ID),
+    //     ]);
 
-        const profiles = profileIds
-            .map((id) => this.profileServicce.getCachedProfileById(id))
-            .filter((profile): profile is Profile => profile !== undefined);
+    //     const profiles = profileIds
+    //         .map((id) => this.profileServicce.getCachedProfileById(id))
+    //         .filter((profile): profile is Profile => profile !== undefined);
 
-        this.profiles.set(profiles);
-        this.subtasks.set(subtasks);
-    }
+    //     this.profiles.set(profiles);
+    //     this.subtasks.set(subtasks);
+    // }
 
     openTask() {
         this.taskmanagement.currentTask.set(this.task());

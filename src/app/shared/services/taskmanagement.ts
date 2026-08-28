@@ -245,10 +245,10 @@ export class Taskmanagement {
         this.tasks.set(tasksWithSubtasks);
     }
 
-    setCurrentTask(taskId: number){
+    setCurrentTask(taskId: number) {
         let tmpTask = this.tasks().find((taskk) => taskk.TASK_ID == taskId);
         if (tmpTask) {
-            this.currentTask.set(tmpTask);           
+            this.currentTask.set(tmpTask);
         }
     }
     // Get subtasks assigned to the task
