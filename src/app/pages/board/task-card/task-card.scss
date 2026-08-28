@@ -18,6 +18,45 @@
         width: clamp(px-to-rem(210), 15dvw, px-to-rem(250));
     }
 
+    .move-btn{
+        position: absolute;
+        top: px-to-rem(16);
+        right: px-to-rem(16);
+        background: $light-secondary;
+        border-radius: 50%;
+        height: px-to-rem(26);
+
+        @include desktop{
+            display: none;
+        }
+
+        img {
+            height: px-to-rem(26);
+            width: px-to-rem(26);
+        }
+    }
+
+    .move-menu{
+        position: absolute;
+        top: 18%;
+        left: 30%;
+        background: $main-color;
+        z-index: 21;
+        color: $font-dirty-white;
+        border-radius: 20px;
+
+        p{
+            text-decoration: underline;
+        }
+
+        ul {
+            width: 175px;
+            height: 140px;
+            @include flex($gap: 12);
+            @include font-inter(regular, 16, 2%, 16);
+        }
+    }
+
     .title{
         @include font-inter(bold, 18, 2%, 18);
         display: -webkit-box;
