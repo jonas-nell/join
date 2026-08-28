@@ -6,10 +6,10 @@
     padding-bottom: 0;
     @include flex($align: start, $gap: 24);
 
-    @include desktop {
-        @include flex($gap: 52);
-        padding-left: calc(px-to-rem(250) + px-to-rem(64));
-        padding-right: px-to-rem(64);
+    @media (min-width: 1240px) {
+        @include flex($gap: 48);
+        padding-left: calc(px-to-rem(250) + px-to-rem(24));
+        padding-right: px-to-rem(24);
     }
 
     .board-top {
@@ -59,7 +59,10 @@
         @include flex($align: start, $gap: 18);
 
         @include desktop {
-            @include flex($direction: row, $align: start, $justify: space-around, $gap: 42);
+            @include flex($direction: row, $align: start, $justify: start, $gap: 12);
+        }
+        @media screen and (min-width: 1620px) {
+            @include flex($direction: row, $align: start, $justify: start, $gap: 28);
         }
 
         .task-container {
@@ -67,15 +70,16 @@
             @include flex($align: start, $gap: 18);
 
             @include desktop {
-                max-width: 300px;
+                width: auto;
+                // max-width: 300px;
             }
 
             h3 {
-                @include font-inter(bold, 28, 2dvh, 28);
+                @include font-inter(bold, 26, 2dvh, 26);
                 color: $board-text-color;
 
                 @include desktop {
-                    margin-left: 10%;
+                    margin-left: 15px;
                 }
             }
 
@@ -93,9 +97,8 @@
                     }
                 }
 
-
                 @include desktop {
-                    @include flex($direction: column, $justify: start, $gap: 24);
+                    @include flex($direction: column, $align: start, $justify: start, $gap: 24);
                     height: 69dvh;
                     overflow-y: auto;
                     overflow-x: visible;
@@ -107,11 +110,11 @@
                         width: px-to-rem(5);
                     }
 
-                    &::-webkit-scrollbar-track{
+                    &::-webkit-scrollbar-track {
                         background: transparent;
                     }
 
-                    &::-webkit-scrollbar-thumb{
+                    &::-webkit-scrollbar-thumb {
                         background: $font-light;
                         border-radius: 8px;
                     }
@@ -121,13 +124,18 @@
             .no-tasks-placeholder {
                 flex: 0 0 auto;
                 height: px-to-rem(100);
-                width: px-to-rem(250);
+                width: px-to-rem(210);
                 background: $light-gray;
                 border: dotted 3px $font-light;
                 border-radius: 24px;
+                text-align: center;
 
                 @include flex();
                 color: $font-light;
+
+                @media (min-width: 1230px) {
+                    width: clamp(px-to-rem(210), 15dvw, px-to-rem(250));
+                }
             }
         }
     }

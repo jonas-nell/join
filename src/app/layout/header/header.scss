@@ -38,42 +38,86 @@ header {
         }
     }
 
-    @include desktop {
-        height: px-to-rem(96);
-        width: calc(100% - 250px);
-        padding: distance(20, 36);
+    // Non-board pages: unchanged, everything switches together at 1024px
+    &:not(.board-header) {
+        @include desktop {
+            height: px-to-rem(96);
+            width: calc(100% - 250px);
+            padding: distance(20, 36);
+            left: 250px;
 
-        left: 250px;
+            .btn-wrpr {
+                .btn-menu {
+                    width: px-to-rem(56);
 
-        .btn-wrpr {
-            @include flex(row, center, space-between, 20);
+                    &:hover {
+                        background-color: $light-gray;
+                    }
+                }
 
-            .btn-menu {
-                width: px-to-rem(56);
+                .btn-help {
+                    display: block;
+                    width: px-to-rem(32);
+                    height: px-to-rem(32);
 
-                &:hover {
-                    background-color: $light-gray;
+                    &:hover {
+                        transform: scale(1.15);
+                    }
                 }
             }
 
-            .btn-help {
+            .logo {
+                display: none;
+            }
+
+            p {
                 display: block;
-                width: px-to-rem(32);
-                height: px-to-rem(32);
+                margin-left: px-to-rem(36);
+            }
+        }
+    }
 
-                &:hover {
-                    transform: scale(1.15);
+    // Board page: look switches at 1024px, offset stays full-width until 1245px
+    &.board-header {
+        @include desktop {
+            height: px-to-rem(96);
+            width: 100%;
+            padding: distance(20, 36);
+            left: 0;
+
+            .btn-wrpr {
+                .btn-menu {
+                    width: px-to-rem(56);
+
+                    &:hover {
+                        background-color: $light-gray;
+                    }
                 }
+
+                .btn-help {
+                    display: block;
+                    width: px-to-rem(32);
+                    height: px-to-rem(32);
+
+                    &:hover {
+                        transform: scale(1.15);
+                    }
+                }
+            }
+
+            .logo {
+                display: none;
+            }
+
+            p {
+                display: block;
+                margin-left: px-to-rem(36);
             }
         }
 
-        .logo {
-            display: none;
-        }
-
-        p {
-            display: block;
-            margin-left: px-to-rem(36);
+        @media (min-width: 1245px) {
+            width: calc(100% - 250px);
+            left: 250px;
         }
     }
 }
