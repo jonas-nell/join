@@ -1,14 +1,5 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-.drag-placeholder {
-    background: $light-gray;
-    border: dotted 3px $font-light;
-    height: px-to-rem(260);
-    width: px-to-rem(250);
-    transition: transform 50ms cubic-bezier(0, 0, 0.2, 1);
-    border-radius: 24px;
-}
-
 .task-card{
     height: px-to-rem(260);
     width: px-to-rem(250);
@@ -17,6 +8,15 @@
 
     padding: distance(16, 16);
     @include flex($align: start, $justify: space-between);
+
+    @include desktop{
+        height: px-to-rem(260);
+        width: px-to-rem(210);
+    }
+    
+    @media (min-width: 1230px) {
+        width: clamp(px-to-rem(210), 15dvw, px-to-rem(250));
+    }
 
     .title{
         @include font-inter(bold, 18, 2%, 18);
@@ -73,25 +73,30 @@
         .assigned-to{
             display: flex;
 
+            app-user-badge {
+                --badge-size: #{px-to-rem(32)};
+                --badge-font-size: #{px-to-rem(16)};
+            }
+
             .badge {
                 display: block;
                 border-radius: 50%;
-                border:2px solid white;
+                border:1px solid white;
 
                 &:not(:first-child) {
                     margin-left: px-to-rem(-10);
                 }
             }
 
-            .more-indicator {
+            .more-indicator{
                 @include font-inter(regular, 16, 2%, 16);
-                display: grid;
-                place-items: center;
-                width: px-to-rem(32);
-                height: px-to-rem(32);
-                background: $light-gray;
-                color: $font-light;
-            }
+                @include flex();
+
+                width: px-to-rem(34);
+                height: px-to-rem(34);
+                background: $font-light;
+                color: white;
+            
         }
 
         .priority-icon {
@@ -101,7 +106,7 @@
         }
     }
 }
-
+}
 // .cdk-drag-dragging{
 //     height: 500px;
 // }
