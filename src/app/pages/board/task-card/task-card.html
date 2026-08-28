@@ -1,6 +1,20 @@
-
 <div class="task-card" cdkDrag (click)="openTask()">
     <div class="drag-placeholder" *cdkDragPlaceholder></div>
+    
+    <button class="move-btn" (click)="openMoveMenu($event)">
+        <img src="./assets/icons/pointer-down.svg" alt="">
+    </button>
+    <dialog [appDialog]="moveMenuName()" [modal]="false" class="move-menu" (click)="$event.stopPropagation()">
+        <ul>
+            <p>Move to:</p>
+            @for (option of otherStatuses(); track option.value){
+                <li>
+                    <button type="button" (click)="moveTo(option.value)">{{ option.label }}</button>
+                </li>
+            }
+        </ul>
+    </dialog>
+    
     <app-category-badge [category]="task().task_category" />
     <div class="title">{{ task().task_title }}</div>
     <div class="description">{{ task().task_description }}</div>
@@ -19,7 +33,6 @@
                     class="badge"
                     [userId]="profile.id"
                     [userName]="profile.user_name"
-                    size="small"
                 />
             }
             @if (hiddenProfilesCount() > 0) {
@@ -37,3 +50,4 @@
         (editRequested)="openEditTask($event)"
     />
 }
+
