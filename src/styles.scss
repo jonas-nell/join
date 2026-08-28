@@ -15,12 +15,13 @@
     border: initial;
 }
 
-// Daniel added this to avoid background scrolling if dialog open
-html:has(.dialog-backdrop),
-body:has(.dialog-backdrop) {
-    overflow: clip;
+dialog {
+    overscroll-behavior: contain;
 }
-
+dialog::backdrop {
+    overflow: hidden; /* Needed to make this a scroll container */
+    overscroll-behavior: contain;
+}
 .content {
     width: 100%;
     height: 100%;
