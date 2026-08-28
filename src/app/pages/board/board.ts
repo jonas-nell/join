@@ -21,7 +21,7 @@ import { map } from 'rxjs';
 
 @Component({
     selector: 'app-board',
-    imports: [AddTaskButton, SearchBar, CdkDropList, CdkDropListGroup, TaskCard],
+    imports: [AddTaskButton, SearchBar, CdkDropList, CdkDropListGroup, TaskCard, SingleTaskView],
     templateUrl: './board.html',
     styleUrl: './board.scss',
 })
@@ -31,11 +31,9 @@ export class Board {
     readonly taskmanagementService = inject(Taskmanagement);
 
     private breakpointObserver = inject(BreakpointObserver);
-
-    readonly selectedTask = signal<Task | null>(null);
     
     constructor() {
-        this.taskmanagementService.ensureTasksLoaded();
+        this.taskmanagementService.ensureTasksLoaded();        
     }
     
     isDesktop = toSignal(

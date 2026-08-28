@@ -13,7 +13,7 @@
     </div>
 
     <div class="card-bottom">
-        <div class="assigned-to">
+        <!-- <div class="assigned-to">
             @for (profile of visibleProfiles(); track profile.id) {
                 <app-user-badge
                     class="badge"
@@ -25,15 +25,7 @@
             @if (hiddenProfilesCount() > 0) {
                 <div class="badge more-indicator">+{{ hiddenProfilesCount() }}</div>
             }
-        </div>
+        </div> -->
         <img class="priority-icon" [src]="priorityIcon()" alt="" />
     </div>
 </div>
-
-@if (taskOpen()) {
-    <app-single-task-view
-        [task]="task()"
-        (closed)="closeTask()"
-        (editRequested)="openEditTask($event)"
-    />
-}

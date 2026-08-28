@@ -8,65 +8,52 @@ import { ProfileService } from '../../../shared/services/profile-service';
 import { CategoryBadge } from '../../../shared/category-badge/category-badge';
 import { NotificationService } from '../../../shared/services/notification-service';
 import { ConfirmationService } from '../../../shared/services/confirmation-service';
+import { DialogService } from '../../../shared/services/dialog-service';
+import { Dialog } from '../../../shared/directives/dialog-directive';
 
 @Component({
     selector: 'app-single-task-view',
-    imports: [DatePipe, UserBadge, CategoryBadge],
+    imports: [DatePipe, UserBadge, CategoryBadge, Dialog],
     templateUrl: './single-task-view.html',
     styleUrl: './single-task-view.scss',
 })
 export class SingleTaskView implements OnInit {
-    private readonly taskmanagement = inject(Taskmanagement);
-    private readonly profileService = inject(ProfileService);
+    readonly taskmanagement = inject(Taskmanagement);
+    readonly profileService = inject(ProfileService);
+    readonly dialogService = inject(DialogService);
     private readonly confirmationService = inject(ConfirmationService);
     private readonly notificationService = inject(NotificationService);
 
     // Loading signal to show dialog after loading all data
-    readonly loading = signal(true);
-
-    // Get task from parent component
-    readonly task = input.required<Task>();
-
-    // Removes the dialog when this event is emitted
-    readonly closed = output<void>();
-
-    // Open the edit overlay later...todo
-    readonly editRequested = output<Task>();
-
-    // Signals for profiles and subtasks
-    readonly profiles = signal<Profile[]>([]);
-    readonly subtasks = signal<Subtask[]>([]);
+    // readonly loading = signal(true);
 
     // Prevent multiple delete clicks
     readonly deleting = signal(false);
     readonly errorMessage = signal('');
 
-    async ngOnInit(): Promise<void> {
-        await this.loadDialogData();
-    }
-    async loadDialogData(): Promise<void> {
-        this.loading.set(true);
+    async ngOnInit(): Promise<void> {}
+    // async loadDialogData(): Promise<void> {
+    //     this.loading.set(true);
 
-        try {
-            await this.profileService.ensureProfilesLoaded();
+    //     try {
+    //         await this.profileService.ensureProfilesLoaded();
 
-            const [profileIds, subtasks] = await Promise.all([
-                this.taskmanagement.loadTaskProfileIds(this.task().TASK_ID),
-                this.taskmanagement.loadSubtasks(this.task().TASK_ID),
-            ]);
+    //         const [profileIds] = await Promise.all([
+    //             this.taskmanagement.loadTaskProfileIds(this.task().TASK_ID),
+    //         ]);
 
-            const profiles = profileIds
-                .map((id) => this.profileService.getCachedProfileById(id))
-                .filter((profile): profile is Profile => profile !== undefined);
+    //         const profiles = profileIds
+    //             .map((id) => this.profileService.getCachedProfileById(id))
+    //             .filter((profile): profile is Profile => profile !== undefined);
 
-            this.profiles.set(profiles);
-            this.subtasks.set(subtasks);
-        } catch {
-            this.errorMessage.set('The task details could not be loaded.');
-        } finally {
-            this.loading.set(false);
-        }
-    }
+    //         this.profiles.set(profiles);
+    //     } catch {
+    //         this.errorMessage.set('The task details could not be loaded.');
+    //     } finally {
+    //         this.loading.set(false);
+    //     }
+    //     console.log(this.loading());
+    // }
 
     async changeSubtask(subtask: Subtask, event: Event): Promise<void> {
         const checkbox = event.target as HTMLInputElement;
@@ -74,10 +61,9 @@ export class SingleTaskView implements OnInit {
         const newValue = checkbox.checked;
 
         if (subtask.id) {
-            
             // Update the displayed checkbox immediately.
             this.setLocalSubtaskValue(subtask.id, newValue);
-    
+
             try {
                 await this.taskmanagement.updateSubtaskDone(subtask.id, newValue);
             } catch {
@@ -89,15 +75,23 @@ export class SingleTaskView implements OnInit {
     }
 
     private setLocalSubtaskValue(subtaskId: number, taskDone: boolean): void {
-        this.subtasks.update((subtasks) =>
-            subtasks.map((subtask) =>
-                subtask.id === subtaskId ? { ...subtask, subtask_done: taskDone } : subtask,
-            ),
-        );
+        this.taskmanagement.currentTask.update((task) => {
+            if (!task || !task.subtasks) {
+                return task;
+            }
+
+            return {
+                ...task,
+                subtasks: task.subtasks.map((subtask) =>
+                    subtask.id === subtaskId ? { ...subtask, subtask_done: taskDone } : subtask,
+                ),
+            };
+        });
     }
 
-    requestEdit(): void {
-        this.editRequested.emit(this.task());
+    closeDialog(): void {
+        this.dialogService.closeDialog();
+        this.taskmanagement.currentTask.set(null);
     }
 
     async deleteTask(): Promise<void> {
@@ -110,9 +104,13 @@ export class SingleTaskView implements OnInit {
         }
 
         try {
-            await this.taskmanagement.deleteTask(this.task().TASK_ID);
+            const currentTask = this.taskmanagement.currentTask();
+
+            if (currentTask != null) {
+                await this.taskmanagement.deleteTask(currentTask.TASK_ID);
+            }
             this.notificationService.success('Task deleted.');
-            this.closed.emit();
+            this.dialogService.closeDialog();
         } catch {
             this.notificationService.error('The task could not be deleted.');
         }
