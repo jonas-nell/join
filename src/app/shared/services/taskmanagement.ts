@@ -376,4 +376,20 @@ export class Taskmanagement {
     }
     //#endregion
     //#endregion
+
+    async moveTaskToStatus(task: Task, newStatus: StatusChange['task_status']): Promise<void>{
+        if (task.task_status === newStatus) return;
+
+        const targetTasks = this.tasks().filter(
+            (t) => t.task_status === newStatus && t.TASK_ID !== task.TASK_ID,
+        );
+        const updates = [...targetTasks, task].map((t, index) => ({
+            TASK_ID: t.TASK_ID,
+            order_index: index,
+        }));
+
+        this.reorderLocally(task.TASK_ID, newStatus, updates);
+        await this.updateStatus(task.TASK_ID, { task_status: newStatus});
+        await this.updateOrderIndices(updates);
+    }
 }
