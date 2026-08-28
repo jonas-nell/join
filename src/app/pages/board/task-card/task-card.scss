@@ -1,24 +1,48 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-.task-card{
+.drag-placeholder {
     height: px-to-rem(260);
     width: px-to-rem(250);
-    box-shadow: 0px 0px 10px 3px rgba(0,0,0,0.08);
+    background: $light-gray;
+    border: dotted 3px $font-light;
     border-radius: 24px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+
+    @include desktop {
+        height: px-to-rem(260);
+        width: px-to-rem(210);
+    }
+
+    @media (min-width: 1230px) {
+        width: clamp(px-to-rem(210), 15dvw, px-to-rem(250));
+    }
+}
+
+.task-card {
+    height: px-to-rem(260);
+    width: px-to-rem(250);
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
+    border-radius: 24px;
+    border: 1px solid transparent;
 
     padding: distance(16, 16);
     @include flex($align: start, $justify: space-between);
 
-    @include desktop{
+    @include desktop {
         height: px-to-rem(260);
         width: px-to-rem(210);
+
+        &:hover{
+            border: 1px solid $main-color;
+            cursor: pointer;
+        }
     }
-    
+
     @media (min-width: 1230px) {
         width: clamp(px-to-rem(210), 15dvw, px-to-rem(250));
     }
 
-    .move-btn{
+    .move-btn {
         position: absolute;
         top: px-to-rem(16);
         right: px-to-rem(16);
@@ -26,7 +50,7 @@
         border-radius: 50%;
         height: px-to-rem(26);
 
-        @include desktop{
+        @include desktop {
             display: none;
         }
 
@@ -36,7 +60,7 @@
         }
     }
 
-    .move-menu{
+    .move-menu {
         position: absolute;
         top: 18%;
         left: 30%;
@@ -45,7 +69,7 @@
         color: $font-dirty-white;
         border-radius: 20px;
 
-        p{
+        p {
             text-decoration: underline;
         }
 
@@ -57,7 +81,7 @@
         }
     }
 
-    .title{
+    .title {
         @include font-inter(bold, 18, 2%, 18);
         display: -webkit-box;
         line-clamp: 2;
@@ -66,14 +90,14 @@
         overflow: hidden;
     }
 
-    .description{
+    .description {
         @include font-inter(regular, 16, 2%, 16);
         color: $font-light;
         display: -webkit-box;
         line-clamp: 2;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
-        overflow: hidden;        
+        overflow: hidden;
     }
 
     .progress {
@@ -84,7 +108,7 @@
             visibility: hidden;
         }
 
-        .progress-bar{
+        .progress-bar {
             flex: 1;
             height: px-to-rem(8);
             background: $light-gray;
@@ -92,7 +116,7 @@
             overflow: hidden;
         }
 
-        .progress-bar-fill{
+        .progress-bar-fill {
             height: 100%;
             background: $progress-bar-color;
             border-radius: 8px;
@@ -105,11 +129,11 @@
         }
     }
 
-    .card-bottom{
+    .card-bottom {
         @include flex($direction: row, $align: center, $justify: space-between);
         width: 100%;
 
-        .assigned-to{
+        .assigned-to {
             display: flex;
 
             app-user-badge {
@@ -120,14 +144,14 @@
             .badge {
                 display: block;
                 border-radius: 50%;
-                border:1px solid white;
+                border: 1px solid white;
 
                 &:not(:first-child) {
                     margin-left: px-to-rem(-10);
                 }
             }
 
-            .more-indicator{
+            .more-indicator {
                 @include font-inter(regular, 16, 2%, 16);
                 @include flex();
 
@@ -135,17 +159,12 @@
                 height: px-to-rem(34);
                 background: $font-light;
                 color: white;
-            
-        }
+            }
 
-        .priority-icon {
-            width: px-to-rem(20);
-            height: px-to-rem(20);
-    
+            .priority-icon {
+                width: px-to-rem(20);
+                height: px-to-rem(20);
+            }
         }
     }
 }
-}
-// .cdk-drag-dragging{
-//     height: 500px;
-// }
