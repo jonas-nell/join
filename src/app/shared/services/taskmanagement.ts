@@ -30,11 +30,6 @@ export class Taskmanagement {
     currentTask: Signal<Task | null> = computed(
         () => this.tasks().find((task) => task.TASK_ID === this.currentTaskId()) ?? null,
     );
-    // currentTask = signal<Task | null>(null);
-
-    setCurrentTask(taskId: number | null) {
-        this.currentTaskId.set(taskId);
-    }
 
     //#region taskstatus computed
     todo = computed(() =>
@@ -376,8 +371,6 @@ export class Taskmanagement {
             }),
         );
     }
-    //#endregion
-    //#endregion
 
     async moveTaskToStatus(task: Task, newStatus: StatusChange['task_status']): Promise<void> {
         if (task.task_status === newStatus) return;
@@ -394,4 +387,11 @@ export class Taskmanagement {
         await this.updateStatus(task.TASK_ID, { task_status: newStatus });
         await this.updateOrderIndices(updates);
     }
+
+    setCurrentTask(taskId: number | null) {
+        this.currentTaskId.set(taskId);
+    }
+    //#endregion
+    //#endregion
 }
+
