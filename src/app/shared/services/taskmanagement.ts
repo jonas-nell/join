@@ -18,6 +18,7 @@ export class Taskmanagement {
     private readonly database = inject(DatabaseService);
     taskInsertChannel: RealtimeChannel | undefined;
     taskUpdateChannel: RealtimeChannel | undefined;
+    subtaskUpdateChannel: RealtimeChannel | undefined;
     //#endregion
 
     tasksRequested = false;
@@ -58,6 +59,7 @@ export class Taskmanagement {
     constructor() {
         this.subscribeInsert();
         this.subscribeUpdate();
+        this.subscribeSubtaskUpdate();
     }
 
     ngOnDestroy() {
@@ -100,6 +102,40 @@ export class Taskmanagement {
                                 : task,
                         ),
                     );
+                },
+            )
+            .subscribe();
+    }
+
+    subscribeSubtaskUpdate() {
+        this.subtaskUpdateChannel = this.database.client
+            .channel('custom-subtask-update-channel')
+            .on(
+                'postgres_changes',
+                {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'subtasks',
+                },
+                (payload) => {
+                    const updatedSubtask = payload.new as Subtask;
+
+                    this.tasks.update((tasks) =>
+                        tasks.map((task) =>
+                            task.TASK_ID === updatedSubtask.id
+                                ? {
+                                      ...task,
+                                      subtasks: task.subtasks?.map((subtask) =>
+                                          subtask.id === updatedSubtask.id
+                                              ? updatedSubtask
+                                              : subtask,
+                                      ),
+                                  }
+                                : task,
+                        ),
+                    );
+                    console.log('Change received!', payload);
+                    
                 },
             )
             .subscribe();
@@ -277,15 +313,15 @@ export class Taskmanagement {
     }
 
     async deleteTask(taskId: number): Promise<void> {
+        // Remove the deleted task from the board signal...
+        this.tasks.update((tasks) => tasks.filter((task) => task.TASK_ID !== taskId));
+        
         const { error } = await this.database.client.from('tasks').delete().eq('TASK_ID', taskId);
 
         if (error) {
             console.error('The task could not be deleted:', error);
             throw error;
         }
-
-        // Remove the deleted task from the board signal...
-        this.tasks.update((tasks) => tasks.filter((task) => task.TASK_ID !== taskId));
     }
 
     async ensureTasksLoaded(forceReload = false): Promise<void> {
@@ -394,4 +430,3 @@ export class Taskmanagement {
     //#endregion
     //#endregion
 }
-
