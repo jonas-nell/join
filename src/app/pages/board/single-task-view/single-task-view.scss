@@ -6,7 +6,7 @@ dialog {
     margin: auto;
     position: fixed;
     inset: 0;
-
+    padding: px-to-rem(15);
     &::backdrop {
         background: rgb(0 0 0 / 20%);
     }
@@ -27,266 +27,265 @@ dialog {
     @include font-inter(regular, 16, 2dvh, 20);
     @include flex($direction: column, $justify: start, $align: stretch);
 
-        @include tablet {
-            padding: px-to-rem(25);
-        }
+    @include tablet {
+        padding: px-to-rem(25);
+    }
 
-        .dialog-header {
-            flex-shrink: 0;
-            @include flex($direction: row, $justify: space-between);
+    .dialog-header {
+        flex-shrink: 0;
+        @include flex($direction: row, $justify: space-between);
 
-            .close-button {
-                padding: 0;
-                border: 0;
-                background: transparent;
-                font-size: px-to-rem(24);
-                cursor: pointer;
-            }
-        }
-
-        h2 {
-            display: -webkit-box;
-            width: 100%;
-            min-width: 0;
-            flex: 0 0 auto;
-
-            font-size: clamp(px-to-rem(24), calc(px-to-rem(10) + 3vw), px-to-rem(48));
-            padding-bottom: px-to-rem(2);
-            margin: px-to-rem(10) 0 px-to-rem(10);
-
-            color: black;
-
-            line-height: 1.1;
-
-            // Max three lines, and after three dots...
-            overflow: clip;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
-        }
-
-        .tooltip-host {
-            &::after {
-                content: attr(data-tooltip-label) '\A' attr(data-tooltip);
-                position: absolute;
-                z-index: 100;
-
-                top: calc(100% + px-to-rem(8));
-
-                max-width: min(px-to-rem(420), calc(100vw - px-to-rem(48)));
-                padding: px-to-rem(10);
-
-                background: $dark;
-                color: white;
-                border-radius: px-to-rem(10);
-                box-shadow: 0 px-to-rem(4) px-to-rem(14) rgba(0, 0, 0, 0.5);
-
-                line-height: 1.2;
-
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-                transition:
-                    opacity 120ms ease,
-                    transform 120ms ease,
-                    visibility 120ms ease;
-            }
-
-            &:hover::after,
-            &:focus-visible::after {
-                opacity: 1;
-                visibility: visible;
-            }
-        }
-
-        .description {
-            width: 100%;
-            min-height: 0;
-            min-width: 0;
-            flex: 0 0 auto;
-
-            padding: px-to-rem(5);
-
-            @include tablet {
-                padding: px-to-rem(5) px-to-rem(10);
-            }
-
-            // padding: px-to-rem(10);
-            // Short content occupies only one, two, or three lines.
-            // Content exceeding three lines becomes scrollable.
-            max-height: 4em;
-            overflow: auto;
-
-            margin: 0 0 px-to-rem(7);
-            color: black;
-            line-height: 1.2;
-            box-shadow: inset 0 0 px-to-rem(1) rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-        }
-
-        .description.is-empty {
-            box-shadow: none;
-        }
-
-        section {
-            h3 {
-                margin-top: px-to-rem(5);
-                margin-bottom: px-to-rem(5);
-                @include font-inter(bold, 16, 2dvh, 20);
-                color: $board-text-color;
-            }
-        }
-
-        .task-details {
-            border-collapse: separate;
-            border-spacing: 0 px-to-rem(10); // horizontal gap, vertical row gap
-
-            td:first-child {
-                color: $board-text-color;
-                width: px-to-rem(140);
-            }
-
-            .priority-value {
-                @include flex($direction: row, $justify: start);
-                gap: px-to-rem(10); // Distance between priority word and icon
-            }
-
-            // Center the icon to the text
-            .priority img {
-                display: block;
-            }
-        }
-
-        .profile-list {
-            box-shadow: inset 0 0 px-to-rem(1) rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            width: 100%;
-            max-height: px-to-rem(125);
-            @include tablet {
-                max-height: px-to-rem(160);
-            }
-
-            overflow-y: auto;
-        }
-
-        .profile {
-            width: 100%;
-            // min-height: px-to-rem(20);
-            padding: px-to-rem(5);
-            // padding-left: px-to-rem(10);
-
-            @include tablet {
-                // min-height: px-to-rem(30);
-                padding-left: px-to-rem(10);
-                padding-top: px-to-rem(6);
-            }
-
-            @include flex($direction: row, $justify: start, $gap: 10);
-
-            app-user-badge {
-                --badge-size: #{px-to-rem(32)};
-                --badge-font-size: #{px-to-rem(16)};
-
-                @include tablet {
-                    --badge-size: #{px-to-rem(42)};
-                    --badge-font-size: #{px-to-rem(16)};
-                }
-            }
-
-            span {
-                min-width: 0;
-                overflow-x: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-        }
-
-        .subtask-list {
-            min-height: 0;
-            box-shadow: inset 0 0 px-to-rem(1) rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            width: 100%;
-            max-height: px-to-rem(60);
-            overflow-y: auto;
-            overflow-x: hidden;
-            overscroll-behavior: contain;
-
-            padding: px-to-rem(5);
-
-            @include desktop {
-                max-height: px-to-rem(100);
-            }
-        }
-
-        .subtask-list:not(:has(.subtask)) {
-            box-shadow: none;
-        }
-
-        .subtask {
-            width: 100%;
-            min-height: px-to-rem(26);
-            flex-shrink: 0;
-            // padding-top: px-to-rem(2);
-            padding: px-to-rem(3);
+        .close-button {
+            padding: 0;
+            border: 0;
+            background: transparent;
+            font-size: px-to-rem(24);
             cursor: pointer;
-            @include flex($direction: row, $justify: start, $gap: 10);
-
-            @include tablet {
-                padding-top: px-to-rem(0);
-                padding-left: px-to-rem(10);
-            }
-
-            @include desktop {
-                min-height: px-to-rem(30);
-            }
-
-            input {
-                width: px-to-rem(16);
-                height: px-to-rem(16);
-                flex-shrink: 0;
-                margin: 0;
-                accent-color: $dark;
-                cursor: pointer;
-            }
-
-            span {
-                min-width: 0;
-                overflow-x: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-        }
-
-        .dialog-actions {
-            margin-top: px-to-rem(20);
-            @include flex($direction: row, $justify: end, $gap: 10);
-
-            button {
-                padding: 0;
-                border: 0;
-                background: transparent;
-                color: $dark;
-                cursor: pointer;
-                transition: transform 150ms ease;
-                @include flex($direction: row, $gap: 5);
-
-                img {
-                    width: px-to-rem(16);
-                    height: px-to-rem(16);
-                    object-fit: contain;
-                }
-
-                &:hover {
-                    font-weight: bold;
-                    transform: scale(1.08);
-                }
-            }
-
-            .divider {
-                width: px-to-rem(1);
-                height: px-to-rem(22);
-                background: #d1d1d1;
-            }
         }
     }
 
+    h2 {
+        display: -webkit-box;
+        width: 100%;
+        min-width: 0;
+        flex: 0 0 auto;
+
+        font-size: clamp(px-to-rem(24), calc(px-to-rem(10) + 3vw), px-to-rem(48));
+        padding-bottom: px-to-rem(2);
+        margin: px-to-rem(10) 0 px-to-rem(10);
+
+        color: black;
+
+        line-height: 1.1;
+
+        // Max three lines, and after three dots...
+        overflow: clip;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+    }
+
+    .tooltip-host {
+        &::after {
+            content: attr(data-tooltip-label) '\A' attr(data-tooltip);
+            position: absolute;
+            z-index: 100;
+
+            top: calc(100% + px-to-rem(8));
+
+            max-width: min(px-to-rem(420), calc(100vw - px-to-rem(48)));
+            padding: px-to-rem(10);
+
+            background: $dark;
+            color: white;
+            border-radius: px-to-rem(10);
+            box-shadow: 0 px-to-rem(4) px-to-rem(14) rgba(0, 0, 0, 0.5);
+
+            line-height: 1.2;
+
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition:
+                opacity 120ms ease,
+                transform 120ms ease,
+                visibility 120ms ease;
+        }
+
+        &:hover::after,
+        &:focus-visible::after {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    .description {
+        width: 100%;
+        min-height: 0;
+        min-width: 0;
+        flex: 0 0 auto;
+
+        padding: px-to-rem(5);
+
+        @include tablet {
+            padding: px-to-rem(5) px-to-rem(10);
+        }
+
+        // padding: px-to-rem(10);
+        // Short content occupies only one, two, or three lines.
+        // Content exceeding three lines becomes scrollable.
+        max-height: 4em;
+        overflow: auto;
+
+        margin: 0 0 px-to-rem(7);
+        color: black;
+        line-height: 1.2;
+        box-shadow: inset 0 0 px-to-rem(1) rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+    }
+
+    .description.is-empty {
+        box-shadow: none;
+    }
+
+    section {
+        h3 {
+            margin-top: px-to-rem(5);
+            margin-bottom: px-to-rem(5);
+            @include font-inter(bold, 16, 2dvh, 20);
+            color: $board-text-color;
+        }
+    }
+
+    .task-details {
+        border-collapse: separate;
+        border-spacing: 0 px-to-rem(10); // horizontal gap, vertical row gap
+
+        td:first-child {
+            color: $board-text-color;
+            width: px-to-rem(140);
+        }
+
+        .priority-value {
+            @include flex($direction: row, $justify: start);
+            gap: px-to-rem(10); // Distance between priority word and icon
+        }
+
+        // Center the icon to the text
+        .priority img {
+            display: block;
+        }
+    }
+
+    .profile-list {
+        box-shadow: inset 0 0 px-to-rem(1) rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        width: 100%;
+        max-height: px-to-rem(125);
+        @include tablet {
+            max-height: px-to-rem(160);
+        }
+
+        overflow-y: auto;
+    }
+
+    .profile {
+        width: 100%;
+        // min-height: px-to-rem(20);
+        padding: px-to-rem(5);
+        // padding-left: px-to-rem(10);
+
+        @include tablet {
+            // min-height: px-to-rem(30);
+            padding-left: px-to-rem(10);
+            padding-top: px-to-rem(6);
+        }
+
+        @include flex($direction: row, $justify: start, $gap: 10);
+
+        app-user-badge {
+            --badge-size: #{px-to-rem(32)};
+            --badge-font-size: #{px-to-rem(16)};
+
+            @include tablet {
+                --badge-size: #{px-to-rem(42)};
+                --badge-font-size: #{px-to-rem(16)};
+            }
+        }
+
+        span {
+            min-width: 0;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .subtask-list {
+        min-height: 0;
+        box-shadow: inset 0 0 px-to-rem(1) rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        width: 100%;
+        max-height: px-to-rem(60);
+        overflow-y: auto;
+        overflow-x: hidden;
+        overscroll-behavior: contain;
+
+        padding: px-to-rem(5);
+
+        @include desktop {
+            max-height: px-to-rem(100);
+        }
+    }
+
+    .subtask-list:not(:has(.subtask)) {
+        box-shadow: none;
+    }
+
+    .subtask {
+        width: 100%;
+        min-height: px-to-rem(26);
+        flex-shrink: 0;
+        // padding-top: px-to-rem(2);
+        padding: px-to-rem(3);
+        cursor: pointer;
+        @include flex($direction: row, $justify: start, $gap: 10);
+
+        @include tablet {
+            padding-top: px-to-rem(0);
+            padding-left: px-to-rem(10);
+        }
+
+        @include desktop {
+            min-height: px-to-rem(30);
+        }
+
+        input {
+            width: px-to-rem(16);
+            height: px-to-rem(16);
+            flex-shrink: 0;
+            margin: 0;
+            accent-color: $dark;
+            cursor: pointer;
+        }
+
+        span {
+            min-width: 0;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .dialog-actions {
+        margin-top: px-to-rem(20);
+        @include flex($direction: row, $justify: end, $gap: 10);
+
+        button {
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: $dark;
+            cursor: pointer;
+            transition: transform 150ms ease;
+            @include flex($direction: row, $gap: 5);
+
+            img {
+                width: px-to-rem(16);
+                height: px-to-rem(16);
+                object-fit: contain;
+            }
+
+            &:hover {
+                font-weight: bold;
+                transform: scale(1.08);
+            }
+        }
+
+        .divider {
+            width: px-to-rem(1);
+            height: px-to-rem(22);
+            background: #d1d1d1;
+        }
+    }
+}

@@ -4,16 +4,18 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { minLengthWithoutSpaces } from '../../../shared/helpers/function-min-length';
 import { DialogService } from '../../../shared/services/dialog-service';
 import { ProfileService } from '../../../shared/services/profile-service';
-import { DeleteProfile } from "../../../shared/components/delete-profile/delete-profile";
+// import { DeleteProfile } from "../../../shared/components/delete-profile/delete-profile";
 import { NotificationService } from '../../../shared/services/notification-service';
 import { ProfileChanges } from '../../../shared/interfaces/profile';
 import { UserBadge } from "../../../shared/components/user-badge/user-badge";
 import { Router } from '@angular/router';
 import { advancedEmailValidator } from '../../../shared/helpers/advancedEmailValidator';
+import { ProfileDeletionService } from '../../../shared/services/profile-deletion-service';
+import { ConfirmationDialog } from '../../../shared/components/confirmation/confirmation/confirmation';
 
 @Component({
     selector: 'app-edit-or-add-contact',
-    imports: [Dialog, ReactiveFormsModule, DeleteProfile, UserBadge],
+    imports: [Dialog, ReactiveFormsModule, UserBadge, ConfirmationDialog],
     templateUrl: './edit-or-add-contact.html',
     styleUrl: './edit-or-add-contact.scss',
 })
@@ -24,6 +26,7 @@ export class EditOrAddContact {
 
     readonly profileService = inject(ProfileService);
     readonly notificationService = inject(NotificationService);
+    readonly profileDeletion = inject(ProfileDeletionService);
 
     contactForm = this.fb.nonNullable.group({
         name: ['', [Validators.required, minLengthWithoutSpaces(2), Validators.pattern(/^[\p{L}\p{M}]+(?:[ '’-][\p{L}\p{M}]+)*$/u)]],

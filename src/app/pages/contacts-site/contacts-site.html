@@ -29,7 +29,11 @@
 
             <router-outlet
                 (activate)="profileOpen.set(true)"
-                (deactivate)="profileOpen.set(false); profileService.selectedProfile.set(null); dialogservice.closeDialog()"
+                (deactivate)="
+                    profileOpen.set(false);
+                    profileService.selectedProfile.set(null);
+                    dialogservice.closeDialog()
+                "
             />
         </div>
     </div>
@@ -44,18 +48,25 @@
 
     <dialog class="contact-btn-dialog" appDialog="contact-btn-dialog">
         <div>
-        @if (profileService.selectedProfile(); as selected) {
+            @if (profileService.selectedProfile(); as selected) {
                 <button (click)="dialogservice.openDialog('edit-and-add-contact', 'edit')">
                     <img src="./assets/icons/edit.png" alt="" />
                     <span>Edit</span>
                 </button>
 
-            <app-delete-profile #deleteTrigger [profile]="selected" [showButton]="false"></app-delete-profile>
-                <button (click)="deleteTrigger.openConfirmation()">
+                <button
+                    type="button"
+                    (click)="profileDeletion.deleteProfile(selected)"
+                    [disabled]="profileDeletion.deleting()"
+                >
                     <img src="./assets/icons/delete.png" alt="" />
-                    <span>Delete</span>
+
+                    <span>
+                        {{ profileDeletion.deleting() ? 'Deleting...' : 'Delete' }}
+                    </span>
                 </button>
-        }
+            }
         </div>
+        <app-confirmation />
     </dialog>
 </section>

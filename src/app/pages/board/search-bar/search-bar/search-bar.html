@@ -1,7 +1,13 @@
 <div class="search-bar">
-    <input type="text" placeholder="Find Tasks" aria-label="Find task" />
+    <input
+        type="search"
+        placeholder="Find Tasks"
+        aria-label="Find task"
+        [value]="taskmanagementService.searchTerm()"
+        (input)="updateSearch($event)"
+    />
 
-    <button type="button" aria-label="Search">
+    <button type="button" aria-label="Clear search" (click)="clearSearch()">
         <img src="./assets/icons/search-icon.png" alt="" />
     </button>
 </div>
