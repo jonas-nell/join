@@ -75,23 +75,22 @@ export class SingleTaskView implements OnInit {
     }
 
     private setLocalSubtaskValue(subtaskId: number, taskDone: boolean): void {
-        this.taskmanagement.currentTask.update((task) => {
-            if (!task || !task.subtasks) {
-                return task;
-            }
-
-            return {
-                ...task,
-                subtasks: task.subtasks.map((subtask) =>
-                    subtask.id === subtaskId ? { ...subtask, subtask_done: taskDone } : subtask,
-                ),
-            };
-        });
+        this.taskmanagement.tasks.update((tasks) =>
+            tasks.map((task) =>
+                task.TASK_ID === this.taskmanagement.currentTask()?.TASK_ID
+                    ? {...task, subtasks: task.subtasks?.map((subtask) =>
+                            subtask.id === subtaskId
+                                ? { ...subtask, subtask_done: taskDone }
+                                : subtask,
+                            ),
+                        } : task,
+            ),
+        );        
     }
 
     closeDialog(): void {
         this.dialogService.closeDialog();
-        this.taskmanagement.currentTask.set(null);
+        this.taskmanagement.setCurrentTask(null);
     }
 
     async deleteTask(): Promise<void> {

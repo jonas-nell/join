@@ -22,7 +22,7 @@ export class TaskCard {
     readonly taskmanagement = inject(Taskmanagement);
     readonly profileServicce = inject(ProfileService);
     readonly dialogService = inject(DialogService);
-    readonly task = input.required<Task>();
+    task = input.required<Task>();
 
     readonly totalSubtasks = computed(() => this.task().subtasks?.length ?? 0);
     readonly doneSubtasks = computed(
@@ -89,16 +89,12 @@ export class TaskCard {
     // }
 
     openTask() {
-        // const open = this.dialogService.dialogOpen();
-        // if (open && open.startsWith('move-menu-')) {
-        //     return; // move menu open --> cant open other task by "closing click"
-        // }
-        this.taskmanagement.currentTask.set(this.task());
+        this.taskmanagement.setCurrentTask(this.task().TASK_ID);
         this.dialogService.openDialog('single-task');
     }
 
     closeTask(): void {
         this.dialogService.closeDialog();
-        this.taskmanagement.currentTask.set(null);
+        this.taskmanagement.setCurrentTask(null);
     }
 }
