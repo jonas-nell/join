@@ -1,13 +1,27 @@
-<div class="search-bar">
-    <input
-        type="search"
-        placeholder="Find Tasks"
-        aria-label="Find task"
-        [value]="taskmanagementService.searchTerm()"
-        (input)="updateSearch($event)"
-    />
+<div class="search-container">
+    <div class="search-bar">
+        <input
+            type="search"
+            placeholder="Find Tasks"
+            aria-label="Find task"
+            [value]="taskmanagementService.searchTerm()"
+            (input)="updateSearch($event)"
+            (keydown.enter)="startSearch()"
+        />
 
-    <button type="button" aria-label="Clear search" (click)="clearSearch()">
-        <img src="./assets/icons/search-icon.png" alt="" />
-    </button>
+        <button type="button" aria-label="Search" (click)="startSearch()">
+            <img src="./assets/icons/search-icon.png" alt="" />
+        </button>
+    </div>
+
+    <div class="search-message">
+        @if (searchError()) {
+            <p>Please enter at least 3 characters.</p>
+        } @else if (
+            taskmanagementService.searchTerm().trim().length >= 3 &&
+            taskmanagementService.filteredTasks().length === 0
+        ) {
+            <p>No matching tasks found.</p>
+        }
+    </div>
 </div>

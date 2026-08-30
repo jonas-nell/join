@@ -1,0 +1,31 @@
+// styles/_animations.scss
+
+@keyframes slide-in {
+    from {
+        transform: translate(
+            var(--slide-from-x, 0),
+            var(--slide-from-y, 0)
+        );
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+
+@mixin slide-in(
+    $from-x: 0,
+    $from-y: 0,
+    $duration: 150ms,
+    $timing: ease-out
+) {
+    --slide-from-x: #{$from-x};
+    --slide-from-y: #{$from-y};
+
+    // "both" prevents the element from briefly appearing in 
+    // its final position before sliding in
+    animation: slide-in $duration $timing both;
+
+}

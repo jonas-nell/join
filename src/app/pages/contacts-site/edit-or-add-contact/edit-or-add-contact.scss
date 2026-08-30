@@ -9,22 +9,26 @@
     margin: auto;
     overflow: hidden;
 
-    transition:
-        transform 0.2s ease,
-        display 0.2s allow-discrete,
-        overlay 0.2s allow-discrete;
-
-    @starting-style {
-        transform: translateY(120%);
+    @include desktop {
+        @include slide-in($duration: 250ms, $from-y: 100%);
     }
 
-    &:not([open]) {
-        transform: translateY(120%);
-    }
+    // transition:
+    //     // transform 0.2s ease,
+    //     // display 0.2s allow-discrete,
+    //     // overlay 0.2s allow-discrete;
 
-    ::backdrop {
-        color: initial;
-    }
+    // // @starting-style {
+    // //     transform: translateY(120%);
+    // // }
+
+    // // &:not([open]) {
+    // //     transform: translateY(120%);
+    // // }
+
+    // ::backdrop {
+    //     color: initial;
+    // }
 
     @include desktop {
         height: 60dvh;
@@ -134,22 +138,32 @@
             }
         }
 
-        .badge-default {
-            width: px-to-rem(120);
-            height: px-to-rem(120);
-            color: #ffffff;
-            border-radius: 50%;
-            box-shadow:
-                0 0 0 2px #ffffff,
-                0 0 0 3px #cbd5e1;
-            background-color: $border-contact-list;
-            @include flex();
+        app-user-badge {
+            --badge-size: #{px-to-rem(80)};
+            --badge-font-size: #{px-to-rem(42)};
 
-            img {
-                width: 50%;
-                filter: brightness(0) invert(1);
+            @include desktop {
+                --badge-size: #{px-to-rem(120)};
+                --badge-font-size: #{px-to-rem(48)};
             }
         }
+
+        // .badge-default {
+        //     width: px-to-rem(120);
+        //     height: px-to-rem(120);
+        //     color: #ffffff;
+        //     border-radius: 50%;
+        //     box-shadow:
+        //         0 0 0 2px #ffffff,
+        //         0 0 0 3px #cbd5e1;
+        //     background-color: $border-contact-list;
+        //     @include flex();
+
+        //     img {
+        //         width: 50%;
+        //         filter: brightness(0) invert(1);
+        //     }
+        // }
 
         @include desktop {
             @include flex($align: end);
