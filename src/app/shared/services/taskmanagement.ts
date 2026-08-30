@@ -27,6 +27,7 @@ export class Taskmanagement {
     readonly tasksError = signal('');
 
     tasks = signal<Task[]>([]);
+    subtasks = signal<Record<number, Subtask[]>>({});
     currentTaskId = signal<number | null>(null);
     currentTask: Signal<Task | null> = computed(
         () => this.tasks().find((task) => task.TASK_ID === this.currentTaskId()) ?? null,
@@ -118,28 +119,24 @@ export class Taskmanagement {
                     table: 'subtasks',
                 },
                 (payload) => {
-                    const updatedSubtask = payload.new as Subtask;
+                    const changes = payload.new as Subtask;
+                    const taskId = changes.task_id;
+                    if (taskId === undefined) {
+                        return;
+                    }
 
-                    this.tasks.update((tasks) =>
-                        tasks.map((task) =>
-                            task.TASK_ID === updatedSubtask.id
-                                ? {
-                                      ...task,
-                                      subtasks: task.subtasks?.map((subtask) =>
-                                          subtask.id === updatedSubtask.id
-                                              ? updatedSubtask
-                                              : subtask,
-                                      ),
-                                  }
-                                : task,
+                    this.subtasks.update((subtasks) => ({
+                        ...subtasks,
+                        [taskId]: (subtasks[taskId] ?? []).map((subtask) =>
+                            subtask.id === changes.id ? changes : subtask,
                         ),
-                    );
+                    }));
                     console.log('Change received!', payload);
-                    
                 },
             )
             .subscribe();
     }
+
     //#endregion
 
     //#region unsubscribe
@@ -245,8 +242,8 @@ export class Taskmanagement {
             }
 
             this.tasks.set(data ?? []);
-            await this.setSubtasks();
-            console.log(this.tasks());
+            // await this.setSubtasks();
+            await this.loadAllSubtasks();
 
             this.tasksRequested = true; //prevent loading issues
         } catch (error) {
@@ -273,33 +270,41 @@ export class Taskmanagement {
         return (data ?? []).map((assignment) => assignment.user_id);
     }
 
-    // holt für jeden task die subtasks von der DB und speichert sie lokal im signal tasks
-    async setSubtasks() {
-        const tasksWithSubtasks = await Promise.all(
-            this.tasks().map(async (task) => ({
-                ...task,
-                subtasks: await this.loadSubtasks(task.TASK_ID),
-            })),
-        );
-        this.tasks.set(tasksWithSubtasks);
-    }
-
-    // Get subtasks assigned to the task
-    async loadSubtasks(taskId: number): Promise<Subtask[]> {
-        const { data, error } = await this.database.client
-            .from('subtasks')
-            .select('*')
-            .eq('task_id', taskId)
-            .order('id');
+    // loads all subtasks from db into subtasks() signal
+    async loadAllSubtasks(): Promise<void> {
+        const { data, error } = await this.database.client.from('subtasks').select('*').order('id');
 
         if (error) {
             console.error('The subtasks could not be loaded:', error);
             throw error;
         }
 
-        return data ?? [];
+        const groupedSubtasks: Record<number, Subtask[]> = {};
+
+        for (const subtask of data ?? []) {
+            const taskId = subtask.task_id;
+
+            if (!groupedSubtasks[taskId]) {
+                groupedSubtasks[taskId] = [];
+            }
+
+            groupedSubtasks[taskId].push(subtask);
+        }
+
+        this.subtasks.set(groupedSubtasks);
     }
 
+    // updates subtasks() signal 
+    updateSubtasks(subtaskId: number, taskId: number, changes: Partial<Subtask>) {
+        this.subtasks.update((subtasks) => ({
+            ...subtasks,
+            [taskId]: (subtasks[taskId] ?? []).map((subtask) =>
+                subtask.id === subtaskId ? { ...subtask, ...changes } : subtask,
+            ),
+        }));
+    }
+
+    // updated subtask in db
     async updateSubtaskDone(subtaskId: number, subtaskDone: boolean): Promise<void> {
         const { error } = await this.database.client
             .from('subtasks')
@@ -315,7 +320,7 @@ export class Taskmanagement {
     async deleteTask(taskId: number): Promise<void> {
         // Remove the deleted task from the board signal...
         this.tasks.update((tasks) => tasks.filter((task) => task.TASK_ID !== taskId));
-        
+
         const { error } = await this.database.client.from('tasks').delete().eq('TASK_ID', taskId);
 
         if (error) {

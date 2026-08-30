@@ -59,33 +59,22 @@ export class SingleTaskView implements OnInit {
         const checkbox = event.target as HTMLInputElement;
         const previousValue = subtask.subtask_done;
         const newValue = checkbox.checked;
+        const taskId = this.taskmanagement.currentTask()?.TASK_ID;
 
-        if (subtask.id) {
+        if (subtask.id && taskId) {
             // Update the displayed checkbox immediately.
-            this.setLocalSubtaskValue(subtask.id, newValue);
+            this.taskmanagement.updateSubtasks(subtask.id, taskId, { subtask_done: newValue });
 
             try {
                 await this.taskmanagement.updateSubtaskDone(subtask.id, newValue);
             } catch {
                 // Restore the previous value when saving fails.
-                this.setLocalSubtaskValue(subtask.id, previousValue);
+                this.taskmanagement.updateSubtasks(subtask.id, taskId, {
+                    subtask_done: previousValue,
+                });
                 this.errorMessage.set('The subtask could not be saved.');
             }
         }
-    }
-
-    private setLocalSubtaskValue(subtaskId: number, taskDone: boolean): void {
-        this.taskmanagement.tasks.update((tasks) =>
-            tasks.map((task) =>
-                task.TASK_ID === this.taskmanagement.currentTask()?.TASK_ID
-                    ? {...task, subtasks: task.subtasks?.map((subtask) =>
-                            subtask.id === subtaskId
-                                ? { ...subtask, subtask_done: taskDone }
-                                : subtask,
-                            ),
-                        } : task,
-            ),
-        );        
     }
 
     closeDialog(): void {

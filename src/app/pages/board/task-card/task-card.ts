@@ -24,9 +24,9 @@ export class TaskCard {
     readonly dialogService = inject(DialogService);
     task = input.required<Task>();
 
-    readonly totalSubtasks = computed(() => this.task().subtasks?.length ?? 0);
+    readonly totalSubtasks = computed(() => this.taskmanagement.subtasks()[this.task().TASK_ID]?.length ?? 0);
     readonly doneSubtasks = computed(
-        () => this.task().subtasks?.filter((subtask) => subtask.subtask_done).length ?? 0);
+        () => this.taskmanagement.subtasks()[this.task().TASK_ID]?.filter((subtask) => subtask.subtask_done).length ?? 0);
     readonly progressPercent = computed(() =>
         this.totalSubtasks() === 0 ? 0 : (this.doneSubtasks() / this.totalSubtasks()) * 100);
 
