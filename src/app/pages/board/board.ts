@@ -18,6 +18,7 @@ import { SingleTaskView } from './single-task-view/single-task-view';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { TaskMembers } from '../../shared/services/task-members';
 
 @Component({
     selector: 'app-board',
@@ -26,14 +27,22 @@ import { map } from 'rxjs';
     styleUrl: './board.scss',
 })
 export class Board {
-
     
     readonly taskmanagementService = inject(Taskmanagement);
-
     private breakpointObserver = inject(BreakpointObserver);
+    taskMembers = inject(TaskMembers);
     
     constructor() {
-        this.taskmanagementService.ensureTasksLoaded();        
+        this.loadData();        
+    }
+
+    // loads task data and task member data
+    async loadData(){
+        await this.taskmanagementService.ensureTasksLoaded();
+        for (const task of this.taskmanagementService.tasks()){
+            await this.taskMembers.setTaskMembers(task.TASK_ID)
+        }
+        console.log(this.taskMembers.taskMembers());
     }
     
     isDesktop = toSignal(

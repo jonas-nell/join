@@ -255,21 +255,6 @@ export class Taskmanagement {
         }
     }
 
-    // Get profile IDs assigned to the task
-    async loadTaskProfileIds(taskId: number): Promise<string[]> {
-        const { data, error } = await this.database.client
-            .from('tasks_profiles')
-            .select('user_id')
-            .eq('task_id', taskId);
-
-        if (error) {
-            console.error('The assignments could not be loaded:', error);
-            throw error;
-        }
-
-        return (data ?? []).map((assignment) => assignment.user_id);
-    }
-
     // loads all subtasks from db into subtasks() signal
     async loadAllSubtasks(): Promise<void> {
         const { data, error } = await this.database.client.from('subtasks').select('*').order('id');
@@ -354,14 +339,14 @@ export class Taskmanagement {
             .select(TASK_COLUMNS)
             .single();
 
-        // Stop when Supabase cannot update the profile.
+        // Stop when Supabase cannot update the task.
         if (error) {
             console.error('The task could not be updated:', error);
 
             throw error;
         }
 
-        // Return the updated profile.
+        // Return the updated task.
         return data as Task;
     }
 
@@ -373,9 +358,9 @@ export class Taskmanagement {
             .select(STATUS_COLUMNS)
             .single();
 
-        // Stop when Supabase cannot update the profile.
+        // Stop when Supabase cannot update the status.
         if (error) {
-            console.error('The profile could not be updated:', error);
+            console.error('The status could not be updated:', error);
 
             throw error;
         }
