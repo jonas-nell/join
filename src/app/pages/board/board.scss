@@ -1,12 +1,15 @@
 @use '../../../../public/assets/styles/main.scss' as *;
 
+$card-width: clamp(#{px-to-rem(210)}, 15dvw, #{px-to-rem(250)});
+$scrollbar-width: px-to-rem(5);
+
 .board-wrapper {
     @include font-inter(regular, 22, 2dvh, 22);
-    padding: px-to-rem(16);
+    padding: px-to-rem(14);
     padding-bottom: 0;
     @include flex($align: start, $gap: 24);
 
-    @media (min-width: 1240px) {
+    @media (min-width: 1245px) {
         @include flex($gap: 48);
         padding-left: calc(px-to-rem(250) + px-to-rem(24));
         padding-right: px-to-rem(24);
@@ -68,11 +71,14 @@
         .task-container {
             width: 100%;
             @include flex($align: start, $gap: 18);
-
             @include desktop {
-                width: auto;
-                // max-width: 300px;
+                width: calc(#{$card-width} + #{px-to-rem(24)} + #{$scrollbar-width});
             }
+
+            // @media (min-width: 1230px){
+            //     width: clamp(px-to-rem(210), 20dvw, px-to-rem(250));
+            // }
+            
 
             h3 {
                 @include font-inter(bold, 26, 2dvh, 26);
@@ -87,6 +93,8 @@
                 width: 100%;
                 @include flex($direction: row, $justify: start, $gap: 18);
                 overflow-x: auto;
+                overflow-y: auto;
+                scrollbar-gutter: stable;
                 margin-inline: calc(-1 * px-to-rem(16));
                 width: calc(100% + px-to-rem(32));
                 padding: px-to-rem(16);
@@ -124,7 +132,7 @@
             .no-tasks-placeholder {
                 flex: 0 0 auto;
                 height: px-to-rem(100);
-                width: px-to-rem(210);
+                width: $card-width;
                 background: $light-gray;
                 border: dotted 3px $font-light;
                 border-radius: 24px;
@@ -132,10 +140,6 @@
 
                 @include flex();
                 color: $font-light;
-
-                @media (min-width: 1230px) {
-                    width: clamp(px-to-rem(210), 15dvw, px-to-rem(250));
-                }
             }
         }
     }
