@@ -1,4 +1,4 @@
-import { Injectable, Service, inject, signal, computed, WritableSignal } from '@angular/core';
+import { Injectable, inject, signal, computed, Signal } from '@angular/core';
 import { DatabaseService } from './database-service';
 import { StatusChange, Subtask, Task, TaskChanges } from '../interfaces/task';
 import { Profile } from '../interfaces/profile';
@@ -26,7 +26,10 @@ export class Taskmanagement {
     readonly tasksError = signal('');
 
     tasks = signal<Task[]>([]);
-    currentTask = signal<Task | null>(null);
+    currentTaskId = signal<number | null>(null);
+    currentTask: Signal<Task | null> = computed(
+        () => this.tasks().find((task) => task.TASK_ID === this.currentTaskId()) ?? null,
+    );
 
     //#region taskstatus computed
     todo = computed(() =>
@@ -245,12 +248,6 @@ export class Taskmanagement {
         this.tasks.set(tasksWithSubtasks);
     }
 
-    setCurrentTask(taskId: number) {
-        let tmpTask = this.tasks().find((taskk) => taskk.TASK_ID == taskId);
-        if (tmpTask) {
-            this.currentTask.set(tmpTask);
-        }
-    }
     // Get subtasks assigned to the task
     async loadSubtasks(taskId: number): Promise<Subtask[]> {
         const { data, error } = await this.database.client
@@ -374,10 +371,8 @@ export class Taskmanagement {
             }),
         );
     }
-    //#endregion
-    //#endregion
 
-    async moveTaskToStatus(task: Task, newStatus: StatusChange['task_status']): Promise<void>{
+    async moveTaskToStatus(task: Task, newStatus: StatusChange['task_status']): Promise<void> {
         if (task.task_status === newStatus) return;
 
         const targetTasks = this.tasks().filter(
@@ -389,7 +384,14 @@ export class Taskmanagement {
         }));
 
         this.reorderLocally(task.TASK_ID, newStatus, updates);
-        await this.updateStatus(task.TASK_ID, { task_status: newStatus});
+        await this.updateStatus(task.TASK_ID, { task_status: newStatus });
         await this.updateOrderIndices(updates);
     }
+
+    setCurrentTask(taskId: number | null) {
+        this.currentTaskId.set(taskId);
+    }
+    //#endregion
+    //#endregion
 }
+
