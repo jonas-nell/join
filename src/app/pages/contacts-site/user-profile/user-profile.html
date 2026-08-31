@@ -26,12 +26,27 @@
                 </p>
 
                 <div class="profile__actions">
-                    <button type="button" class="profile__action" (click)="dialogservice.openDialog('edit-and-add-contact','edit' )">
+                    <button
+                        type="button"
+                        class="profile__action"
+                        (click)="dialogservice.openDialog('edit-and-add-contact', 'edit')"
+                    >
                         <img src="./assets/icons/edit.png" alt="" />
                         <span>Edit</span>
                     </button>
 
-                    <app-delete-profile [profile]="selectedProfile" buttonStyle="profile" />
+                    <button
+                        type="button"
+                        class="profile__action"
+                        (click)="profileDeletion.deleteProfile(selectedProfile)"
+                        [disabled]="profileDeletion.deleting()"
+                    >
+                        <img src="./assets/icons/delete.png" alt="" />
+
+                        <span>
+                            {{ profileDeletion.deleting() ? 'Deleting...' : 'Delete' }}
+                        </span>
+                    </button>
                 </div>
             </div>
         </header>
@@ -58,4 +73,5 @@
             </div>
         </section>
     </article>
+    <app-confirmation />
 }

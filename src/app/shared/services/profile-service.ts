@@ -17,8 +17,8 @@ const PROFILE_COLUMNS = `
 })
 export class ProfileService {
     // Get access to the shared Supabase connection.
-private readonly database = inject(DatabaseService);
-    
+    private readonly database = inject(DatabaseService);
+
     readonly profiles = signal<Profile[]>([]);
 
     readonly profilesLoading = signal(false);
@@ -55,9 +55,9 @@ private readonly database = inject(DatabaseService);
 
         try {
             const { data, error } = await this.database.client
-            .from('profiles')
-            .select(PROFILE_COLUMNS)
-            .order('user_name');
+                .from('profiles')
+                .select(PROFILE_COLUMNS)
+                .order('user_name');
 
             if (error) {
                 console.error('Supabase error:', error);
@@ -119,10 +119,10 @@ private readonly database = inject(DatabaseService);
     //Create a new dummy contact
     async createProfile(changes: ProfileChanges): Promise<Profile> {
         const { data, error } = await this.database.client
-        .from('profiles')
-        .insert({ ...changes, user_role:'dummy' })
-        .select(PROFILE_COLUMNS)
-        .single();
+            .from('profiles')
+            .insert({ ...changes, user_role: 'dummy' })
+            .select(PROFILE_COLUMNS)
+            .single();
 
         if (error) {
             console.error('The Profile could not be created:', error);
@@ -158,12 +158,7 @@ private readonly database = inject(DatabaseService);
         return data as Profile;
     }
 
-    // Delete a dummy profile.
-    //
-    // The second filter makes sure that this method
-    // cannot delete a normal user profile.
-    // TODO: Important: the Angular filter is helpful, but the Supabase RLS policy must enforce the same rule.
-    async deleteDummyProfile(profileId: string): Promise<void> {
+    async deleteProfile(profileId: string): Promise<void> {
         const { data, error } = await this.database.client
             .from('profiles')
             .delete()
@@ -171,20 +166,22 @@ private readonly database = inject(DatabaseService);
             .eq('user_role', 'dummy')
             .select('id');
 
-        // Stop when Supabase rejects the request.
         if (error) {
-            console.error('The dummy profile could not be deleted:', error);
-
+            console.error('The profile could not be deleted:', error);
             throw error;
         }
 
-        // Supabase returns an empty array when no row was deleted.
         if (!data || data.length === 0) {
             throw new Error('No dummy profile was deleted.');
         }
 
-        // Tell the user list to load its data again.
-        this.notifyProfilesChanged();
+        // Remove the deleted profile from the local list.
+        this.profiles.update((profiles) => profiles.filter((profile) => profile.id !== profileId));
+
+        // Clear the selected profile when it was deleted.
+        if (this.selectedProfile()?.id === profileId) {
+            this.selectedProfile.set(null);
+        }
     }
 
     // Tell the user list that its data has changed.

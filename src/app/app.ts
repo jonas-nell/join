@@ -4,11 +4,10 @@ import { NavBar } from "./layout/nav-bar/nav-bar";
 import { Header } from "./layout/header/header";
 import { NavigationHistoryService } from './shared/services/navigation-history.service';
 import { Notification } from './shared/components/notification/notification/notification';
-import { ConfirmationDialog } from './shared/components/confirmation/confirmation/confirmation';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavBar, Header, Notification, ConfirmationDialog],
+  imports: [RouterOutlet, NavBar, Header, Notification],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

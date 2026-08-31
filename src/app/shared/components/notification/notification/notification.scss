@@ -5,8 +5,8 @@
 
     position: fixed;
     right: 50%;
-    bottom: calc(12dvh + px-to-rem(24));
-    z-index: 15;
+    bottom: calc(10dvh + px-to-rem(24));
+    z-index: 1500;
 
     width: min(calc(100% - px-to-rem(32)), px-to-rem(500));
     padding: px-to-rem(24);

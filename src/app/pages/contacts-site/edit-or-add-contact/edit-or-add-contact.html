@@ -22,15 +22,20 @@
             </button>
 
             <div class="dialog-badge">
-                @if (dialogService.dialogMode() == 'edit' && profileService.selectedProfile(); as selected) {
-                    <app-user-badge class="user-badge"
-                    [userId]="selected.id"
-                    [userName]="selected.user_name"
-                    size="dialog"
-                    [active]="true" />
+                @if (
+                    dialogService.dialogMode() == 'edit' && profileService.selectedProfile();
+                    as selected
+                ) {
+                    <app-user-badge
+                        class="user-badge"
+                        [userId]="selected.id"
+                        [userName]="selected.user_name"
+                        size="dialog"
+                        [active]="true"
+                    />
                 } @else if (dialogService.dialogMode() == 'add') {
                     <div class="badge-default">
-                        <img src="./assets/icons/person-icon.svg" alt="">
+                        <img src="./assets/icons/person-icon.svg" alt="" />
                     </div>
                 }
             </div>
@@ -63,7 +68,13 @@
                         @if (email?.hasError('required') && email?.touched) {
                             <p>This field is required</p>
                         }
-                        @if ((email?.hasError('email') && email?.touched || email?.hasError('pattern') || email?.hasError('tooManyDots') || email?.hasError('adjacentSpecialCharacters')) && email?.touched) {
+                        @if (
+                            ((email?.hasError('email') && email?.touched) ||
+                                email?.hasError('pattern') ||
+                                email?.hasError('tooManyDots') ||
+                                email?.hasError('adjacentSpecialCharacters')) &&
+                            email?.touched
+                        ) {
                             <p>Please use a valid email</p>
                         }
                     </div>
@@ -88,17 +99,30 @@
                 <div class="buttons">
                     @if (dialogService.dialogMode() == 'edit') {
                         @if (profileService.selectedProfile(); as selected) {
-                            <app-delete-profile #deleteTrigger [profile] ="selected" [showButton]="false" />
-                            <button class="button button-primary" type="button" (click)="deleteTrigger.openConfirmation()">Delete</button>
+                            <button
+                                class="button button-primary"
+                                type="button"
+                                (click)="profileDeletion.deleteProfile(selected)"
+                                [disabled]="profileDeletion.deleting()"
+                            >
+                                {{ profileDeletion.deleting() ? 'Deleting...' : 'Delete' }}
+                            </button>
                         }
                         <button class="button button-secondary" type="submit">Save</button>
                     }
                     @if (dialogService.dialogMode() == 'add') {
-                        <button class="button button-primary" type="button" (click)="dialogService.closeDialog()">Cancel</button>
+                        <button
+                            class="button button-primary"
+                            type="button"
+                            (click)="dialogService.closeDialog()"
+                        >
+                            Cancel
+                        </button>
                         <button class="button button-secondary" type="submit">Create</button>
                     }
                 </div>
             </form>
         </section>
     </div>
+    <app-confirmation />
 </dialog>

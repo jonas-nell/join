@@ -3,16 +3,17 @@ import { ActivatedRoute } from '@angular/router';
 import { Profile } from '../../../shared/interfaces/profile';
 // import { createProfileColor, createProfileInitials } from '../../../shared/helpers/profile-helper';
 import { ProfileService } from '../../../shared/services/profile-service';
-import { DeleteProfile } from '../../../shared/components/delete-profile/delete-profile';
+// import { DeleteProfile } from '../../../shared/components/delete-profile/delete-profile';
 import { UserBadge } from '../../../shared/components/user-badge/user-badge';
 import { DialogService } from '../../../shared/services/dialog-service';
 import { retry } from 'rxjs';
-
+import { ProfileDeletionService } from '../../../shared/services/profile-deletion-service';
+import { ConfirmationDialog } from '../../../shared/components/confirmation/confirmation/confirmation';
 
 @Component({
     selector: 'app-user-profile',
     standalone: true,
-    imports: [DeleteProfile, UserBadge],
+    imports: [UserBadge, ConfirmationDialog],
     templateUrl: './user-profile.html',
     styleUrl: './user-profile.scss',
 })
@@ -20,7 +21,7 @@ export class UserProfile implements OnInit {
     private readonly route = inject(ActivatedRoute);
 
     private readonly profileService = inject(ProfileService);
-
+    readonly profileDeletion = inject(ProfileDeletionService);
     // // Store the selected profile.
     // readonly profile = signal<Profile | null>(null);
 
@@ -34,8 +35,8 @@ export class UserProfile implements OnInit {
     readonly profile = computed(() => {
         const id = this.profileId();
 
-        return id ? this.profileService.getCachedProfileById(id) ?? null : null;
-    })
+        return id ? (this.profileService.getCachedProfileById(id) ?? null) : null;
+    });
 
     readonly profileList = computed(() => {
         const selectedProfile = this.profile();
