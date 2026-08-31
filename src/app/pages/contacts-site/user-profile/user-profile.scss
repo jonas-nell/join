@@ -27,7 +27,6 @@ app-user-badge {
     }
 }
 
-
 // Style the selected username.
 .profile__name {
     @include font-inter(medium, 26, 3vw, 40);
@@ -86,7 +85,7 @@ app-user-badge {
         margin: 0;
         padding: distance(30, 25);
 
-        animation: profile-slide-in 0.15s ease-out;
+        @include slide-in($duration: 250ms, $from-x: 100%);
     }
 
     .profile__header {
@@ -124,11 +123,11 @@ app-user-badge {
     }
 }
 
-@keyframes profile-slide-in {
-    from {
-        transform: translateX(100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
+// @keyframes profile-slide-in {
+//     from {
+//         transform: translateX(100%);
+//     }
+//     to {
+//         transform: translateX(0);
+//     }
+// }

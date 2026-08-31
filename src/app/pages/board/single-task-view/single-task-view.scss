@@ -1,5 +1,11 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
+dialog[open] {
+    @include desktop {
+        @include slide-in($duration: 150ms, $from-x: 100%);
+    }
+}
+
 dialog {
     max-width: 100vw;
     max-height: 100dvh;
@@ -28,6 +34,7 @@ dialog {
     @include flex($direction: column, $justify: start, $align: stretch);
 
     @include tablet {
+        min-width: px-to-rem(525);
         padding: px-to-rem(25);
     }
 
@@ -259,16 +266,14 @@ dialog {
 
     .dialog-actions {
         margin-top: px-to-rem(20);
-        @include flex($direction: row, $justify: end, $gap: 10);
+        @include flex($direction: row, $justify: end, $gap: 15);
 
         button {
-            padding: 0;
-            border: 0;
-            background: transparent;
+            width: 75px;
             color: $dark;
             cursor: pointer;
             transition: transform 150ms ease;
-            @include flex($direction: row, $gap: 5);
+            @include flex($direction: row, $justify: start, $gap: 5);
 
             img {
                 width: px-to-rem(16);
@@ -278,7 +283,7 @@ dialog {
 
             &:hover {
                 font-weight: bold;
-                transform: scale(1.08);
+                transform: scale(1.03);
             }
         }
 

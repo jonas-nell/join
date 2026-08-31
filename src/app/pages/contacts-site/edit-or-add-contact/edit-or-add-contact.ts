@@ -7,11 +7,12 @@ import { ProfileService } from '../../../shared/services/profile-service';
 // import { DeleteProfile } from "../../../shared/components/delete-profile/delete-profile";
 import { NotificationService } from '../../../shared/services/notification-service';
 import { ProfileChanges } from '../../../shared/interfaces/profile';
-import { UserBadge } from "../../../shared/components/user-badge/user-badge";
+import { UserBadge } from '../../../shared/components/user-badge/user-badge';
 import { Router } from '@angular/router';
 import { advancedEmailValidator } from '../../../shared/helpers/advancedEmailValidator';
 import { ProfileDeletionService } from '../../../shared/services/profile-deletion-service';
 import { ConfirmationDialog } from '../../../shared/components/confirmation/confirmation/confirmation';
+import { ConfirmationService } from '../../../shared/services/confirmation-service';
 
 @Component({
     selector: 'app-edit-or-add-contact',
@@ -22,6 +23,9 @@ import { ConfirmationDialog } from '../../../shared/components/confirmation/conf
 export class EditOrAddContact {
     fb = inject(FormBuilder);
     dialogService = inject(DialogService);
+
+    // Daniel:
+    private readonly confirmationService = inject(ConfirmationService);
     private readonly router = inject(Router);
 
     readonly profileService = inject(ProfileService);
@@ -29,12 +33,30 @@ export class EditOrAddContact {
     readonly profileDeletion = inject(ProfileDeletionService);
 
     contactForm = this.fb.nonNullable.group({
-        name: ['', [Validators.required, minLengthWithoutSpaces(2), Validators.pattern(/^[\p{L}\p{M}]+(?:[ '’-][\p{L}\p{M}]+)*$/u)]],
-        email: ['', [Validators.required, Validators.email, Validators.pattern(/\.[a-zA-Z]{2,}$/), advancedEmailValidator()]],
-        phone: ['', [Validators.required, minLengthWithoutSpaces(8), Validators.pattern(/^\+?[0-9 ]+$/)]],
+        name: [
+            '',
+            [
+                Validators.required,
+                minLengthWithoutSpaces(2),
+                Validators.pattern(/^[\p{L}\p{M}]+(?:[ '’-][\p{L}\p{M}]+)*$/u),
+            ],
+        ],
+        email: [
+            '',
+            [
+                Validators.required,
+                Validators.email,
+                Validators.pattern(/\.[a-zA-Z]{2,}$/),
+                advancedEmailValidator(),
+            ],
+        ],
+        phone: [
+            '',
+            [Validators.required, minLengthWithoutSpaces(8), Validators.pattern(/^\+?[0-9 ]+$/)],
+        ],
     });
 
-    constructor(){
+    constructor() {
         effect(() => {
             const isThisDialogOpen = this.dialogService.dialogOpen() === 'edit-and-add-contact';
 
@@ -46,20 +68,20 @@ export class EditOrAddContact {
         });
     }
 
-    get name(){
+    get name() {
         return this.contactForm.get('name');
     }
 
-    get email(){
-        return this.contactForm.get('email')
+    get email() {
+        return this.contactForm.get('email');
     }
 
-    get phone(){
-        return this.contactForm.get('phone')
+    get phone() {
+        return this.contactForm.get('phone');
     }
-    
+
     // beim öffnen daten des zu bearbeitenden contacts einfügen
-    fillEditForm(){
+    fillEditForm() {
         if (this.dialogService.dialogMode() == 'edit') {
             const selected = this.profileService.selectedProfile();
 
@@ -71,7 +93,7 @@ export class EditOrAddContact {
                 name: selected.user_name,
                 email: selected.user_email,
                 phone: selected.user_phone ?? '',
-            });            
+            });
         }
     }
 
@@ -93,7 +115,6 @@ export class EditOrAddContact {
             user_email: values.email,
             user_phone: values.phone || null,
         };
-        
 
         try {
             if (this.dialogService.dialogMode() === 'edit') {
@@ -117,5 +138,30 @@ export class EditOrAddContact {
         } catch (error) {
             this.notificationService.error('The contact could not be saved. Please try again.');
         }
+    }
+
+    // Daniel
+    async handleBackdropClick(event: MouseEvent): Promise<void> {
+        // event.target is the element that was clicked,
+        // event.currentTarget is the dialog that has this click handler.
+        //
+        // If they are different, the user clicked something inside the dialog,
+        // such as an input or button. In that case, do nothing.
+        if (event.target !== event.currentTarget) {
+            return;
+        }
+
+        // The user clicked directly on the dialog backdrop.
+        await this.confirmationService.confirmUnsavedChanges(
+            // True when the user changed at least one form field.
+            this.contactForm.dirty,
+
+            // This function runs when the user chooses to save.
+            () => this.formSubmit(),
+
+            // This function runs when there are no changes
+            // or the user chooses to discard them.
+            () => this.dialogService.closeDialog(),
+        );
     }
 }
