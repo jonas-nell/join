@@ -18,6 +18,7 @@ export class Taskmanagement {
     private readonly database = inject(DatabaseService);
     taskInsertChannel: RealtimeChannel | undefined;
     taskUpdateChannel: RealtimeChannel | undefined;
+    subtaskUpdateChannel: RealtimeChannel | undefined;
     //#endregion
 
     tasksRequested = false;
@@ -26,6 +27,7 @@ export class Taskmanagement {
     readonly tasksError = signal('');
 
     tasks = signal<Task[]>([]);
+    subtasks = signal<Record<number, Subtask[]>>({});
     currentTaskId = signal<number | null>(null);
     currentTask: Signal<Task | null> = computed(
         () => this.tasks().find((task) => task.TASK_ID === this.currentTaskId()) ?? null,
@@ -58,6 +60,7 @@ export class Taskmanagement {
     constructor() {
         this.subscribeInsert();
         this.subscribeUpdate();
+        this.subscribeSubtaskUpdate();
     }
 
     ngOnDestroy() {
@@ -104,6 +107,36 @@ export class Taskmanagement {
             )
             .subscribe();
     }
+
+    subscribeSubtaskUpdate() {
+        this.subtaskUpdateChannel = this.database.client
+            .channel('custom-subtask-update-channel')
+            .on(
+                'postgres_changes',
+                {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    table: 'subtasks',
+                },
+                (payload) => {
+                    const changes = payload.new as Subtask;
+                    const taskId = changes.task_id;
+                    if (taskId === undefined) {
+                        return;
+                    }
+
+                    this.subtasks.update((subtasks) => ({
+                        ...subtasks,
+                        [taskId]: (subtasks[taskId] ?? []).map((subtask) =>
+                            subtask.id === changes.id ? changes : subtask,
+                        ),
+                    }));
+                    console.log('Change received!', payload);
+                },
+            )
+            .subscribe();
+    }
+
     //#endregion
 
     //#region unsubscribe
@@ -209,8 +242,8 @@ export class Taskmanagement {
             }
 
             this.tasks.set(data ?? []);
-            await this.setSubtasks();
-            console.log(this.tasks());
+            // await this.setSubtasks();
+            await this.loadAllSubtasks();
 
             this.tasksRequested = true; //prevent loading issues
         } catch (error) {
@@ -222,48 +255,41 @@ export class Taskmanagement {
         }
     }
 
-    // Get profile IDs assigned to the task
-    async loadTaskProfileIds(taskId: number): Promise<string[]> {
-        const { data, error } = await this.database.client
-            .from('tasks_profiles')
-            .select('user_id')
-            .eq('task_id', taskId);
-
-        if (error) {
-            console.error('The assignments could not be loaded:', error);
-            throw error;
-        }
-
-        return (data ?? []).map((assignment) => assignment.user_id);
-    }
-
-    // holt für jeden task die subtasks von der DB und speichert sie lokal im signal tasks
-    async setSubtasks() {
-        const tasksWithSubtasks = await Promise.all(
-            this.tasks().map(async (task) => ({
-                ...task,
-                subtasks: await this.loadSubtasks(task.TASK_ID),
-            })),
-        );
-        this.tasks.set(tasksWithSubtasks);
-    }
-
-    // Get subtasks assigned to the task
-    async loadSubtasks(taskId: number): Promise<Subtask[]> {
-        const { data, error } = await this.database.client
-            .from('subtasks')
-            .select('*')
-            .eq('task_id', taskId)
-            .order('id');
+    // loads all subtasks from db into subtasks() signal
+    async loadAllSubtasks(): Promise<void> {
+        const { data, error } = await this.database.client.from('subtasks').select('*').order('id');
 
         if (error) {
             console.error('The subtasks could not be loaded:', error);
             throw error;
         }
 
-        return data ?? [];
+        const groupedSubtasks: Record<number, Subtask[]> = {};
+
+        for (const subtask of data ?? []) {
+            const taskId = subtask.task_id;
+
+            if (!groupedSubtasks[taskId]) {
+                groupedSubtasks[taskId] = [];
+            }
+
+            groupedSubtasks[taskId].push(subtask);
+        }
+
+        this.subtasks.set(groupedSubtasks);
     }
 
+    // updates subtasks() signal 
+    updateSubtasks(subtaskId: number, taskId: number, changes: Partial<Subtask>) {
+        this.subtasks.update((subtasks) => ({
+            ...subtasks,
+            [taskId]: (subtasks[taskId] ?? []).map((subtask) =>
+                subtask.id === subtaskId ? { ...subtask, ...changes } : subtask,
+            ),
+        }));
+    }
+
+    // updated subtask in db
     async updateSubtaskDone(subtaskId: number, subtaskDone: boolean): Promise<void> {
         const { error } = await this.database.client
             .from('subtasks')
@@ -277,15 +303,15 @@ export class Taskmanagement {
     }
 
     async deleteTask(taskId: number): Promise<void> {
+        // Remove the deleted task from the board signal...
+        this.tasks.update((tasks) => tasks.filter((task) => task.TASK_ID !== taskId));
+
         const { error } = await this.database.client.from('tasks').delete().eq('TASK_ID', taskId);
 
         if (error) {
             console.error('The task could not be deleted:', error);
             throw error;
         }
-
-        // Remove the deleted task from the board signal...
-        this.tasks.update((tasks) => tasks.filter((task) => task.TASK_ID !== taskId));
     }
 
     async ensureTasksLoaded(forceReload = false): Promise<void> {
@@ -313,14 +339,14 @@ export class Taskmanagement {
             .select(TASK_COLUMNS)
             .single();
 
-        // Stop when Supabase cannot update the profile.
+        // Stop when Supabase cannot update the task.
         if (error) {
             console.error('The task could not be updated:', error);
 
             throw error;
         }
 
-        // Return the updated profile.
+        // Return the updated task.
         return data as Task;
     }
 
@@ -332,9 +358,9 @@ export class Taskmanagement {
             .select(STATUS_COLUMNS)
             .single();
 
-        // Stop when Supabase cannot update the profile.
+        // Stop when Supabase cannot update the status.
         if (error) {
-            console.error('The profile could not be updated:', error);
+            console.error('The status could not be updated:', error);
 
             throw error;
         }
@@ -420,4 +446,3 @@ export class Taskmanagement {
     //#endregion
     //#endregion
 }
-

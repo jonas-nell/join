@@ -11,6 +11,7 @@ import { ConfirmationService } from '../../../shared/services/confirmation-servi
 import { DialogService } from '../../../shared/services/dialog-service';
 import { Dialog } from '../../../shared/directives/dialog-directive';
 import { ConfirmationDialog } from "../../../shared/components/confirmation/confirmation/confirmation";
+import { TaskMembers } from '../../../shared/services/task-members';
 
 @Component({
     selector: 'app-single-task-view',
@@ -22,6 +23,7 @@ export class SingleTaskView implements OnInit {
     readonly taskmanagement = inject(Taskmanagement);
     readonly profileService = inject(ProfileService);
     readonly dialogService = inject(DialogService);
+    readonly taskmembers = inject(TaskMembers);
     private readonly confirmationService = inject(ConfirmationService);
     private readonly notificationService = inject(NotificationService);
 
@@ -32,7 +34,9 @@ export class SingleTaskView implements OnInit {
     readonly deleting = signal(false);
     readonly errorMessage = signal('');
 
-    async ngOnInit(): Promise<void> {}
+    async ngOnInit(): Promise<void> {
+        await this.profileService.ensureProfilesLoaded();
+    }
     // async loadDialogData(): Promise<void> {
     //     this.loading.set(true);
 
@@ -60,33 +64,22 @@ export class SingleTaskView implements OnInit {
         const checkbox = event.target as HTMLInputElement;
         const previousValue = subtask.subtask_done;
         const newValue = checkbox.checked;
+        const taskId = this.taskmanagement.currentTask()?.TASK_ID;
 
-        if (subtask.id) {
+        if (subtask.id && taskId) {
             // Update the displayed checkbox immediately.
-            this.setLocalSubtaskValue(subtask.id, newValue);
+            this.taskmanagement.updateSubtasks(subtask.id, taskId, { subtask_done: newValue });
 
             try {
                 await this.taskmanagement.updateSubtaskDone(subtask.id, newValue);
             } catch {
                 // Restore the previous value when saving fails.
-                this.setLocalSubtaskValue(subtask.id, previousValue);
+                this.taskmanagement.updateSubtasks(subtask.id, taskId, {
+                    subtask_done: previousValue,
+                });
                 this.errorMessage.set('The subtask could not be saved.');
             }
         }
-    }
-
-    private setLocalSubtaskValue(subtaskId: number, taskDone: boolean): void {
-        this.taskmanagement.tasks.update((tasks) =>
-            tasks.map((task) =>
-                task.TASK_ID === this.taskmanagement.currentTask()?.TASK_ID
-                    ? {...task, subtasks: task.subtasks?.map((subtask) =>
-                            subtask.id === subtaskId
-                                ? { ...subtask, subtask_done: taskDone }
-                                : subtask,
-                            ),
-                        } : task,
-            ),
-        );        
     }
 
     closeDialog(): void {

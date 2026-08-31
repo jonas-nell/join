@@ -28,18 +28,19 @@
         </div>
         
         <div class="card-bottom">
-            <!-- <div class="assigned-to">
-                @for (profile of visibleProfiles(); track profile.id) {
+            <div class="assigned-to">
+            @for (memberId of taskmembers.taskMembers()[task().TASK_ID]; track $index) {
+                @if ($index < 3) {
                     <app-user-badge
                         class="badge"
-                        [userId]="profile.id"
-                        [userName]="profile.user_name"
+                        [userId]="memberId"
+                        [userName]="profileServicce.getProfileName(memberId)"
                     />
+                } @else if($index == 3) {
+                    <div class="badge more-indicator">+{{ taskmembers.taskMembers()[task().TASK_ID].length - 3 }}</div>
                 }
-                @if (hiddenProfilesCount() > 0) {
-                    <div class="badge more-indicator">+{{ hiddenProfilesCount() }}</div>
-                }
-            </div> -->
+            }
+        </div>
             <img class="priority-icon" [src]="priorityIcon()" alt="" />
         </div>
     </div>

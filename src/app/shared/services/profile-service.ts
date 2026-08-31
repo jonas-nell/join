@@ -34,6 +34,10 @@ export class ProfileService {
 
     private profilesResquest: Promise<void> | null = null;
 
+    getProfileName(profileId: string): string{
+        return this.profiles().find(profile => profile.id === profileId)?.user_name ?? 'not found';
+    }
+
     async ensureProfilesLoaded(forceReload = false): Promise<void> {
         if (!forceReload && this.profilesRequested) {
             if (this.profilesResquest) {
