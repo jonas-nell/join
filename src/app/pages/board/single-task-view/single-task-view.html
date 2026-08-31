@@ -14,15 +14,14 @@
                 tabindex="0"
                 [attr.data-tooltip]="task.task_title"
             >
-
-            <h2 id="task-dialog-title">
-                {{ task.task_title }}
-            </h2>
+                <h2 id="task-dialog-title">
+                    {{ task.task_title }}
+                </h2>
             </div>
 
-                <p class="description" [class.is-empty]="!task.task_description">
-                    {{ task.task_description }}
-                </p>
+            <p class="description" [class.is-empty]="!task.task_description">
+                {{ task.task_description }}
+            </p>
 
             <table class="task-details">
                 <tbody>
@@ -38,15 +37,15 @@
                         <td class="detail-value priority-value">
                             <span> {{ task.task_priority }}</span>
 
-                        <span class="priority">
-                            @switch (task.task_priority) {
-                                @case ('low') {
-                                    <img src="./assets/icons/Prio low.png" alt="" />
-                                }
+                            <span class="priority">
+                                @switch (task.task_priority) {
+                                    @case ('low') {
+                                        <img src="./assets/icons/Prio low.png" alt="" />
+                                    }
 
-                                @case ('medium') {
-                                    <img src="./assets/icons/Prio medium.png" alt="" />
-                                }
+                                    @case ('medium') {
+                                        <img src="./assets/icons/Prio medium.png" alt="" />
+                                    }
 
                                     @case ('urgent') {
                                         <img src="./assets/icons/Prio urgent.png" alt="" />
@@ -61,15 +60,17 @@
             <section class="section-assignedTo">
                 <h3>Assigned To:</h3>
 
-                <!-- <div class="profile-list">
-                    @for (profile of profiles(); track profile.id) {
+                <div class="profile-list">
+                    @for (memberId of taskmembers.taskMembers()[task.TASK_ID]; track $index) {
                         <div class="profile">
-                            <app-user-badge [userId]="profile.id" [userName]="profile.user_name" />
-
-                            <span>{{ profile.user_name }}</span>
+                            <app-user-badge
+                                [userId]="memberId"
+                                [userName]="profileService.getProfileName(memberId)"
+                            />
+                            <span>{{ profileService.getProfileName(memberId) }}</span>
                         </div>
                     }
-                </div> -->
+                </div>
             </section>
 
             <section class="section-subtaskList">

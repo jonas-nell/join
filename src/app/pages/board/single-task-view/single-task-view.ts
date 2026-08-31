@@ -10,6 +10,7 @@ import { NotificationService } from '../../../shared/services/notification-servi
 import { ConfirmationService } from '../../../shared/services/confirmation-service';
 import { DialogService } from '../../../shared/services/dialog-service';
 import { Dialog } from '../../../shared/directives/dialog-directive';
+import { TaskMembers } from '../../../shared/services/task-members';
 
 @Component({
     selector: 'app-single-task-view',
@@ -21,6 +22,7 @@ export class SingleTaskView implements OnInit {
     readonly taskmanagement = inject(Taskmanagement);
     readonly profileService = inject(ProfileService);
     readonly dialogService = inject(DialogService);
+    readonly taskmembers = inject(TaskMembers);
     private readonly confirmationService = inject(ConfirmationService);
     private readonly notificationService = inject(NotificationService);
 
@@ -31,7 +33,9 @@ export class SingleTaskView implements OnInit {
     readonly deleting = signal(false);
     readonly errorMessage = signal('');
 
-    async ngOnInit(): Promise<void> {}
+    async ngOnInit(): Promise<void> {
+        await this.profileService.ensureProfilesLoaded();
+    }
     // async loadDialogData(): Promise<void> {
     //     this.loading.set(true);
 
