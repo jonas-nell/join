@@ -266,10 +266,10 @@ dialog {
 
     .dialog-actions {
         margin-top: px-to-rem(20);
-        @include flex($direction: row, $justify: end, $gap: 10);
+        @include flex($direction: row, $justify: end, $gap: 15);
 
         button {
-            width: 70px;
+            width: 75px;
             color: $dark;
             cursor: pointer;
             transition: transform 150ms ease;

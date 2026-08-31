@@ -1,4 +1,11 @@
-<dialog appDialog="edit-and-add-contact" class="contactDialog">
+<!-- Daniel -->
+<!-- <dialog appDialog="edit-and-add-contact" class="contactDialog"> -->
+<dialog
+    appDialog="edit-and-add-contact"
+    class="contactDialog"
+    [closeOnBackdrop]="false"
+    (click)="handleBackdropClick($event)"
+>
     <div class="dialog-wrpr">
         <section class="part part-top">
             <img class="dialog-logo" src="./assets/icons/logo.svg" alt="" />
