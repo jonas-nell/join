@@ -60,3 +60,13 @@ button,
 a {
     cursor: pointer;
 }
+
+.cdk-drag-preview {
+    perspective: 800px;
+}
+
+.cdk-drag-preview .task-card-body {
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    transform: scale(1.05) rotateY(30deg);
+    box-shadow: 0px 12px 24px 4px rgba(0, 0, 0, 0.2);
+}

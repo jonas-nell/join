@@ -33,22 +33,22 @@ export class Taskmanagement {
 
     //#region taskstatus computed
     todo = computed(() =>
-        [...this.tasks()]
+        [...this.filteredTasks()]
             .filter((t) => t.task_status === 'To do')
             .sort((a, b) => a.order_index - b.order_index),
     );
     progress = computed(() =>
-        [...this.tasks()]
+        [...this.filteredTasks()]
             .filter((t) => t.task_status === 'In progress')
             .sort((a, b) => a.order_index - b.order_index),
     );
     feedback = computed(() =>
-        [...this.tasks()]
+        [...this.filteredTasks()]
             .filter((t) => t.task_status === 'Await feedback')
             .sort((a, b) => a.order_index - b.order_index),
     );
     done = computed(() =>
-        [...this.tasks()]
+        [...this.filteredTasks()]
             .filter((t) => t.task_status === 'Done')
             .sort((a, b) => a.order_index - b.order_index),
     );
@@ -387,6 +387,32 @@ export class Taskmanagement {
         await this.updateStatus(task.TASK_ID, { task_status: newStatus });
         await this.updateOrderIndices(updates);
     }
+
+    
+    // Search tasks by name and descrition
+
+    // Contains the text entered into the search field on the board
+    readonly searchTerm = signal('');
+
+     // Show all tasks until at least three characters were entered
+    // After that, title and description are searched through
+    readonly filteredTasks = computed(() => {
+        const searchText = this.searchTerm().trim().toLowerCase();
+
+        if (searchText.length < 3) {
+            return this.tasks();
+        }
+
+        return this.tasks().filter((task) => {
+            const title = task.task_title?.toLowerCase() ?? '';
+            const description = task.task_description?.toLowerCase() ?? '';
+
+            return title.includes(searchText) || description.includes(searchText);
+        });
+    });
+
+    // True while a search filter is active.
+    readonly isSearchActive = computed(() => this.searchTerm().trim().length >= 3);
 
     setCurrentTask(taskId: number | null) {
         this.currentTaskId.set(taskId);
