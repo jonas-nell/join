@@ -2,9 +2,7 @@
     <div class="board-top">
         <h2>Board</h2>
         <app-search-bar></app-search-bar>
-        <app-add-task-button
-            (click)="dialogService.openDialog('task-form', 'edit')"
-        ></app-add-task-button>
+        <app-add-task-button></app-add-task-button>
     </div>
     <div class="board-middle" cdkDropListGroup>
         <div class="task-container">
