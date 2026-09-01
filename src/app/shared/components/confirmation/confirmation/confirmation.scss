@@ -4,9 +4,10 @@
     position: fixed;
     inset: 0;
     z-index: 1000;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.2);
     @include flex();
 
+    
     .confirmation-dialog {
     @include font-inter(bold, 20, 20px, 20);
     position: fixed;
@@ -22,7 +23,7 @@
     background-color: #dcfce7;
     border: 2px solid #07481f;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
 
     transform: translateX(50%);
 

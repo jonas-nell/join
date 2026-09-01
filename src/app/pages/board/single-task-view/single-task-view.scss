@@ -1,21 +1,41 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-dialog[open] {
-    @include desktop {
-        @include slide-in($duration: 150ms, $from-x: 100%);
-    }
-}
+// dialog[open] {
+//     @include flex();
+//     @include desktop {
+//         @include slide-in($duration: 150ms, $from-x: 100%);
+//     }
+// }
 
 dialog {
-    max-width: 100vw;
-    max-height: 100dvh;
-    margin: auto;
+    width: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
     position: fixed;
     inset: 0;
     padding: px-to-rem(15);
-    &::backdrop {
-        background: rgb(0 0 0 / 20%);
+
+    // Keeps the layout centered during closing.
+    @include flex();
+
+    // Mobile: from and to the bottom.
+    @include dialog-slide-in-out($from-y: 100%, $duration: 500ms, $backdrop: true);
+
+    // Desktop: from and to the right.
+    @include desktop {
+        @include dialog-slide-in-out($from-x: 100%, $duration: 500ms, $backdrop: true);
     }
+
+    // &::backdrop {
+    //     background: rgb(0 0 0 / 30%);
+    // }
+}
+
+// Final state after the closing transition.
+.dialog-backdrop:not([open]) {
+    display: none;
 }
 
 .task-dialog {

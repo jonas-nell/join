@@ -4,11 +4,12 @@
     @include font-inter(bold, 20, 20px, 20);
 
     position: fixed;
+    inset: auto;
     right: 50%;
     bottom: calc(10dvh + px-to-rem(24));
-    z-index: 1500;
 
     width: min(calc(100% - px-to-rem(32)), px-to-rem(500));
+    margin: 0;
     padding: px-to-rem(24);
 
     text-align: center;
@@ -19,15 +20,14 @@
     transform: translateX(50%);
 
     &.success {
-         color: #166534;
+        color: #166534;
         border: 1px solid #86efac;
         background-color: #dcfce7;
     }
 
     &.error {
-         color: #df2c38;
+        color: #df2c38;
         border: 1px solid #fc1b2a;
         background: #faabab;
     }
 }
-
