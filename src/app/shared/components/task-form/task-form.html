@@ -2,173 +2,221 @@
     <h1>Add Task</h1>
 
     <form [formGroup]="taskForm" (ngSubmit)="createTask()">
-        <!-- Title -->
-        <div>
-            <label for="title">Title<span>*</span></label>
-            <input id="title" type="text" formControlName="task_title" />
-        </div>
-
-        <!-- Description -->
-        <div>
-            <label for="description">Description></label>
-            <textarea id="description" formControlName="task_description"></textarea>
-        </div>
-
-        <!-- due date -->
-        <div>
-            <label for="due-date">Due date<span>*</span></label>
-            <input id="due-date" type="date" formControlName="task_due_date" />
-        </div>
-
-        <!-- priority -->
-        <div>
-            <p>Priority</p>
-            @for (prio of priorities; track $index) {
-                <label for="{{ prio.for }}" class="radio-option">
+        <div class="form-columns">
+            <div class="form-column form-column--left">
+                <!-- Title -->
+                <div>
+                    <label for="title">Title<span class="req">*</span></label>
                     <input
-                        type="radio"
-                        value="{{ prio.value }}"
-                        id="{{ prio.optionId }}"
-                        formControlName="task_priority"
+                        id="title"
+                        type="text"
+                        formControlName="task_title"
+                        placeholder="Enter a title"
                     />
-                    <div class="prio-wrpr">
-                        <span>{{ prio.text }}</span>
-                        <img src="{{ prio.imgUrl }}" alt="{{ prio.imgAlt }}" />
+                    <div class="error-field">
+                        @if (task_title?.invalid && task_title.touched) {
+                            <span class="error-message">Title required</span>
+                        }
                     </div>
-                </label>
-            }
-            <!-- <label for="option-urgent" class="radio-option">
-                <input type="radio" value="urgent" id="option-urgent" />
-                <div class="prio-wrpr">
-                    <span>Urgent</span>
-                    <img src="./assets/icons/Prio urgent.png" alt="priority urgent icon" />
                 </div>
-            </label>
-            <label for="option-medium" class="radio-option">
-                <input type="radio" value="medium" id="option-medium" />
-                <div class="prio-wrpr">
-                    <span>Medium</span>
-                    <img src="./assets/icons/Prio medium.png" alt="priority medium icon" />
+        
+                <!-- Description -->
+                <div>
+                    <label for="description">Description</label>
+                    <textarea
+                        id="description"
+                        formControlName="task_description"
+                        placeholder="Enter a description"
+                    ></textarea>
                 </div>
-            </label>
-            <label for="option-low" class="radio-option">
-                <input type="radio" value="low" id="option-low" />
-                <div class="prio-wrpr">
-                    <span>Low</span>
-                    <img src="./assets/icons/Prio low.png" alt="priority low icon" />
+        
+                <!-- due date -->
+                <div>
+                    <label for="due-date">Due date<span class="req">*</span></label>
+                    <input
+                        id="due-date"
+                        type="date"
+                        formControlName="task_due_date"
+                        placeholder="dd/mm/yyyy"
+                    />
+                    <div class="error-field">
+                        @if (task_due_date?.invalid && task_due_date.touched) {
+                            <span class="error-message">Due date required</span>
+                        }
+                    </div>
                 </div>
-            </label> -->
-        </div>
-
-        <!-- assigned to -->
-        <div>
-            <ng-select
-                [items]="profileService.profiles()"
-                [multiple]="true"
-                [closeOnSelect]="false"
-                bindLabel="name"
-                placeholder="Select contacts to assign"
-                [clearSearchOnAdd]="true"
-                formControlName="member"
-            >
-                <ng-template ng-multi-label-tmp> </ng-template>
-                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-                    <input id="item-{{ index }}" type="checkbox" [checked]="item$.selected" />
-
-                    {{ item.user_name }}
-                </ng-template>
-            </ng-select>
-        </div>
-
-        <!-- category -->
-        <div>
-            <p>Category</p>
-            <select formControlName="task_category">
-                <option value="" disabled>Select a category</option>
-                @for (category of categories; track $index) {
-                    <option [value]="category.name">{{ category.name }}</option>
-                }
-            </select>
-        </div>
-        <div class="subtask-input">
-            <div>
-                <label for="subtask">Subtask</label>
-                <input
-                    id="subtask"
-                    type="text"
-                    placeholder="Add new subtask"
-                    formControlName="subtaskInput"
-                />
-                <button (click)="clearSubtaskInput($event)">
-                    <img src="./assets/icons/btn-close-blue.svg" alt="button clear field" />
-                </button>
-                <button (click)="addSubtaskk($event)">
-                    <img src="./assets/icons/check.png" alt="add subtask" />
-                </button>
             </div>
-            <div>
-                <div class="subtasks" formArrayName="subtasks">
-                    @for (subtask of subTasks.controls; track subtask; let i = $index) {
-                        <div class="subtask" [formGroupName]="i">
-                            <!-- edit mode -->
-                            @if (editingSubtaskIndex === i) {
+            
+            <div class="form-separator"></div>
+
+            <div class="form-column form-column--right">
+                <!-- priority -->
+                <div class="prio-section">
+                    <p>Priority</p>
+                    <div class="btn-wrapper">
+                        @for (prio of priorities; track $index) {
+                            <label for="{{ prio.for }}" class="radio-option">
                                 <input
-                                    type="text"
-                                    formControlName="subtask_title"
-                                    class="subtask-edit-input"
-                                    (keydown)="onEditSubtaskKeydown($event, i)"
+                                    type="radio"
+                                    [attr.data-priority]="prio.value"
+                                    value="{{ prio.value }}"
+                                    id="{{ prio.optionId }}"
+                                    formControlName="task_priority"
                                 />
-
-                                <div class="subtask-actions">
-                                    <button type="button" (click)="saveSubtask(i)">
-                                        <img
-                                            src="./assets/icons/check.png"
-                                            alt="save edited subtask"
-                                        />
-                                    </button>
-                                    <button type="button" (click)="removeSubtask(i)">
-                                        <img
-                                            src="./assets/icons/delete.png"
-                                            alt="remove subtask icon"
-                                        />
-                                    </button>
+                                <div class="prio-wrpr">
+                                    <span>{{ prio.text }}</span>
+                                    <img
+                                        [src]="
+                                            task_priority?.value === prio.value
+                                                ? prio.imgUrlWhite
+                                                : prio.imgUrl
+                                        "
+                                        alt="{{ prio.imgAlt }}"
+                                    />
                                 </div>
-                            }
-
-                            <!-- view mode -->
-                            @else {
-                                <span class="subtask-title">
-                                    {{ subtask.controls.subtask_title.value }}
-                                </span>
-
-                                <div class="subtask-actions">
-                                    <button type="button" (click)="editSubtask(i)">
-                                        <img
-                                            src="./assets/icons/edit.png"
-                                            alt="edit subtask icon"
-                                        />
-                                    </button>
-                                    <button type="button" (click)="removeSubtask(i)">
-                                        <img
-                                            src="./assets/icons/delete.png"
-                                            alt="remove subtask icon"
-                                        />
-                                    </button>
-                                </div>
+                            </label>
+                        }
+                    </div>
+                </div>
+        
+                <!-- assigned to -->
+                <div>
+                    <ng-select
+                        [items]="profileService.profiles()"
+                        [multiple]="true"
+                        [closeOnSelect]="false"
+                        bindLabel="user_name"
+                        placeholder="Select contacts to assign"
+                        [clearSearchOnAdd]="true"
+                        formControlName="member"
+                    >
+                        <ng-template ng-multi-label-tmp> </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <app-user-badge [userId]="item.id" [userName]="item.user_name" />
+                            <span class="option-name">{{ item.user_name }}</span>
+                            <label class="custom-checkbox">
+                                <input id="item-{{ index }}" type="checkbox" [checked]="item$.selected" />
+                                <span class="checkbox-icon"></span>
+                            </label>
+                        </ng-template>
+                    </ng-select>
+        
+                    @if (taskForm.value.member?.length) {
+                        <div class="selected-members">
+                            @for (member of taskForm.value.member; track member.id) {
+                                <app-user-badge [userId]="member.id" [userName]="member.user_name" />
                             }
                         </div>
                     }
                 </div>
+        
+                <!-- category -->
+                <div>
+                    <p>Category<span class="req">*</span></p>
+                    <select formControlName="task_category">
+                        <option value="" disabled>Select a category</option>
+                        @for (category of categories; track $index) {
+                            <option [value]="category.name">{{ category.name }}</option>
+                        }
+                    </select>
+                    <div class="error-field">
+                        @if (task_category?.invalid && task_category.touched) {
+                            <span class="error-message">Category required</span>
+                        }
+                    </div>
+                </div>
+                <!-- subtasks -->
+                <div class="subtask-input">
+                    <div>
+                        <label for="subtask">Subtask</label>
+                        <div class="input-wrapper">
+                            <input
+                                id="subtask"
+                                type="text"
+                                placeholder="Add new subtask"
+                                formControlName="subtaskInput"
+                            />
+                            <div class="input-actions">
+                                <button (click)="clearSubtaskInput($event)">
+                                    <img
+                                        class="btn-1"
+                                        src="./assets/icons/btn-close-blue.svg"
+                                        alt="button clear field"
+                                    />
+                                </button>
+                                <div class="devider"></div>
+                                <button (click)="addSubtaskk($event)">
+                                    <img class="btn-2" src="./assets/icons/check.png" alt="add subtask" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="subtasks" formArrayName="subtasks">
+                            @for (subtask of subTasks.controls; track subtask; let i = $index) {
+                                <div class="subtask" [formGroupName]="i">
+                                    <!-- edit mode -->
+                                    @if (editingSubtaskIndex === i) {
+                                        <div class="subtask-wrapper">
+                                            <input
+                                                type="text"
+                                                formControlName="subtask_title"
+                                                class="subtask-edit-input"
+                                                (keydown)="onEditSubtaskKeydown($event, i)"
+                                            />
+        
+                                            <div class="subtask-actions">
+                                                <button type="button" (click)="saveSubtask(i)">
+                                                    <img
+                                                        src="./assets/icons/check.png"
+                                                        alt="save edited subtask"
+                                                    />
+                                                </button>
+                                                <div class="devider"></div>
+                                                <button type="button" (click)="removeSubtask(i)">
+                                                    <img
+                                                        src="./assets/icons/delete.png"
+                                                        alt="remove subtask icon"
+                                                    />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
+        
+                                    <!-- view mode -->
+                                    @else {
+                                        <div class="subtask-wrapper">
+                                            <span class="subtask-title">
+                                                <span>•</span
+                                                ><span>{{ subtask.controls.subtask_title.value }}</span>
+                                            </span>
+        
+                                            <div class="subtask-actions">
+                                                <button type="button" (click)="editSubtask(i)">
+                                                    <img
+                                                        src="./assets/icons/edit.png"
+                                                        alt="edit subtask icon"
+                                                    />
+                                                </button>
+                                                <div class="devider"></div>
+                                                <button type="button" (click)="removeSubtask(i)">
+                                                    <img
+                                                        src="./assets/icons/delete.png"
+                                                        alt="remove subtask icon"
+                                                    />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- <div class="search-bar">
-    <input type="text" placeholder="Find Tasks" aria-label="Find task" />
-
-    <button type="button" aria-label="Search">
-        <img src="./assets/icons/search-icon.png" alt="" />
-    </button>
-</div> -->
-
-        <button type="submit">Create Task</button>
+        <div class="form-buttons">
+            <button type="submit">Create Task</button>
+        </div>
     </form>
 </section>

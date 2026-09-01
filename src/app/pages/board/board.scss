@@ -24,6 +24,10 @@ $scrollbar-width: px-to-rem(5);
             order: 1;
             margin: 0;
             @include font-inter(bold, 48, 2dvh, 64);
+
+            @include desktop {
+                margin-left: 15px;
+            }
         }
 
         app-add-task-button {
@@ -90,13 +94,12 @@ $scrollbar-width: px-to-rem(5);
             }
 
             .task-list {
-                width: 100%;
                 @include flex($direction: row, $justify: start, $gap: 18);
                 overflow-x: auto;
                 overflow-y: auto;
                 scrollbar-gutter: stable;
-                margin-inline: calc(-1 * px-to-rem(16));
-                width: calc(100% + px-to-rem(32));
+                margin-inline: calc(-1 * #{px-to-rem(16)});
+                width: calc(100% + #{px-to-rem(30)});
                 padding: px-to-rem(16);
 
                 @media screen and (max-width: 1023px) {

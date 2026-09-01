@@ -21,6 +21,7 @@ import { Taskmanagement } from '../../services/taskmanagement';
 import { Profile } from '../../interfaces/profile';
 import { TaskModel } from '../../models/task-model';
 import { validate } from '@angular/forms/signals';
+import { UserBadge } from "../user-badge/user-badge";
 //#endregion
 
 interface SubtaskForm {
@@ -33,13 +34,14 @@ interface SubtaskForm {
     selector: 'app-task-form',
     standalone: true,
     imports: [
-        ReactiveFormsModule,
-        NgSelectComponent,
-        CommonModule,
-        NgMultiLabelTemplateDirective,
-        NgOptionTemplateDirective,
-        FormsModule,
-    ],
+    ReactiveFormsModule,
+    NgSelectComponent,
+    CommonModule,
+    NgMultiLabelTemplateDirective,
+    NgOptionTemplateDirective,
+    FormsModule,
+    UserBadge
+],
     templateUrl: './task-form.html',
     styleUrl: './task-form.scss',
 })
@@ -58,6 +60,7 @@ export class TaskForm {
             value: 'urgent',
             optionId: 'option-urgent',
             imgUrl: './assets/icons/Prio urgent.png',
+            imgUrlWhite: './assets/icons/Prio urgent white.png',
             imgAlt: 'priority urgent icon',
             text: 'Urgent',
         },
@@ -66,6 +69,7 @@ export class TaskForm {
             value: 'medium',
             optionId: 'option-medium',
             imgUrl: './assets/icons/Prio medium.png',
+            imgUrlWhite: './assets/icons/Prio medium white.png',
             imgAlt: 'priority medium icon',
             text: 'Medium',
         },
@@ -74,6 +78,7 @@ export class TaskForm {
             value: 'low',
             optionId: 'option-low',
             imgUrl: './assets/icons/Prio low.png',
+            imgUrlWhite: './assets/icons/Prio low white.png',
             imgAlt: 'priority low icon',
             text: 'Low',
         },
@@ -95,7 +100,7 @@ export class TaskForm {
         task_priority: new FormControl('medium', {
             nonNullable: true,
         }),
-        member: new FormControl(null, { nonNullable: true }),
+        member: new FormControl<Profile[]>([], { nonNullable: true }),
         task_category: new FormControl('', {
             nonNullable: true,
             validators: [Validators.required],
