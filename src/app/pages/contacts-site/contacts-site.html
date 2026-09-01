@@ -56,7 +56,7 @@
 
                 <button
                     type="button"
-                    (click)="profileDeletion.deleteProfile(selected)"
+                    (click)="deleteFromMenu(selected)"
                     [disabled]="profileDeletion.deleting()"
                 >
                     <img src="./assets/icons/delete.png" alt="" />
@@ -67,6 +67,6 @@
                 </button>
             }
         </div>
-        <app-confirmation />
     </dialog>
+    <app-confirmation />
 </section>

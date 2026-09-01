@@ -10,6 +10,7 @@ import { ProfileService } from '../../shared/services/profile-service';
 // import { DeleteProfile } from "../../shared/components/delete-profile/delete-profile";
 import { ProfileDeletionService } from '../../shared/services/profile-deletion-service';
 import { ConfirmationDialog } from '../../shared/components/confirmation/confirmation/confirmation';
+import { Profile } from '../../shared/interfaces/profile';
 
 @Component({
     selector: 'app-contacts-site',
@@ -39,4 +40,9 @@ export class ContactsSite {
     onEditContact() {
         this.dialogservice.openDialog('contact-btn-dialog');
     }
+
+    async deleteFromMenu(profile: Profile): Promise<void> {
+    this.dialogservice.closeDialog();
+    await this.profileDeletion.deleteProfile(profile);
+}
 }

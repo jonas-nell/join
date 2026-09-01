@@ -85,7 +85,8 @@ app-user-badge {
         margin: 0;
         padding: distance(30, 25);
 
-        @include slide-in($duration: 250ms, $from-x: 100%);
+        // @include slide-in($duration: 250ms, $from-x: 100%);
+        @include slide-in-right($duration: 500ms);
     }
 
     .profile__header {
