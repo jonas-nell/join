@@ -18,6 +18,7 @@ export class Taskmanagement {
     private readonly database = inject(DatabaseService);
     taskInsertChannel: RealtimeChannel | undefined;
     taskUpdateChannel: RealtimeChannel | undefined;
+    taskDeleteChannel: RealtimeChannel | undefined;
     subtaskUpdateChannel: RealtimeChannel | undefined;
     subtaskInsertChannel: RealtimeChannel | undefined;
     subtaskDeleteChannel: RealtimeChannel | undefined;
@@ -66,13 +67,16 @@ export class Taskmanagement {
         this.subscribeSubtaskUpdate();
         this.subscribeSubtaskInsert();
         this.subscribeSubtaskDelete();
+        this.subscribeDelete();
     }
 
     ngOnDestroy() {
         this.unsubscribeInsert();
         this.unsubscribeUpdate();
+        this.unsubscribeDelete();
         this.unsubscrSubtaskInsert();
         this.unsubscrSubtaskUpdate();
+        this.unsubscribeSubtaskDelete();
     }
 
     //#region methods
@@ -109,6 +113,21 @@ export class Taskmanagement {
                                 ? new TaskModel(payload.new)
                                 : task,
                         ),
+                    );
+                },
+            )
+            .subscribe();
+    }
+
+    subscribeDelete() {
+        this.taskDeleteChannel = this.database.client
+            .channel('custom-delete-channel')
+            .on(
+                'postgres_changes',
+                { event: 'DELETE', schema: 'public', table: 'tasks' },
+                (payload) => {
+                    this.tasks.update((tasks) =>
+                        tasks.filter((task) => task.TASK_ID !== payload.old['TASK_ID']),
                     );
                 },
             )
@@ -211,6 +230,12 @@ export class Taskmanagement {
             this.database.client.removeChannel(this.taskUpdateChannel);
         }
     }
+
+    unsubscribeDelete() {
+        if (this.taskDeleteChannel) {
+            this.database.client.removeChannel(this.taskDeleteChannel);
+        }
+    }
     //#endregion
 
     //#region unsubscribe subtask
@@ -226,7 +251,7 @@ export class Taskmanagement {
         }
     }
 
-    unsubscribeSubtaskSelete() {
+    unsubscribeSubtaskDelete() {
         if (this.subtaskDeleteChannel) {
             this.database.client.removeChannel(this.subtaskDeleteChannel);
         }
