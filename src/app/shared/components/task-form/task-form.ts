@@ -95,6 +95,7 @@ export class TaskForm {
 
     editingSubtaskIndex: number | null = null;
     originalSubtaskTitle = '';
+    subtasksToDelete: number[] = [];
 
     taskForm = new FormGroup({
         task_title: new FormControl('', {
@@ -130,7 +131,7 @@ export class TaskForm {
 
         effect(() => {
             const taskFormOpen = this.taskService.taskFormMode();
-
+            this.subtasksToDelete = [];
             if (taskFormOpen == 'edit') {
                 this.fillTaskForm();
             } else if (taskFormOpen == 'add') {
@@ -274,6 +275,9 @@ export class TaskForm {
 
             this.taskService.addSubtasks(this.onlyNewSubtasks(subtasks), taskId);
             this.editSubtasks(taskId, subtasks);
+            if (this.subtasksToDelete.length > 0) {
+                this.deleteSubtasks(taskId);
+            }
 
             this.editTaskMembers(taskId);
             this.clearTaskInput();
@@ -407,6 +411,12 @@ export class TaskForm {
         const taskId = subtask.controls.task_id.value;
         this.subTasks.removeAt(subtaskIndex);
         if (subtaskId && taskId) {
+            this.subtasksToDelete.push(subtaskId);
+        }
+    }
+
+    deleteSubtasks(taskId: number) {
+        for (const subtaskId of this.subtasksToDelete) {
             this.taskService.deleteSubtaskLocal(subtaskId, taskId);
             this.taskService.deleteSubTask(subtaskId);
         }

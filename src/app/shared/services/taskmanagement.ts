@@ -20,6 +20,7 @@ export class Taskmanagement {
     taskUpdateChannel: RealtimeChannel | undefined;
     subtaskUpdateChannel: RealtimeChannel | undefined;
     subtaskInsertChannel: RealtimeChannel | undefined;
+    subtaskDeleteChannel: RealtimeChannel | undefined;
     //#endregion
 
     tasksRequested = false;
@@ -64,10 +65,10 @@ export class Taskmanagement {
         this.subscribeUpdate();
         this.subscribeSubtaskUpdate();
         this.subscribeSubtaskInsert();
+        this.subscribeSubtaskDelete();
     }
 
     ngOnDestroy() {
-        console.log('unsubscribe works');
         this.unsubscribeInsert();
         this.unsubscribeUpdate();
         this.unsubscrSubtaskInsert();
@@ -166,6 +167,34 @@ export class Taskmanagement {
             )
             .subscribe();
     }
+
+    subscribeSubtaskDelete() {
+        this.subtaskDeleteChannel = this.database.client
+            .channel('custom-subtask-delete-channel')
+            .on(
+                'postgres_changes',
+                { event: 'DELETE', schema: 'public', table: 'subtasks' },
+                (payload) => {
+                    let tmpSubtask = payload.old as Subtask;
+                    const subtaskId = tmpSubtask.id;
+                    if (subtaskId === undefined) {
+                        return;
+                    }
+                    this.subtasks.update((subtasks) => {
+                        const updated = { ...subtasks };
+
+                        for (const taskId in updated) {
+                            updated[Number(taskId)] = updated[Number(taskId)].filter(
+                                (subtask) => subtask.id !== subtaskId,
+                            );
+                        }
+
+                        return updated;
+                    });
+                },
+            )
+            .subscribe();
+    }
     //#endregion
     //#endregion
 
@@ -194,6 +223,12 @@ export class Taskmanagement {
     unsubscrSubtaskUpdate() {
         if (this.subtaskUpdateChannel) {
             this.database.client.removeChannel(this.subtaskUpdateChannel);
+        }
+    }
+
+    unsubscribeSubtaskSelete() {
+        if (this.subtaskDeleteChannel) {
+            this.database.client.removeChannel(this.subtaskDeleteChannel);
         }
     }
     //#endregion
@@ -353,35 +388,10 @@ export class Taskmanagement {
         const { error } = await this.database.client.from('subtasks').delete().eq('id', subtaskId);
 
         if (error) {
-            console.error('The task could not be deleted:', error);
+            console.error('The subtask could not be deleted:', error);
             throw error;
         }
     }
-
-    //     deleteSubtaskLocal(subtaskId: number, taskId: number){
-    // this.subtasks.update((subtasks) => ({
-    //             ...subtasks, [taskId]: (subtasks[taskId] ?? []).map((subtask) => subtask.id !== subtaskId)))}
-
-    //     }
-    // // tasks.filter((task) => task.TASK_ID !== taskId
-    //     updateSubtasks(subtaskId: number, taskId: number, changes: Partial<Subtask>) {
-    //         this.subtasks.update((subtasks) => ({
-    //             ...subtasks, [taskId]: (subtasks[taskId] ?? []).map((subtask) => subtask.id !== subtaskId)
-    //         //     [taskId]: (subtasks[taskId] ?? []).map((subtask) =>
-    //         //         subtask.id === subtaskId ? { ...subtask, ...changes } : subtask,
-    //         //     ),
-    //         // }));
-    //     }
-
-    //     async deleteSubTask(subtaskId: number, taskId: number): Promise<void> {
-
-    //         const { error } = await this.database.client.from('tasks').delete().eq('TASK_ID', taskId);
-
-    //         if (error) {
-    //             console.error('The task could not be deleted:', error);
-    //             throw error;
-    //         }
-    //     }
 
     async deleteTask(taskId: number): Promise<void> {
         // Remove the deleted task from the board signal...
