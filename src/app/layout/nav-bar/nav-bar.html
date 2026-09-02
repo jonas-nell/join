@@ -7,7 +7,7 @@
                 <span>Summary</span>
             </a>
         </div>
-        <div class="nav-link" routerLinkActive="active">
+        <div class="nav-link" routerLinkActive="active" (click)="taskmanagement.taskFormMode.set('add')">
             <a routerLink="/add-task" routerLinkActive="active">
                 <img src="./assets/icons/tasks.svg" alt="">
                 <span>Add Tasks</span>

@@ -33,10 +33,13 @@ export class TaskMembers {
     // set signal with arrays of member id's assigned to task id's
     async setTaskMembers(taskId: number) {
         const memberIds = await this.loadTaskProfileIds(taskId);
+        this.updateTaskMembers(taskId, memberIds);
+    }
 
+    updateTaskMembers(taskId: number, taskmembers: string[]) {
         this.taskMembers.update((members) => ({
             ...members,
-            [taskId]: memberIds,
+            [taskId]: taskmembers,
         }));
     }
     //#endregion

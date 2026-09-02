@@ -27,9 +27,6 @@ export class SingleTaskView implements OnInit {
     private readonly confirmationService = inject(ConfirmationService);
     private readonly notificationService = inject(NotificationService);
 
-    // Loading signal to show dialog after loading all data
-    // readonly loading = signal(true);
-
     // Prevent multiple delete clicks
     readonly deleting = signal(false);
     readonly errorMessage = signal('');
@@ -37,28 +34,6 @@ export class SingleTaskView implements OnInit {
     async ngOnInit(): Promise<void> {
         await this.profileService.ensureProfilesLoaded();
     }
-    // async loadDialogData(): Promise<void> {
-    //     this.loading.set(true);
-
-    //     try {
-    //         await this.profileService.ensureProfilesLoaded();
-
-    //         const [profileIds] = await Promise.all([
-    //             this.taskmanagement.loadTaskProfileIds(this.task().TASK_ID),
-    //         ]);
-
-    //         const profiles = profileIds
-    //             .map((id) => this.profileService.getCachedProfileById(id))
-    //             .filter((profile): profile is Profile => profile !== undefined);
-
-    //         this.profiles.set(profiles);
-    //     } catch {
-    //         this.errorMessage.set('The task details could not be loaded.');
-    //     } finally {
-    //         this.loading.set(false);
-    //     }
-    //     console.log(this.loading());
-    // }
 
     async changeSubtask(subtask: Subtask, event: Event): Promise<void> {
         const checkbox = event.target as HTMLInputElement;

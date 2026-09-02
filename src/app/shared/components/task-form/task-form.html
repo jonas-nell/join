@@ -1,10 +1,17 @@
 <section class="task-form">
-    <h1>Add Task</h1>
+    @if (modeAdd()) {
+        <h1>Add Task</h1>
+    }
 
-    <form [formGroup]="taskForm" (ngSubmit)="createTask()">
+    <form [formGroup]="taskForm" (ngSubmit)="setTask()">
         <!-- Title -->
         <div>
-            <label for="title">Title<span>*</span></label>
+            <label for="title"
+                >Title
+                @if (modeAdd()) {
+                    <span>*</span>
+                }
+            </label>
             <input id="title" type="text" formControlName="task_title" />
         </div>
 
@@ -16,7 +23,12 @@
 
         <!-- due date -->
         <div>
-            <label for="due-date">Due date<span>*</span></label>
+            <label for="due-date"
+                >Due date
+                @if (modeAdd()) {
+                    <span>*</span>
+                }
+            </label>
             <input id="due-date" type="date" formControlName="task_due_date" />
         </div>
 
@@ -108,7 +120,7 @@
             </div>
             <div>
                 <div class="subtasks" formArrayName="subtasks">
-                    @for (subtask of subTasks.controls; track subtask; let i = $index) {
+                    @for (subtask of subTasks.controls; track $index; let i = $index) {
                         <div class="subtask" [formGroupName]="i">
                             <!-- edit mode -->
                             @if (editingSubtaskIndex === i) {
@@ -161,14 +173,17 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="search-bar">
-    <input type="text" placeholder="Find Tasks" aria-label="Find task" />
-
-    <button type="button" aria-label="Search">
-        <img src="./assets/icons/search-icon.png" alt="" />
-    </button>
-</div> -->
-
-        <button type="submit">Create Task</button>
+        @if (modeAdd()) {
+            <button (click)="clearTaskForm($event)">
+                Clear <img src="./assets/icons/btn-close-blue.svg" alt="button clear icon" />
+            </button>
+        }
+        <button type="submit">
+            @if (modeAdd()) {
+                Create Task
+            } @else {
+                Ok
+            } <img src="./assets/icons/check.png" alt="icon check">
+        </button>
     </form>
 </section>

@@ -1,4 +1,4 @@
-<button type="button" aria-label="Add task">
+<button type="button" aria-label="Add task"  (click)="taskmanagement.taskFormMode.set('add')" (click)="dialogService.openDialog('task-form', 'add')">
     <span>Add task</span>
 
     <img src="./assets/icons/plus-icon.png" alt="Add task plus icon" />

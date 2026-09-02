@@ -19,10 +19,13 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { TaskMembers } from '../../shared/services/task-members';
+import { DialogService } from '../../shared/services/dialog-service';
+import { TaskForm } from "../../shared/components/task-form/task-form";
+import { Dialog } from '../../shared/directives/dialog-directive';
 
 @Component({
     selector: 'app-board',
-    imports: [AddTaskButton, SearchBar, CdkDropList, CdkDropListGroup, TaskCard, SingleTaskView],
+    imports: [AddTaskButton, SearchBar, CdkDropList, CdkDropListGroup, TaskCard, SingleTaskView, TaskForm, Dialog],
     templateUrl: './board.html',
     styleUrl: './board.scss',
 })
@@ -30,6 +33,7 @@ export class Board {
     
     readonly taskmanagementService = inject(Taskmanagement);
     private breakpointObserver = inject(BreakpointObserver);
+    readonly dialogService = inject(DialogService);
     taskMembers = inject(TaskMembers);
     
     constructor() {

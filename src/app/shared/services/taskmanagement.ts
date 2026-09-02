@@ -19,6 +19,7 @@ export class Taskmanagement {
     taskInsertChannel: RealtimeChannel | undefined;
     taskUpdateChannel: RealtimeChannel | undefined;
     subtaskUpdateChannel: RealtimeChannel | undefined;
+    subtaskInsertChannel: RealtimeChannel | undefined;
     //#endregion
 
     tasksRequested = false;
@@ -32,6 +33,7 @@ export class Taskmanagement {
     currentTask: Signal<Task | null> = computed(
         () => this.tasks().find((task) => task.TASK_ID === this.currentTaskId()) ?? null,
     );
+    taskFormMode = signal<'edit' | 'add' | null>(null);
 
     //#region taskstatus computed
     todo = computed(() =>
@@ -61,12 +63,15 @@ export class Taskmanagement {
         this.subscribeInsert();
         this.subscribeUpdate();
         this.subscribeSubtaskUpdate();
+        this.subscribeSubtaskInsert();
     }
 
     ngOnDestroy() {
         console.log('unsubscribe works');
         this.unsubscribeInsert();
         this.unsubscribeUpdate();
+        this.unsubscrSubtaskInsert();
+        this.unsubscrSubtaskUpdate();
     }
 
     //#region methods
@@ -74,6 +79,7 @@ export class Taskmanagement {
     //#region realtime
 
     //#region subscribe
+    //#region subscribe task
     subscribeInsert() {
         this.taskInsertChannel = this.database.client
             .channel('custom-insert-channel')
@@ -107,7 +113,9 @@ export class Taskmanagement {
             )
             .subscribe();
     }
+    //#endregion
 
+    //#region subscribe subtask
     subscribeSubtaskUpdate() {
         this.subtaskUpdateChannel = this.database.client
             .channel('custom-subtask-update-channel')
@@ -137,9 +145,32 @@ export class Taskmanagement {
             .subscribe();
     }
 
+    subscribeSubtaskInsert() {
+        this.subtaskInsertChannel = this.database.client
+            .channel('custom-subtask-insert-channel')
+            .on(
+                'postgres_changes',
+                { event: 'INSERT', schema: 'public', table: 'subtasks' },
+                (payload) => {
+                    let tmpSubtask = payload.new as Subtask;
+                    const taskId = tmpSubtask.task_id;
+                    if (taskId === undefined) {
+                        return;
+                    }
+                    this.subtasks.update((subtasks) => ({
+                        ...subtasks,
+                        [taskId]: [...(subtasks[taskId] ?? []), tmpSubtask],
+                    }));
+                    console.log('Change received!', payload);
+                },
+            )
+            .subscribe();
+    }
+    //#endregion
     //#endregion
 
     //#region unsubscribe
+    //#region unsubscribe task
     unsubscribeInsert() {
         if (this.taskInsertChannel) {
             this.database.client.removeChannel(this.taskInsertChannel);
@@ -151,6 +182,21 @@ export class Taskmanagement {
             this.database.client.removeChannel(this.taskUpdateChannel);
         }
     }
+    //#endregion
+
+    //#region unsubscribe subtask
+    unsubscrSubtaskInsert() {
+        if (this.subtaskInsertChannel) {
+            this.database.client.removeChannel(this.subtaskInsertChannel);
+        }
+    }
+
+    unsubscrSubtaskUpdate() {
+        if (this.subtaskUpdateChannel) {
+            this.database.client.removeChannel(this.subtaskUpdateChannel);
+        }
+    }
+    //#endregion
     //#endregion
 
     //#endregion
@@ -184,11 +230,19 @@ export class Taskmanagement {
 
     // verhindern, dass ein title mehrfach vergeben werden kann
     isDoubleTask(taskTitle: string) {
-        const doubleTask = this.tasks().some((task) => task.task_title === taskTitle);
-        console.log(doubleTask);
-        return doubleTask;
+        const isdoubleTask = this.tasks().some((task) => task.task_title === taskTitle);
+        return isdoubleTask;
     }
 
+    // returns TASK_ID if taskTitle already exists
+    taskIdByTitle(taskTitle: string): number | undefined {
+        // if task exists with same title as taskTitle doubleTaskTitle will be this task
+        const doubleTaskTitle = this.tasks().find((task) => task.task_title === taskTitle);
+        // if double task title exist, returns TASK_ID of double task
+        return doubleTaskTitle?.TASK_ID;
+    }
+
+    // db
     async addSubtasks(subtasks: Subtask[], taskId: number) {
         // Omit: Use the Subtask interface but leave out the id...
         const subtaskArr: Omit<Subtask, 'id'>[] = subtasks.map((subtask) => ({
@@ -279,7 +333,7 @@ export class Taskmanagement {
         this.subtasks.set(groupedSubtasks);
     }
 
-    // updates subtasks() signal 
+    // updates subtasks() signal
     updateSubtasks(subtaskId: number, taskId: number, changes: Partial<Subtask>) {
         this.subtasks.update((subtasks) => ({
             ...subtasks,
@@ -350,6 +404,15 @@ export class Taskmanagement {
         return data as Task;
     }
 
+    // updates task() signal after edit
+    editTask(editedTask: Task) {
+        this.tasks.update((tasks) =>
+            tasks.map((task) =>
+                task.TASK_ID === editedTask.TASK_ID ? new TaskModel(editedTask) : task,
+            ),
+        );
+    }
+
     async updateStatus(taskId: number, changes: StatusChange): Promise<Task> {
         const { data, error } = await this.database.client
             .from('tasks')
@@ -413,14 +476,12 @@ export class Taskmanagement {
         await this.updateStatus(task.TASK_ID, { task_status: newStatus });
         await this.updateOrderIndices(updates);
     }
-
-    
     // Search tasks by name and descrition
 
     // Contains the text entered into the search field on the board
     readonly searchTerm = signal('');
 
-     // Show all tasks until at least three characters were entered
+    // Show all tasks until at least three characters were entered
     // After that, title and description are searched through
     readonly filteredTasks = computed(() => {
         const searchText = this.searchTerm().trim().toLowerCase();
