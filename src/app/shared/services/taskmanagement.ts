@@ -342,6 +342,47 @@ export class Taskmanagement {
         }
     }
 
+    deleteSubtaskLocal(subtaskId: number, taskId: number) {
+        this.subtasks.update((subtasks) => ({
+            ...subtasks,
+            [taskId]: (subtasks[taskId] ?? []).filter((subtask) => subtask.id !== subtaskId),
+        }));
+    }
+
+    async deleteSubTask(subtaskId: number): Promise<void> {
+        const { error } = await this.database.client.from('subtasks').delete().eq('id', subtaskId);
+
+        if (error) {
+            console.error('The task could not be deleted:', error);
+            throw error;
+        }
+    }
+
+    //     deleteSubtaskLocal(subtaskId: number, taskId: number){
+    // this.subtasks.update((subtasks) => ({
+    //             ...subtasks, [taskId]: (subtasks[taskId] ?? []).map((subtask) => subtask.id !== subtaskId)))}
+
+    //     }
+    // // tasks.filter((task) => task.TASK_ID !== taskId
+    //     updateSubtasks(subtaskId: number, taskId: number, changes: Partial<Subtask>) {
+    //         this.subtasks.update((subtasks) => ({
+    //             ...subtasks, [taskId]: (subtasks[taskId] ?? []).map((subtask) => subtask.id !== subtaskId)
+    //         //     [taskId]: (subtasks[taskId] ?? []).map((subtask) =>
+    //         //         subtask.id === subtaskId ? { ...subtask, ...changes } : subtask,
+    //         //     ),
+    //         // }));
+    //     }
+
+    //     async deleteSubTask(subtaskId: number, taskId: number): Promise<void> {
+
+    //         const { error } = await this.database.client.from('tasks').delete().eq('TASK_ID', taskId);
+
+    //         if (error) {
+    //             console.error('The task could not be deleted:', error);
+    //             throw error;
+    //         }
+    //     }
+
     async deleteTask(taskId: number): Promise<void> {
         // Remove the deleted task from the board signal...
         this.tasks.update((tasks) => tasks.filter((task) => task.TASK_ID !== taskId));

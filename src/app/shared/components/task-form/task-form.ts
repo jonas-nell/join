@@ -402,7 +402,14 @@ export class TaskForm {
 
     //#region remove subtask
     removeSubtask(subtaskIndex: number) {
+        const subtask = this.subTasks.at(subtaskIndex);
+        const subtaskId = subtask.controls.id.value;
+        const taskId = subtask.controls.task_id.value;
         this.subTasks.removeAt(subtaskIndex);
+        if (subtaskId && taskId) {
+            this.taskService.deleteSubtaskLocal(subtaskId, taskId);
+            this.taskService.deleteSubTask(subtaskId);
+        }
     }
     //#endregion
     //#endregion
