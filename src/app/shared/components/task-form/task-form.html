@@ -164,6 +164,7 @@
                                 type="text"
                                 placeholder="Add new subtask"
                                 formControlName="subtaskInput"
+                                (keydown)="onAddSubtaskKeydown($event)"
                             />
                             <div class="input-actions">
                                 <button (click)="clearSubtaskInput($event)">

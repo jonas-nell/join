@@ -328,6 +328,12 @@ export class TaskForm {
         }
     }
 
+    onAddSubtaskKeydown(event:KeyboardEvent){
+        if (event.key === 'Enter') {
+            this.addSubtaskk(event);            
+        }
+    }
+
     //#endregion
 
     //#region edit subtask
