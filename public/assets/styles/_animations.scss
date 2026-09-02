@@ -1,31 +1,124 @@
 // styles/_animations.scss
 
-@keyframes slide-in {
+// @keyframes slide-in {
+//     from {
+//         transform: translate(
+//             var(--slide-from-x, 0),
+//             var(--slide-from-y, 0)
+//         );
+//         opacity: 0;
+//     }
+
+//     to {
+//         transform: translate(0, 0);
+//         opacity: 1;
+//     }
+// }
+
+// @mixin slide-in(
+//     $from-x: 0,
+//     $from-y: 0,
+//     $duration: 150ms,
+//     $timing: ease-out
+// ) {
+//     --slide-from-x: #{$from-x};
+//     --slide-from-y: #{$from-y};
+
+//     // "both" prevents the element from briefly appearing in 
+//     // its final position before sliding in
+//     animation: slide-in $duration $timing both;
+
+// }
+
+// @mixin slide-out($duration: 150ms, $to-x: 100%) {
+//     animation: slide-out $duration ease-in forwards;
+
+//     @keyframes slide-out {
+//         from {
+//             transform: translateX(0);
+//         }
+
+//         to {
+//             transform: translateX($to-x);
+//         }
+//     }
+// }
+
+
+
+
+// Normal element: slide-in only
+@mixin slide-in-right(
+    $duration: 250ms,
+    $timing: ease-out
+) {
+    animation: slide-in-right $duration $timing both;
+}
+
+@keyframes slide-in-right {
     from {
-        transform: translate(
-            var(--slide-from-x, 0),
-            var(--slide-from-y, 0)
-        );
+        transform: translateX(100%);
         opacity: 0;
     }
 
     to {
-        transform: translate(0, 0);
+        transform: translateX(0);
         opacity: 1;
     }
 }
 
-@mixin slide-in(
+// Native <dialog>: slide and fade in/out.
+@mixin dialog-slide-in-out(
     $from-x: 0,
     $from-y: 0,
-    $duration: 150ms,
-    $timing: ease-out
+    $duration: 250ms,
+    $timing: ease,
+    $backdrop: false,
+    $backdrop-color: rgb(0 0 0 / 50%)
 ) {
-    --slide-from-x: #{$from-x};
-    --slide-from-y: #{$from-y};
+    // Closed dialog state
+    transform: translate($from-x, $from-y);
+    opacity: 0;
 
-    // "both" prevents the element from briefly appearing in 
-    // its final position before sliding in
-    animation: slide-in $duration $timing both;
+    transition:
+        transform $duration $timing,
+        opacity $duration $timing,
+        display $duration allow-discrete,
+        overlay $duration allow-discrete;
 
+    // Open dialog state
+    &[open] {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+
+    // Opening dialog state
+    @starting-style {
+        &[open] {
+            transform: translate($from-x, $from-y);
+            opacity: 0;
+        }
+    }
+
+    // Optional backdrop animation
+    @if $backdrop {
+        &::backdrop {
+            background-color: transparent;
+
+            transition:
+                background-color $duration $timing,
+                display $duration allow-discrete,
+                overlay $duration allow-discrete;
+        }
+
+        &[open]::backdrop {
+            background-color: $backdrop-color;
+        }
+
+        @starting-style {
+            &[open]::backdrop {
+                background-color: transparent;
+            }
+        }
+    }
 }

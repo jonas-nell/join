@@ -1,48 +1,58 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
+@use '../../../../../public/assets/styles/main.scss' as *;
+
 .contactDialog {
-    border-radius: 20px;
-    height: use-clamp(500, 90%, 600);
-    width: use-clamp(310, 98%, 400);
     position: fixed;
     inset: 0;
-    margin: auto;
-    overflow: hidden;
+
+    width: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+
+    margin: 0;
+    padding: px-to-rem(15);
+    border: 0;
+    background: transparent;
+
+    // Must remain active while closing.
+    @include flex();
+
+    // Mobile: enter and leave through the bottom.
+    @include dialog-slide-in-out($from-y: 100%, $duration: 500ms, $backdrop: true);
+
+    // // Fade backdrop at the same speed.
+    // @include dialog-backdrop-fade(
+    //     $color: rgb(0 0 0 / 30%),
+    //     $duration: 400ms
+    // );
 
     @include desktop {
-        @include slide-in($duration: 250ms, $from-y: 100%);
+        @include dialog-slide-in-out($from-x: 100%, $duration: 500ms, $backdrop: true);
     }
 
-    // transition:
-    //     // transform 0.2s ease,
-    //     // display 0.2s allow-discrete,
-    //     // overlay 0.2s allow-discrete;
-
-    // // @starting-style {
-    // //     transform: translateY(120%);
-    // // }
-
-    // // &:not([open]) {
-    // //     transform: translateY(120%);
-    // // }
-
-    // ::backdrop {
-    //     color: initial;
+    // &::backdrop {
+    //     background: rgb(0 0 0 / 30%);
     // }
+}
 
-    @include desktop {
-        height: 60dvh;
-        width: 70dvw;
-        width: use-clamp(1000, 70%, 1100);
-    }
+// Final state after the closing transition.
+.contactDialog:not([open]) {
+    display: none;
 }
 
 .dialog-wrpr {
-    width: 100%;
-    height: 100%;
+    width: use-clamp(310, 98%, 400);
+    height: use-clamp(500, 90%, 600);
+    border-radius: 20px;
+
     @include flex($justify: space-between);
 
     @include desktop {
+        width: use-clamp(1000, 70%, 1100);
+        height: 60dvh;
+
         @include flex(row);
     }
 }
@@ -56,6 +66,7 @@
         flex-shrink: 0;
         color: white;
         background-color: $main-color;
+        border-radius: 20px 20px 0 0;
         @include flex($align: start, $gap: 8);
 
         @include desktop {
@@ -63,6 +74,7 @@
             height: 100%;
             width: 45%;
             padding: distance(0, 40);
+            border-radius: 20px 0 0 20px;
         }
 
         img {
@@ -124,7 +136,12 @@
         flex: 1;
         min-height: 0;
         background-color: white;
+        border-radius: 0 0 20px 20px;
         @include font-inter(regular, 18, 4vw, 20);
+
+        @include desktop {
+            border-radius: 0 20px 20px 0;
+        }
 
         .dialog-badge {
             position: absolute;
@@ -148,22 +165,22 @@
             }
         }
 
-        // .badge-default {
-        //     width: px-to-rem(120);
-        //     height: px-to-rem(120);
-        //     color: #ffffff;
-        //     border-radius: 50%;
-        //     box-shadow:
-        //         0 0 0 2px #ffffff,
-        //         0 0 0 3px #cbd5e1;
-        //     background-color: $border-contact-list;
-        //     @include flex();
+        .badge-default {
+            width: px-to-rem(120);
+            height: px-to-rem(120);
+            color: #ffffff;
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 2px #ffffff,
+                0 0 0 3px #cbd5e1;
+            background-color: $border-contact-list;
+            @include flex();
 
-        //     img {
-        //         width: 50%;
-        //         filter: brightness(0) invert(1);
-        //     }
-        // }
+            img {
+                width: 50%;
+                filter: brightness(0) invert(1);
+            }
+        }
 
         @include desktop {
             @include flex($align: end);

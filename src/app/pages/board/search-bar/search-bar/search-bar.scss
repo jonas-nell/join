@@ -18,6 +18,13 @@
         padding: px-to-rem(16);
 
         @include font-inter(regular, 20, 2dvh, 20);
+
+        // remove blue frame
+        &:focus,
+        &:focus-visible {
+            outline: none;
+            box-shadow: none;
+        }
     }
 
     button {
