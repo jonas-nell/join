@@ -144,7 +144,7 @@ export class TaskForm {
         return this.taskForm.get('task_description');
     }
     get task_due_date() {
-        return this.taskForm.get('dtask_due_date');
+        return this.taskForm.get('task_due_date');
     }
 
     get task_priority() {

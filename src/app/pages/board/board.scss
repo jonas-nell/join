@@ -9,10 +9,19 @@ $scrollbar-width: px-to-rem(5);
     padding-bottom: 0;
     @include flex($align: start, $gap: 24);
 
+
+    @include desktop{
+        max-height: calc(100dvh - 20dvh);
+        padding-bottom: 120px;
+        padding-top: 20dvh;
+    }
+
     @media (min-width: 1245px) {
         @include flex($gap: 48);
         padding-left: calc(px-to-rem(250) + px-to-rem(24));
         padding-right: px-to-rem(24);
+        padding-bottom: 0;
+        padding-top: 10dvh;
     }
 
     .board-top {
