@@ -39,7 +39,7 @@ main {
     @include desktop {
         padding-top: px-to-rem(96);
         padding-bottom: 0;
-        overflow-x: hidden;
+        // overflow-x: hidden;
     }
 }
 
