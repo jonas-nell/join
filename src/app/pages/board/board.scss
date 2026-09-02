@@ -11,9 +11,7 @@ $scrollbar-width: px-to-rem(5);
 
 
     @include desktop{
-        max-height: calc(100dvh - 20dvh);
-        padding-bottom: 120px;
-        padding-top: 20dvh;
+        padding-bottom: 100px;
     }
 
     @media (min-width: 1245px) {
@@ -21,7 +19,6 @@ $scrollbar-width: px-to-rem(5);
         padding-left: calc(px-to-rem(250) + px-to-rem(24));
         padding-right: px-to-rem(24);
         padding-bottom: 0;
-        padding-top: 10dvh;
     }
 
     .board-top {
@@ -119,7 +116,7 @@ $scrollbar-width: px-to-rem(5);
 
                 @include desktop {
                     @include flex($direction: column, $align: start, $justify: start, $gap: 24);
-                    height: 69dvh;
+                    height: 62dvh;
                     overflow-y: auto;
                     overflow-x: visible;
                     margin-inline: 0;
@@ -138,6 +135,10 @@ $scrollbar-width: px-to-rem(5);
                         background: $font-light;
                         border-radius: 8px;
                     }
+                }
+
+                @media (min-width: 1245px){
+                    height: 70dvh;
                 }
             }
 
