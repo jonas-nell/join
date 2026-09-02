@@ -228,20 +228,6 @@ export class Taskmanagement {
         return task as Task;
     }
 
-    // verhindern, dass ein title mehrfach vergeben werden kann
-    isDoubleTask(taskTitle: string) {
-        const isdoubleTask = this.tasks().some((task) => task.task_title === taskTitle);
-        return isdoubleTask;
-    }
-
-    // returns TASK_ID if taskTitle already exists
-    taskIdByTitle(taskTitle: string): number | undefined {
-        // if task exists with same title as taskTitle doubleTaskTitle will be this task
-        const doubleTaskTitle = this.tasks().find((task) => task.task_title === taskTitle);
-        // if double task title exist, returns TASK_ID of double task
-        return doubleTaskTitle?.TASK_ID;
-    }
-
     // db
     async addSubtasks(subtasks: Subtask[], taskId: number) {
         // Omit: Use the Subtask interface but leave out the id...
