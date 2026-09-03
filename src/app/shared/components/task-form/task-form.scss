@@ -11,7 +11,7 @@
     :host-context(dialog) & {
         padding: distance(48, 24, 0, 24);
         height: auto;
-        width: auto;
+        width: 75dvw;
         max-width: px-to-rem(1170);
         max-height: 80dvh;
 
@@ -38,12 +38,12 @@
             .form-buttons {
                 position: sticky;
                 bottom: 0;
-                left: 0;
-                right: 32px;
                 background: white;
                 padding-top: px-to-rem(16);
-                padding-bottom: px-to-rem(0);
+                padding-bottom: px-to-rem(32);
+                padding-inline: px-to-rem(24);
                 z-index: 10;
+                
             }
         }
     }
@@ -89,10 +89,7 @@
             @include desktop {
                 @include flex(row, $align: start, $gap: 24);
                 width: 100%;
-
-                :host-context(dialog) & {
-                    flex-direction: column;
-                }
+                
             }
 
             .form-column {
@@ -154,6 +151,7 @@
         .btn-wrapper {
             width: 100%;
             @include flex(row, $justify: space-around);
+            padding-inline: px-to-rem(8);
         }
 
         .prio-section {
@@ -180,6 +178,7 @@
                 @include font-inter(regular, 16, 2%, 16);
                 width: px-to-rem(94);
                 box-shadow: 0px 0px 4px 0px #00000066;
+                cursor: pointer;
 
                 @media (min-width: 525px) {
                     padding: distance(16, 24);
@@ -262,7 +261,7 @@
             .input-actions {
                 position: absolute;
                 right: px-to-rem(8);
-                top: 50%;
+                top: 30%;
                 transform: translateY(-50%);
                 width: fit-content;
                 @include flex(row, $gap: 4, $justify: flex-end);
@@ -326,7 +325,11 @@
             @include font-inter(regular, 16, 2%, 16);
             position: fixed;
             bottom: 100px;
-            right: 16px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            box-sizing: border-box;
+            padding-inline: px-to-rem(16);
             background: white;
             padding-bottom: 16px;
             padding-top: 16px;
@@ -335,6 +338,9 @@
             @include desktop {
                 position: relative;
                 bottom: auto;
+
+
+                padding-inline: 0;
             }
 
             .clear-btn {
@@ -404,4 +410,10 @@
     color: $required-color;
     top: px-to-rem(-4);
     margin-left: px-to-rem(14);
+}
+
+@include desktop{
+    .edit-mode.task-form form .form-columns{
+        flex-direction: column;
+    }
 }
