@@ -63,11 +63,11 @@
                             task_due_date.hasError('beforeToday') &&
                             (task_due_date.touched || task_due_date.dirty)
                         ) {
-                            <small class="error-message"> Date can't be in past. </small>
+                            <span class="error-message"> Date can't be in the past. </span>
                         }
 
                         @if (task_due_date.hasError('required') && task_due_date.touched) {
-                            <small class="error-message"> Due date required. </small>
+                            <span class="error-message"> Due date required. </span>
                         }
                     </div>
                 </div>
@@ -308,4 +308,5 @@
             </button>
         </div>
     </form>
+    <app-confirmation />
 </section>

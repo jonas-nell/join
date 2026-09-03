@@ -28,6 +28,9 @@ import { doubleTitle } from '../../helpers/double-title-validator';
 import { Router } from '@angular/router';
 import { formatLocalDate, notBeforeTodayValidator } from '../../helpers/date-validator';
 import { duplicateSubtaskValidator } from '../../helpers/duplicate-subtask-validator';
+import { NotificationService } from '../../services/notification-service';
+import { ConfirmationService } from '../../services/confirmation-service';
+import { ConfirmationDialog } from '../confirmation/confirmation/confirmation';
 //#endregion
 
 interface SubtaskForm {
@@ -49,6 +52,7 @@ interface SubtaskForm {
         NgOptionTemplateDirective,
         FormsModule,
         UserBadge,
+        ConfirmationDialog,
     ],
     templateUrl: './task-form.html',
     styleUrl: './task-form.scss',
@@ -64,6 +68,9 @@ export class TaskForm {
     fb = inject(FormBuilder);
     router = inject(Router);
     //#endregion
+
+    notificationService = inject(NotificationService);
+    confirmationService = inject(ConfirmationService);
 
     modeAdd = computed(() => this.taskService.taskFormMode() == 'add');
     priorities = [
@@ -137,13 +144,19 @@ export class TaskForm {
 
         effect(() => {
             const taskFormOpen = this.taskService.taskFormMode();
+            const dueDateControl = this.taskForm.controls.task_due_date;
+
             this.subtasksToDelete = [];
             if (taskFormOpen == 'edit') {
                 this.fillTaskForm();
             } else if (taskFormOpen == 'add') {
+                dueDateControl.setValidators([Validators.required, notBeforeTodayValidator()]);
                 this.clearTaskInput();
                 this.subTasks.clear();
             }
+            dueDateControl.updateValueAndValidity({
+                emitEvent: false,
+            });
         });
     }
 
@@ -189,16 +202,40 @@ export class TaskForm {
     fillTaskForm() {
         if (this.taskService.currentTask() && this.dialogService.dialogMode() == 'edit') {
             const currentTask = this.taskService.currentTask();
+            const existingDueDate = currentTask?.task_due_date ?? '';
+            const dueDateControl = this.taskForm.controls.task_due_date;
+
+            dueDateControl.setValidators([
+                Validators.required,
+                (control) => {
+                    // Task's unchanged existing date can be earlier thann todays date.
+                    if (control.value === existingDueDate) {
+                        return null;
+                    }
+
+                    // Any newly selected date must be today or later.
+                    return notBeforeTodayValidator()(control);
+                },
+            ]);
+
             this.taskForm.patchValue({
                 task_title: currentTask?.task_title ?? '',
                 task_description: currentTask?.task_description ?? '',
-                task_due_date: currentTask?.task_due_date ?? '',
+                task_due_date: existingDueDate,
                 task_priority: currentTask?.task_priority ?? '',
                 member: this.getTaskMembers(currentTask?.TASK_ID) ?? [],
                 task_category: currentTask?.task_category ?? '',
                 subtaskInput: '',
             });
+
+            dueDateControl.updateValueAndValidity({
+                emitEvent: false,
+            });
+
             this.setSubtasks();
+
+            this.taskForm.markAsPristine();
+            this.taskForm.markAsUntouched();
         }
     }
 
@@ -276,6 +313,7 @@ export class TaskForm {
         await this.taskService.addTaskDB(taskValuesNeeded, memberIdArray, subtasks);
         this.clearTaskInput();
         this.dialogService.closeDialog();
+        this.notificationService.success('Task was created');
         this.taskService.taskFormMode.set(null);
         this.router.navigate(['/board']);
     }
@@ -293,13 +331,19 @@ export class TaskForm {
         if (taskId) {
             this.taskService.editTask(taskValuesNeeded);
             this.taskService.updateTask(taskId, taskValuesNeeded);
-
             this.editAssignedSubtasks(taskId, subtasks);
 
             if (this.members.touched) {
                 this.editAssignedMembers(taskId);
             }
 
+            const hasChanges = this.taskForm.dirty || this.subtasksToDelete.length > 0;
+
+            if (hasChanges) {
+                this.notificationService.success('Task was updated');
+            }
+
+            this.editTaskMembers(taskId);
             this.clearTaskInput();
 
             // Switching the active dialog automatically closes task-form
@@ -393,6 +437,9 @@ export class TaskForm {
         });
 
         this.clearSubtaskInput(event);
+            this.taskForm.markAsDirty();
+        console.log("this.taskForm.dirty " + this.taskForm.dirty);
+        
     }
 
     onAddSubtaskKeydown(event: KeyboardEvent) {
@@ -478,10 +525,19 @@ export class TaskForm {
     //#endregion
 
     //#region remove subtask
-    removeSubtask(subtaskIndex: number) {
+    async removeSubtask(subtaskIndex: number) {
         const subtask = this.subTasks.at(subtaskIndex);
         const subtaskId = subtask.controls.id.value;
         const taskId = subtask.controls.task_id.value;
+
+        const confirmed = await this.confirmationService.confirm(
+            'Do you really want to delete this Subtask?',
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
         this.subTasks.removeAt(subtaskIndex);
         if (subtaskId && taskId) {
             this.subtasksToDelete.push(subtaskId);
