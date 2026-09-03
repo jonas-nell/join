@@ -1,6 +1,6 @@
 <section class="task-form" [class.edit-mode]="!modeAdd()">
     <button type="button" class="close-btn" (click)="dialogService.closeDialog()">
-        <img src="./assets/icons/btn-close-blue.svg" alt="">
+        <img src="./assets/icons/btn-close-blue.svg" alt="" />
     </button>
 
     @if (modeAdd()) {
@@ -63,11 +63,11 @@
                             task_due_date.hasError('beforeToday') &&
                             (task_due_date.touched || task_due_date.dirty)
                         ) {
-                            <small class="error-message"> Date can't be in past. </small>
+                            <span class="error-message"> Date can't be in the past. </span>
                         }
 
                         @if (task_due_date.hasError('required') && task_due_date.touched) {
-                            <small class="error-message"> Due date required. </small>
+                            <span class="error-message"> Due date required. </span>
                         }
                     </div>
                 </div>
@@ -157,7 +157,10 @@
                             <span class="req">*</span>
                         }
                     </p>
-                    <select formControlName="task_category" [class.input-error]="task_category?.invalid && task_category.touched">
+                    <select
+                        formControlName="task_category"
+                        [class.input-error]="task_category?.invalid && task_category.touched"
+                    >
                         <option value="" disabled>Select a category</option>
                         @for (category of categories; track $index) {
                             <option [value]="category.name">{{ category.name }}</option>
@@ -269,7 +272,8 @@
         <div class="form-buttons">
             @if (modeAdd()) {
                 <button class="clear-btn" (click)="clearTaskForm($event)">
-                    <span>Clear</span><img src="./assets/icons/btn-close-blue.svg" alt="button clear icon" />
+                    <span>Clear</span
+                    ><img src="./assets/icons/btn-close-blue.svg" alt="button clear icon" />
                 </button>
             }
             <button class="submit-btn" type="submit">
@@ -282,4 +286,5 @@
             </button>
         </div>
     </form>
+    <app-confirmation />
 </section>

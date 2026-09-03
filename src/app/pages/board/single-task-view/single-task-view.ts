@@ -12,10 +12,11 @@ import { DialogService } from '../../../shared/services/dialog-service';
 import { Dialog } from '../../../shared/directives/dialog-directive';
 import { ConfirmationDialog } from "../../../shared/components/confirmation/confirmation/confirmation";
 import { TaskMembers } from '../../../shared/services/task-members';
+import { Notification } from "../../../shared/components/notification/notification/notification";
 
 @Component({
     selector: 'app-single-task-view',
-    imports: [DatePipe, UserBadge, CategoryBadge, Dialog, ConfirmationDialog],
+    imports: [DatePipe, UserBadge, CategoryBadge, Dialog, ConfirmationDialog, Notification],
     templateUrl: './single-task-view.html',
     styleUrl: './single-task-view.scss',
 })
