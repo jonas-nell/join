@@ -37,7 +37,28 @@ export class Board {
     taskMembers = inject(TaskMembers);
     
     constructor() {
-        this.loadData();        
+        this.loadData(); 
+        effect(() => {
+            const taskId = this.taskmanagementService.scrollToNewTask();
+            const tasks = this.taskmanagementService.tasks();
+
+            if (!taskId || !tasks.length){
+                return;
+            }
+            setTimeout(() => {
+                const task = document.getElementById(`task-${taskId}`);
+
+                if(!task) {
+                    return;
+                }
+
+                task.scrollIntoView({
+                    block:'center'
+                });
+
+                this.taskmanagementService.scrollToNewTask.set(null);
+            });
+        });       
     }
 
     // loads task data and task member data

@@ -36,6 +36,7 @@ export class Taskmanagement {
         () => this.tasks().find((task) => task.TASK_ID === this.currentTaskId()) ?? null,
     );
     taskFormMode = signal<'edit' | 'add' | null>(null);
+    scrollToNewTask = signal<string | null>(null);
 
     //#region taskstatus computed
     todo = computed(() =>
@@ -274,6 +275,8 @@ export class Taskmanagement {
 
             throw error;
         }
+
+        this.scrollToNewTask.set(task.TASK_ID);
 
         if (members.length > 0) {
             this.filterTaskMembers(members, task.TASK_ID);
