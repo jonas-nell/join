@@ -1,4 +1,8 @@
-<section class="task-form">
+<section class="task-form" [class.edit-mode]="!modeAdd()">
+    <button type="button" class="close-btn" (click)="dialogService.closeDialog()">
+        <img src="./assets/icons/btn-close-blue.svg" alt="">
+    </button>
+
     @if (modeAdd()) {
         <h1>Add Task</h1>
     }
@@ -19,6 +23,7 @@
                         type="text"
                         formControlName="task_title"
                         placeholder="Enter a title"
+                        [class.input-error]="task_title?.invalid && task_title.touched"
                     />
                     <div class="error-field">
                         @if (task_title?.invalid && task_title.touched) {
@@ -50,6 +55,7 @@
                         type="date"
                         formControlName="task_due_date"
                         placeholder="dd/mm/yyyy"
+                        [class.input-error]="task_due_date?.invalid && task_due_date.touched"
                     />
                     <div class="error-field">
                         @if (task_due_date?.invalid && task_due_date.touched) {
@@ -99,8 +105,9 @@
                         [closeOnSelect]="false"
                         bindLabel="user_name"
                         placeholder="Select contacts to assign"
-                        [clearSearchOnAdd]="true"
+                        [clearSearchOnAdd]="false"
                         formControlName="member"
+                        appendTo=".task-form"
                     >
                         <ng-template ng-multi-label-tmp> </ng-template>
                         <ng-template
@@ -142,7 +149,7 @@
                             <span class="req">*</span>
                         }
                     </p>
-                    <select formControlName="task_category">
+                    <select formControlName="task_category" [class.input-error]="task_category?.invalid && task_category.touched">
                         <option value="" disabled>Select a category</option>
                         @for (category of categories; track $index) {
                             <option [value]="category.name">{{ category.name }}</option>
@@ -252,17 +259,17 @@
         </div>
         <div class="form-buttons">
             @if (modeAdd()) {
-                <button (click)="clearTaskForm($event)">
-                    Clear <img src="./assets/icons/btn-close-blue.svg" alt="button clear icon" />
+                <button class="clear-btn" (click)="clearTaskForm($event)">
+                    <span>Clear</span><img src="./assets/icons/btn-close-blue.svg" alt="button clear icon" />
                 </button>
             }
-            <button type="submit">
+            <button class="submit-btn" type="submit">
                 @if (modeAdd()) {
-                    Create Task
+                    <span>Create Task</span>
                 } @else {
-                    Ok
+                    <span>Ok</span>
                 }
-                <img src="./assets/icons/check.png" alt="icon check" />
+                <img src="./assets/icons/check-white.png" alt="icon check" />
             </button>
         </div>
     </form>
