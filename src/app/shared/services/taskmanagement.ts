@@ -263,7 +263,7 @@ export class Taskmanagement {
     //#endregion
 
     //#region add
-    async addTaskDB(changes: TaskChanges, members:string[], subtasks: Subtask[]): Promise<Task> {
+    async addTaskDB(changes: TaskChanges, members: string[], subtasks: Subtask[]): Promise<Task> {
         const { data: task, error } = await this.database.client
             .from('tasks')
             .insert({ ...changes })
@@ -279,7 +279,7 @@ export class Taskmanagement {
         this.scrollToNewTask.set(task.TASK_ID);
 
         if (members.length > 0) {
-            this.filterTaskMembers(members, task.TASK_ID);
+            this.insertTaskMembers(members, task.TASK_ID);
         }
 
         if (subtasks.length > 0) {
@@ -313,7 +313,7 @@ export class Taskmanagement {
     // nach erstellung von task (wenn task id verfügbar)
     // prüfung ob members zu task hunzugefügt
     // arr mit objekten (task id + user id) wird erstellt und in datenbanktabelle geschrieben
-    async filterTaskMembers(members: string[], taskId: number) {
+    async insertTaskMembers(members: string[], taskId: number) {
         const assignments: { task_id: number; user_id: string }[] = members.map((memberId) => ({
             task_id: taskId,
             user_id: memberId,
@@ -431,6 +431,20 @@ export class Taskmanagement {
             console.error('The task could not be deleted:', error);
             throw error;
         }
+    }
+
+    async deleteTaskMembers(memberId: string, taskId: number) {
+        const { error: assignmentError } = await this.database.client
+            .from('tasks_profiles')
+            .delete()
+            .eq('user_id', memberId)
+            .eq('task_id', taskId);
+
+        if (assignmentError) {
+            console.error('The assigned user could not be deleted from the task:', assignmentError);
+            throw assignmentError;
+        }
+        // console.log(assignments);
     }
 
     async ensureTasksLoaded(forceReload = false): Promise<void> {

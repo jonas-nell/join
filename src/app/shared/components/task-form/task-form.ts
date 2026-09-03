@@ -295,13 +295,12 @@ export class TaskForm {
             this.taskService.editTask(taskValuesNeeded);
             this.taskService.updateTask(taskId, taskValuesNeeded);
 
-            this.taskService.addSubtasks(this.onlyNewSubtasks(subtasks), taskId);
-            this.editSubtasks(taskId, subtasks);
-            if (this.subtasksToDelete.length > 0) {
-                this.deleteSubtasks(taskId);
+            this.editAssignedSubtasks(taskId, subtasks);
+
+            if (this.members.touched) {
+                this.editAssignedMembers(taskId);
             }
 
-            this.editTaskMembers(taskId);
             this.clearTaskInput();
 
             // Switching the active dialog automatically closes task-form
@@ -312,6 +311,34 @@ export class TaskForm {
             });
 
             this.dialogService.openDialog('single-task');
+        }
+    }
+
+    // calls methods needed to update data on db and local signal
+    editAssignedMembers(taskId: number) {
+        const formMembers = this.memberIdArr(this.members.value);
+        const newMembers = this.taskMembers.findNewTaskMembers(formMembers, taskId);
+        const deletedMembers = this.taskMembers.findDeletedTaskMembers(newMembers, taskId);
+        console.log(deletedMembers);
+        // update taskmember signal
+        this.taskMembers.updateTaskMembers(taskId, formMembers);
+        if (newMembers) {
+            this.taskService.insertTaskMembers(newMembers, taskId);
+        }
+
+        if (deletedMembers) {
+            for (const memberId of deletedMembers) {
+                this.taskService.deleteTaskMembers(memberId, taskId);
+            }
+        }
+    }
+
+    // calls methods needed to update data on db and local signal
+    editAssignedSubtasks(taskId: number, subtasks: Subtask[]) {
+        this.taskService.addSubtasks(this.onlyNewSubtasks(subtasks), taskId);
+        this.editSubtasks(taskId, subtasks);
+        if (this.subtasksToDelete.length > 0) {
+            this.deleteSubtasks(taskId);
         }
     }
     //#endregion

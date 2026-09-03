@@ -36,11 +36,50 @@ export class TaskMembers {
         this.updateTaskMembers(taskId, memberIds);
     }
 
+    // set members for one task
     updateTaskMembers(taskId: number, taskmembers: string[]) {
         this.taskMembers.update((members) => ({
             ...members,
             [taskId]: taskmembers,
         }));
+    }
+
+    findNewTaskMembers(newMemberArr: string[], taskId: number) {
+        // aktuell im signal
+        const oldMembers: string[] = this.taskMembers()[taskId];
+        // members die noch nicht im signal sind
+        const newMembers: string[] = [];
+
+        // find new members
+        // undefined = new member (not in current signal)
+        for (const newMember of newMemberArr) {
+            const oldMember = oldMembers.find((oldMember) => oldMember === newMember);
+            if (!oldMember) {
+                newMembers.push(newMember);
+            }
+        }
+        console.log(oldMembers);
+        
+        console.log(newMembers);
+        
+        return newMembers;
+    }
+
+    findDeletedTaskMembers(newMemberArr: string[], taskId: number) {
+        // aktuell im signal
+        const oldMembers: string[] = this.taskMembers()[taskId];
+        // members die im arr übrig bleiben (im signal vorhanden, nach edit nicht)
+        const deletedMembers: string[] = [];
+
+        // find deleted members (only in current signal)
+        // undefined = deleted
+        for (const oldMember of oldMembers) {
+            const newMember = newMemberArr.find((newMember) => newMember === oldMember);
+            if (!newMember) {
+                deletedMembers.push(oldMember);
+            }
+        }
+        return deletedMembers;
     }
     //#endregion
 }
