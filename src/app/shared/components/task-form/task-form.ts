@@ -21,9 +21,10 @@ import { Taskmanagement } from '../../services/taskmanagement';
 import { Profile } from '../../interfaces/profile';
 import { TaskModel } from '../../models/task-model';
 import { validate } from '@angular/forms/signals';
-import { UserBadge } from "../user-badge/user-badge";
+import { UserBadge } from '../user-badge/user-badge';
 import { DialogService } from '../../services/dialog-service';
 import { TaskMembers } from '../../services/task-members';
+import { formatLocalDate, notBeforeTodayValidator } from '../../helpers/date-validator';
 //#endregion
 
 interface SubtaskForm {
@@ -38,14 +39,14 @@ interface SubtaskForm {
     selector: 'app-task-form',
     standalone: true,
     imports: [
-    ReactiveFormsModule,
-    NgSelectComponent,
-    CommonModule,
-    NgMultiLabelTemplateDirective,
-    NgOptionTemplateDirective,
-    FormsModule,
-    UserBadge
-],
+        ReactiveFormsModule,
+        NgSelectComponent,
+        CommonModule,
+        NgMultiLabelTemplateDirective,
+        NgOptionTemplateDirective,
+        FormsModule,
+        UserBadge,
+    ],
     templateUrl: './task-form.html',
     styleUrl: './task-form.scss',
 })
@@ -95,6 +96,8 @@ export class TaskForm {
     editingSubtaskIndex: number | null = null;
     originalSubtaskTitle = '';
 
+    readonly today = formatLocalDate();
+
     taskForm = new FormGroup({
         task_title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
         task_description: new FormControl('', {
@@ -102,7 +105,7 @@ export class TaskForm {
         }),
         task_due_date: new FormControl('', {
             nonNullable: true,
-            validators: [Validators.required],
+            validators: [Validators.required, notBeforeTodayValidator()],
         }),
         task_priority: new FormControl('medium', {
             nonNullable: true,
@@ -143,8 +146,8 @@ export class TaskForm {
     get task_description() {
         return this.taskForm.get('task_description');
     }
-    get task_due_date() {
-        return this.taskForm.get('dtask_due_date');
+    get task_due_date(): FormControl<string> {
+        return this.taskForm.controls.task_due_date;
     }
 
     get task_priority() {
@@ -281,12 +284,15 @@ export class TaskForm {
 
             this.editTaskMembers(taskId);
             this.clearTaskInput();
-            this.dialogService.closeDialog();
 
-            if (this.taskService.taskFormMode() == 'edit') {
-                this.dialogService.openDialog('single-task');
-            }
-            this.taskService.taskFormMode.set(null);
+            // Switching the active dialog automatically closes task-form
+            // and reopens single-task.
+
+            requestAnimationFrame(() => {
+                this.taskService.taskFormMode.set(null);
+            });
+
+            this.dialogService.openDialog('single-task');
         }
     }
     //#endregion

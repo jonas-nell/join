@@ -3,6 +3,47 @@
 $card-width: clamp(#{px-to-rem(210)}, 15dvw, #{px-to-rem(250)});
 $scrollbar-width: px-to-rem(5);
 
+
+.task-form-dialog {
+    position: fixed;
+    inset: 0;
+    // top: 50%;
+    // left: 50%;
+
+    margin: auto;
+    // translate: -50% -50%;
+
+    // @include dialog-slide-in-out(
+    //     $from-y: 120%,
+    //     $duration: 400ms,
+    //     $backdrop: true
+    // );
+
+    // @include desktop {
+    //     @include dialog-slide-in-out(
+    //         $from-x: 120%,
+    //         $duration: 400ms
+    //     );
+    // }
+}
+
+.task-form-dialog--animated {
+    // Add mode on mobile: form from below.
+    @include dialog-slide-in-out(
+        $from-y: 120%,
+        $duration: 400ms,
+        $backdrop: true
+    );
+
+    // Add mode on desktop: form from the right.
+    @include desktop {
+        @include dialog-slide-in-out(
+            $from-x: 120%,
+            $duration: 400ms
+        );
+    }
+}
+
 .board-wrapper {
     @include font-inter(regular, 22, 2dvh, 22);
     padding: px-to-rem(14);

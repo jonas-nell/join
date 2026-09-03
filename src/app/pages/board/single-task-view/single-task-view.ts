@@ -83,4 +83,9 @@ export class SingleTaskView implements OnInit {
             this.notificationService.error('The task could not be deleted.');
         }
     }
+
+    openEditDialog(): void {
+    this.taskmanagement.taskFormMode.set('edit');
+    this.dialogService.openDialog('task-form', 'edit');
+}
 }
