@@ -74,7 +74,7 @@
     $duration: 250ms,
     $timing: ease,
     $backdrop: false,
-    $backdrop-color: rgb(0 0 0 / 50%)
+    $backdrop-color: rgb(0 0 0 / 25%)
 ) {
     // Closed dialog state
     transform: translate($from-x, $from-y);

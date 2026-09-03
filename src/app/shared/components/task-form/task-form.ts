@@ -21,9 +21,10 @@ import { Taskmanagement } from '../../services/taskmanagement';
 import { Profile } from '../../interfaces/profile';
 import { TaskModel } from '../../models/task-model';
 import { validate } from '@angular/forms/signals';
-import { UserBadge } from "../user-badge/user-badge";
+import { UserBadge } from '../user-badge/user-badge';
 import { DialogService } from '../../services/dialog-service';
 import { TaskMembers } from '../../services/task-members';
+import { doubleTitle } from '../../helpers/double-title-validator';
 import { Router } from '@angular/router';
 //#endregion
 
@@ -39,14 +40,14 @@ interface SubtaskForm {
     selector: 'app-task-form',
     standalone: true,
     imports: [
-    ReactiveFormsModule,
-    NgSelectComponent,
-    CommonModule,
-    NgMultiLabelTemplateDirective,
-    NgOptionTemplateDirective,
-    FormsModule,
-    UserBadge
-],
+        ReactiveFormsModule,
+        NgSelectComponent,
+        CommonModule,
+        NgMultiLabelTemplateDirective,
+        NgOptionTemplateDirective,
+        FormsModule,
+        UserBadge,
+    ],
     templateUrl: './task-form.html',
     styleUrl: './task-form.scss',
 })
@@ -98,7 +99,13 @@ export class TaskForm {
     originalSubtaskTitle = '';
 
     taskForm = new FormGroup({
-        task_title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+        task_title: new FormControl('', {
+            nonNullable: true,
+            validators: [
+                Validators.required,
+                doubleTitle(this.taskService.tasks, this.taskService.currentTaskId),
+            ],
+        }),
         task_description: new FormControl('', {
             nonNullable: true,
         }),
@@ -226,11 +233,8 @@ export class TaskForm {
     // method for form submit, creates task if in add mode, edits task if in edit mode
     async setTask() {
         this.taskService.ensureTasksLoaded();
-        if (this.task_title) {
-            if (
-                this.taskService.taskFormMode() == 'add' &&
-                !this.taskService.isDoubleTask(this.task_title?.value)
-            ) {
+        if (this.task_title?.valid && this.taskForm.valid) {
+            if (this.taskService.taskFormMode() == 'add') {
                 await this.createTask();
             } else if (this.taskService.taskFormMode() == 'edit') {
                 this.editFormValues();
@@ -260,14 +264,6 @@ export class TaskForm {
     //#endregion
 
     //#region task edit
-    // checks if task title elready exists (edit mode)
-    doubleNameEdit(taskId: number, taskTitle: string) {
-        return (
-            this.taskService.isDoubleTask(taskTitle) &&
-            this.taskService.taskIdByTitle(taskTitle) === taskId
-        );
-    }
-
     async editFormValues() {
         const orderIndex = this.taskService.currentTask()?.order_index;
         const taskId = this.taskService.currentTask()?.TASK_ID;
@@ -275,7 +271,7 @@ export class TaskForm {
         const taskValues = new TaskModel(rawValues, orderIndex, taskId);
         const { subtasks, ...taskValuesNeeded } = taskValues;
 
-        if (taskId && this.doubleNameEdit(taskId, taskValues.task_title)) {
+        if (taskId) {
             this.taskService.editTask(taskValuesNeeded);
             this.taskService.updateTask(taskId, taskValuesNeeded);
 
@@ -328,6 +324,12 @@ export class TaskForm {
         if (newSubtask && !this.isDoubleSubtask(newSubtask)) {
             this.subTasks.push(this.createSubtask(newSubtask));
             this.clearSubtaskInput(event);
+        }
+    }
+
+    onAddSubtaskKeydown(event: KeyboardEvent) {
+        if (event.key === 'Enter') {
+            this.addSubtaskk(event);
         }
     }
 

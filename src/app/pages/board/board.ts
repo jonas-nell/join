@@ -48,7 +48,7 @@ export class Board {
         for (const task of this.taskmanagementService.tasks()){
             await this.taskMembers.setTaskMembers(task.TASK_ID)
         }
-        console.log(this.taskMembers.taskMembers());
+        console.log(this.taskmanagementService.taskFormMode());
     }
 
     
