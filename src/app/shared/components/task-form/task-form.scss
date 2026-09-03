@@ -261,7 +261,7 @@
             .input-actions {
                 position: absolute;
                 right: px-to-rem(8);
-                top: 50%;
+                top: 30%;
                 transform: translateY(-50%);
                 width: fit-content;
                 @include flex(row, $gap: 4, $justify: flex-end);

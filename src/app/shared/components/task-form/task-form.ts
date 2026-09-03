@@ -27,6 +27,7 @@ import { TaskMembers } from '../../services/task-members';
 import { doubleTitle } from '../../helpers/double-title-validator';
 import { Router } from '@angular/router';
 import { formatLocalDate, notBeforeTodayValidator } from '../../helpers/date-validator';
+import { duplicateSubtaskValidator } from '../../helpers/duplicate-subtask-validator';
 //#endregion
 
 interface SubtaskForm {
@@ -328,16 +329,12 @@ export class TaskForm {
     ): FormGroup<SubtaskForm> {
         return this.fb.group({
             subtask_title: this.fb.nonNullable.control(title || '', {
-                validators: [Validators.required],
+                validators: [Validators.required, duplicateSubtaskValidator()],
             }),
             subtask_done: this.fb.nonNullable.control(done),
             id: this.fb.nonNullable.control(subtaskId || undefined),
             task_id: this.fb.nonNullable.control(taskId || undefined),
         });
-    }
-
-    isDoubleSubtask(subtaskTitle: string): boolean {
-        return this.subTasks.value.some((subtask) => subtask.subtask_title === subtaskTitle);
     }
 
     //#region add subtask
@@ -346,11 +343,31 @@ export class TaskForm {
     // wird nur in form hinzugefügt, nicht lokal oder auf der db gespeichert
     addSubtaskk(event: Event): void {
         event.preventDefault();
+
         const newSubtask = this.subtask?.value.trim();
-        if (newSubtask && !this.isDoubleSubtask(newSubtask)) {
-            this.subTasks.push(this.createSubtask(newSubtask));
-            this.clearSubtaskInput(event);
+
+        if (!newSubtask) {
+            return;
         }
+
+        const isDuplicate = this.subTasks.controls.some((group) => {
+            const title = group.controls.subtask_title.value.trim().toLowerCase();
+            return title === newSubtask.toLowerCase();
+        });
+
+        if (isDuplicate) {
+            this.subtask?.setErrors({ duplicateSubtask: true });
+            this.subtask?.markAsTouched();
+            return;
+        }
+
+        this.subTasks.push(this.createSubtask(newSubtask));
+
+        this.subTasks.controls.forEach((g) => {
+            g.controls.subtask_title.updateValueAndValidity();
+        });
+
+        this.clearSubtaskInput(event);
     }
 
     onAddSubtaskKeydown(event: KeyboardEvent) {
@@ -373,8 +390,14 @@ export class TaskForm {
     // speichert bearbeiteten subtask im form
     saveSubtask(subtaskIndex: number) {
         const subtask = this.subTasks.at(subtaskIndex);
-        const title = subtask.controls.subtask_title.value;
+        const title = subtask.controls.subtask_title.value.trim();
         subtask.controls.subtask_title.setValue(title);
+        subtask.controls.subtask_title.markAsTouched();
+        subtask.controls.subtask_title.updateValueAndValidity();
+
+        if (subtask.controls.subtask_title.invalid) {
+            return;
+        }
 
         this.editingSubtaskIndex = null;
         this.originalSubtaskTitle = '';
