@@ -16,7 +16,7 @@
                 id="todo"
             >
                 @for (task of taskmanagementService.todo(); track task.TASK_ID) {
-                    <app-task-card [task]="task" />
+                    <app-task-card [id]="'task-' + task.TASK_ID" [task]="task" />
                 } @empty {
                     <div class="no-tasks-placeholder">No tasks To do</div>
                 }

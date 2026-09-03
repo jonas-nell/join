@@ -18,8 +18,10 @@ export class Taskmanagement {
     private readonly database = inject(DatabaseService);
     taskInsertChannel: RealtimeChannel | undefined;
     taskUpdateChannel: RealtimeChannel | undefined;
+    taskDeleteChannel: RealtimeChannel | undefined;
     subtaskUpdateChannel: RealtimeChannel | undefined;
     subtaskInsertChannel: RealtimeChannel | undefined;
+    subtaskDeleteChannel: RealtimeChannel | undefined;
     //#endregion
 
     tasksRequested = false;
@@ -34,6 +36,7 @@ export class Taskmanagement {
         () => this.tasks().find((task) => task.TASK_ID === this.currentTaskId()) ?? null,
     );
     taskFormMode = signal<'edit' | 'add' | null>(null);
+    scrollToNewTask = signal<string | null>(null);
 
     //#region taskstatus computed
     todo = computed(() =>
@@ -64,14 +67,17 @@ export class Taskmanagement {
         this.subscribeUpdate();
         this.subscribeSubtaskUpdate();
         this.subscribeSubtaskInsert();
+        this.subscribeSubtaskDelete();
+        this.subscribeDelete();
     }
 
     ngOnDestroy() {
-        console.log('unsubscribe works');
         this.unsubscribeInsert();
         this.unsubscribeUpdate();
+        this.unsubscribeDelete();
         this.unsubscrSubtaskInsert();
         this.unsubscrSubtaskUpdate();
+        this.unsubscribeSubtaskDelete();
     }
 
     //#region methods
@@ -108,6 +114,21 @@ export class Taskmanagement {
                                 ? new TaskModel(payload.new)
                                 : task,
                         ),
+                    );
+                },
+            )
+            .subscribe();
+    }
+
+    subscribeDelete() {
+        this.taskDeleteChannel = this.database.client
+            .channel('custom-delete-channel')
+            .on(
+                'postgres_changes',
+                { event: 'DELETE', schema: 'public', table: 'tasks' },
+                (payload) => {
+                    this.tasks.update((tasks) =>
+                        tasks.filter((task) => task.TASK_ID !== payload.old['TASK_ID']),
                     );
                 },
             )
@@ -166,6 +187,34 @@ export class Taskmanagement {
             )
             .subscribe();
     }
+
+    subscribeSubtaskDelete() {
+        this.subtaskDeleteChannel = this.database.client
+            .channel('custom-subtask-delete-channel')
+            .on(
+                'postgres_changes',
+                { event: 'DELETE', schema: 'public', table: 'subtasks' },
+                (payload) => {
+                    let tmpSubtask = payload.old as Subtask;
+                    const subtaskId = tmpSubtask.id;
+                    if (subtaskId === undefined) {
+                        return;
+                    }
+                    this.subtasks.update((subtasks) => {
+                        const updated = { ...subtasks };
+
+                        for (const taskId in updated) {
+                            updated[Number(taskId)] = updated[Number(taskId)].filter(
+                                (subtask) => subtask.id !== subtaskId,
+                            );
+                        }
+
+                        return updated;
+                    });
+                },
+            )
+            .subscribe();
+    }
     //#endregion
     //#endregion
 
@@ -182,6 +231,12 @@ export class Taskmanagement {
             this.database.client.removeChannel(this.taskUpdateChannel);
         }
     }
+
+    unsubscribeDelete() {
+        if (this.taskDeleteChannel) {
+            this.database.client.removeChannel(this.taskDeleteChannel);
+        }
+    }
     //#endregion
 
     //#region unsubscribe subtask
@@ -196,13 +251,19 @@ export class Taskmanagement {
             this.database.client.removeChannel(this.subtaskUpdateChannel);
         }
     }
+
+    unsubscribeSubtaskDelete() {
+        if (this.subtaskDeleteChannel) {
+            this.database.client.removeChannel(this.subtaskDeleteChannel);
+        }
+    }
     //#endregion
     //#endregion
 
     //#endregion
 
     //#region add
-    async addTaskDB(changes: TaskChanges, members: Profile[], subtasks: Subtask[]): Promise<Task> {
+    async addTaskDB(changes: TaskChanges, members:string[], subtasks: Subtask[]): Promise<Task> {
         const { data: task, error } = await this.database.client
             .from('tasks')
             .insert({ ...changes })
@@ -214,6 +275,8 @@ export class Taskmanagement {
 
             throw error;
         }
+
+        this.scrollToNewTask.set(task.TASK_ID);
 
         if (members.length > 0) {
             this.filterTaskMembers(members, task.TASK_ID);
@@ -250,10 +313,10 @@ export class Taskmanagement {
     // nach erstellung von task (wenn task id verfügbar)
     // prüfung ob members zu task hunzugefügt
     // arr mit objekten (task id + user id) wird erstellt und in datenbanktabelle geschrieben
-    async filterTaskMembers(members: Profile[], taskId: number) {
-        const assignments: { task_id: number; user_id: string }[] = members.map((member) => ({
+    async filterTaskMembers(members: string[], taskId: number) {
+        const assignments: { task_id: number; user_id: string }[] = members.map((memberId) => ({
             task_id: taskId,
-            user_id: member.id,
+            user_id: memberId,
         }));
 
         const { error: assignmentError } = await this.database.client
@@ -338,6 +401,22 @@ export class Taskmanagement {
 
         if (error) {
             console.error('The subtask could not be updated:', error);
+            throw error;
+        }
+    }
+
+    deleteSubtaskLocal(subtaskId: number, taskId: number) {
+        this.subtasks.update((subtasks) => ({
+            ...subtasks,
+            [taskId]: (subtasks[taskId] ?? []).filter((subtask) => subtask.id !== subtaskId),
+        }));
+    }
+
+    async deleteSubTask(subtaskId: number): Promise<void> {
+        const { error } = await this.database.client.from('subtasks').delete().eq('id', subtaskId);
+
+        if (error) {
+            console.error('The subtask could not be deleted:', error);
             throw error;
         }
     }
