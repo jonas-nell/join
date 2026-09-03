@@ -24,6 +24,7 @@ import { validate } from '@angular/forms/signals';
 import { UserBadge } from "../user-badge/user-badge";
 import { DialogService } from '../../services/dialog-service';
 import { TaskMembers } from '../../services/task-members';
+import { Router } from '@angular/router';
 //#endregion
 
 interface SubtaskForm {
@@ -58,6 +59,7 @@ export class TaskForm {
     dialogService = inject(DialogService);
     taskMembers = inject(TaskMembers);
     fb = inject(FormBuilder);
+    router = inject(Router);
     //#endregion
 
     modeAdd = computed(() => this.taskService.taskFormMode() == 'add');
@@ -253,6 +255,7 @@ export class TaskForm {
         this.clearTaskInput();
         this.dialogService.closeDialog();
         this.taskService.taskFormMode.set(null);
+        this.router.navigate(['/board']);
     }
     //#endregion
 

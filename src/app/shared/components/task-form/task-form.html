@@ -1,4 +1,8 @@
-<section class="task-form">
+<section class="task-form" [class.edit-mode]="!modeAdd()">
+    <button type="button" class="close-btn" (click)="dialogService.closeDialog()">
+        <img src="./assets/icons/btn-close-blue.svg" alt="">
+    </button>
+
     @if (modeAdd()) {
         <h1>Add Task</h1>
     }
@@ -101,8 +105,9 @@
                         [closeOnSelect]="false"
                         bindLabel="user_name"
                         placeholder="Select contacts to assign"
-                        [clearSearchOnAdd]="true"
+                        [clearSearchOnAdd]="false"
                         formControlName="member"
+                        appendTo=".task-form"
                     >
                         <ng-template ng-multi-label-tmp> </ng-template>
                         <ng-template

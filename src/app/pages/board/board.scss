@@ -138,7 +138,7 @@ $scrollbar-width: px-to-rem(5);
                 }
 
                 @media (min-width: 1245px){
-                    height: 70dvh;
+                    height: 69dvh;
                 }
             }
 
@@ -157,3 +157,12 @@ $scrollbar-width: px-to-rem(5);
         }
     }
 }
+
+dialog[appDialog="task-form"] {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    background: white;
+    border-radius: 24px;
+}
+

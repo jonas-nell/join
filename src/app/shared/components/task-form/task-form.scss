@@ -3,8 +3,50 @@
 
 .task-form {
     @include flex($align: start, $gap: 24);
-    padding: distance(22, 16);
+    padding: distance(22, 12);
     width: 100%;
+    max-width: 100%;
+    padding-bottom: px-to-rem(80);
+
+    :host-context(dialog) & {
+        padding: distance(48, 24, 0, 24);
+        height: auto;
+        width: auto;
+        max-width: px-to-rem(1170);
+        max-height: 80dvh;
+
+        &.edit-mode {
+            width: min(90vw, px-to-rem(560));
+            padding: px-to-rem(32);
+            max-width: 100%;
+        }
+
+        form {
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-gutter: stable;
+
+            .btn-wrapper {
+                flex-direction: column;
+                gap: 12px;
+
+                @media (min-width: 430px) {
+                    flex-direction: row;
+                }
+            }
+
+            .form-buttons {
+                position: sticky;
+                bottom: 0;
+                left: 0;
+                right: 32px;
+                background: white;
+                padding-top: px-to-rem(16);
+                padding-bottom: px-to-rem(0);
+                z-index: 10;
+            }
+        }
+    }
 
     @include desktop {
         padding-left: calc(px-to-rem(250) + px-to-rem(34));
@@ -15,6 +57,18 @@
     @media (min-width: 1440px) {
         padding-left: calc(px-to-rem(250) + px-to-rem(64));
         padding-right: px-to-rem(64);
+    }
+
+    .close-btn {
+        display: none;
+        position: absolute;
+        top: px-to-rem(16);
+        right: px-to-rem(16);
+        cursor: pointer;
+
+        :host-context(dialog) & {
+            display: flex;
+        }
     }
 
     h1 {
@@ -35,6 +89,10 @@
             @include desktop {
                 @include flex(row, $align: start, $gap: 24);
                 width: 100%;
+
+                :host-context(dialog) & {
+                    flex-direction: column;
+                }
             }
 
             .form-column {
@@ -43,6 +101,11 @@
                     flex: 1 1 0;
                     width: auto;
                     height: 100%;
+
+                    :host-context(dialog) & {
+                        flex: unset;
+                        width: 100%;
+                    }
                 }
             }
 
@@ -126,6 +189,11 @@
                 @include tablet {
                     width: 178px;
                     padding: distance(24, 24);
+
+                    :host-context(dialog) & {
+                        width: 128px;
+                        padding: distance(16, 24);
+                    }
                 }
 
                 @include desktop {
@@ -213,15 +281,15 @@
             }
         }
 
-        .subtasks{
-            padding-top: px-to-rem(36);
+        .subtasks {
+            padding-top: px-to-rem(52);
             max-height: px-to-rem(170);
             overflow-y: auto;
         }
 
         .subtask-wrapper {
             @include flex(row, $justify: start, $gap: 8);
-            width: 80%;
+            width: calc(100% - 26px);
             margin-left: 26px;
             @include font-inter(regular, 16, 2%, 16);
 
@@ -253,9 +321,21 @@
             }
         }
 
-        .form-buttons{
-            @include flex(row, $justify:flex-end, $gap: 24);
+        .form-buttons {
+            @include flex(row, $justify: flex-end, $gap: 24);
             @include font-inter(regular, 16, 2%, 16);
+            position: fixed;
+            bottom: 100px;
+            right: 16px;
+            background: white;
+            padding-bottom: 16px;
+            padding-top: 16px;
+            z-index: 100;
+
+            @include desktop {
+                position: relative;
+                bottom: auto;
+            }
 
             .clear-btn {
                 @include flex(row, $gap: 8);
@@ -264,22 +344,20 @@
                 padding: distance(8, 12, 8, 16);
                 height: px-to-rem(43);
 
-                &:hover{
-                    // border: 2px solid $border-color;
+                &:hover {
                     box-shadow: 0px 4px 4px 0px #00000040;
-
                 }
             }
 
-            .submit-btn{
+            .submit-btn {
                 @include flex(row, $gap: 8);
                 background: $main-color;
                 color: white;
                 padding: distance(8, 12, 8, 16);
                 border-radius: 8px;
                 height: px-to-rem(43);
-                
-                &:hover{
+
+                &:hover {
                     box-shadow: 0px 4px 4px 0px #00000040;
                 }
             }
@@ -293,7 +371,27 @@
         transform: translateY(-50%);
         width: fit-content;
     }
-    
+
+    &.edit-mode {
+        .form-columns {
+            @include desktop {
+                flex-direction: column;
+                gap: px-to-rem(16);
+            }
+        }
+
+        .form-column {
+            @include desktop {
+                width: 100%;
+                flex: unset;
+                height: auto;
+            }
+        }
+
+        .form-separator {
+            display: none;
+        }
+    }
 }
 
 .error-field {
@@ -307,4 +405,3 @@
     top: px-to-rem(-4);
     margin-left: px-to-rem(14);
 }
-
