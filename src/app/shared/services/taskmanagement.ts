@@ -22,6 +22,7 @@ export class Taskmanagement {
     subtaskUpdateChannel: RealtimeChannel | undefined;
     subtaskInsertChannel: RealtimeChannel | undefined;
     subtaskDeleteChannel: RealtimeChannel | undefined;
+    taskMemberInsertChannel: RealtimeChannel | undefined;
     //#endregion
 
     tasksRequested = false;
@@ -69,6 +70,7 @@ export class Taskmanagement {
         this.subscribeSubtaskInsert();
         this.subscribeSubtaskDelete();
         this.subscribeDelete();
+        this.subscribeTaskmemberInsert();
     }
 
     ngOnDestroy() {
@@ -95,7 +97,7 @@ export class Taskmanagement {
                 (payload) => {
                     let tmpTask = new TaskModel(payload.new);
                     this.tasks.update((list) => [...list, tmpTask]);
-                    console.log('Change received!', payload);
+                    // console.log('Change received!', payload);
                 },
             )
             .subscribe();
@@ -136,6 +138,19 @@ export class Taskmanagement {
     }
     //#endregion
 
+    subscribeTaskmemberInsert() {
+        // console.log('works');
+
+        this.taskMemberInsertChannel = this.database.client
+            .channel('custom-taskmember-insert-channel')
+            .on(
+                'postgres_changes',
+                { event: 'DELETE', schema: 'public', table: 'tasks_profiles' },
+                (payload) => {},
+            )
+            .subscribe();
+    }
+
     //#region subscribe subtask
     subscribeSubtaskUpdate() {
         this.subtaskUpdateChannel = this.database.client
@@ -160,7 +175,7 @@ export class Taskmanagement {
                             subtask.id === changes.id ? changes : subtask,
                         ),
                     }));
-                    console.log('Change received!', payload);
+                    // console.log('Change received!', payload);
                 },
             )
             .subscribe();
@@ -182,7 +197,7 @@ export class Taskmanagement {
                         ...subtasks,
                         [taskId]: [...(subtasks[taskId] ?? []), tmpSubtask],
                     }));
-                    console.log('Change received!', payload);
+                    // console.log('Change received!', payload);
                 },
             )
             .subscribe();
@@ -285,9 +300,6 @@ export class Taskmanagement {
         if (subtasks.length > 0) {
             this.addSubtasks(subtasks, task.TASK_ID);
         }
-
-        console.log(changes);
-
         return task as Task;
     }
 
@@ -327,7 +339,6 @@ export class Taskmanagement {
             console.error('The users could not be assigned to the task:', assignmentError);
             throw assignmentError;
         }
-        console.log(assignments);
     }
     //#endregion
 
@@ -444,7 +455,6 @@ export class Taskmanagement {
             console.error('The assigned user could not be deleted from the task:', assignmentError);
             throw assignmentError;
         }
-        // console.log(assignments);
     }
 
     async ensureTasksLoaded(forceReload = false): Promise<void> {

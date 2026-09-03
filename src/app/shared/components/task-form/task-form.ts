@@ -231,7 +231,6 @@ export class TaskForm {
                 ),
             );
         }
-        console.log(this.subTasks);
     }
 
     clearTaskInput(): void {
@@ -258,7 +257,6 @@ export class TaskForm {
                 await this.createTask();
             } else if (this.taskService.taskFormMode() == 'edit') {
                 this.editFormValues();
-                console.log('edit');
             }
         }
     }
@@ -318,8 +316,8 @@ export class TaskForm {
     editAssignedMembers(taskId: number) {
         const formMembers = this.memberIdArr(this.members.value);
         const newMembers = this.taskMembers.findNewTaskMembers(formMembers, taskId);
-        const deletedMembers = this.taskMembers.findDeletedTaskMembers(newMembers, taskId);
-        console.log(deletedMembers);
+        const deletedMembers = this.taskMembers.findDeletedTaskMembers(formMembers, taskId);
+
         // update taskmember signal
         this.taskMembers.updateTaskMembers(taskId, formMembers);
         if (newMembers) {
