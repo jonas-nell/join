@@ -56,10 +56,18 @@
                         formControlName="task_due_date"
                         placeholder="dd/mm/yyyy"
                         [class.input-error]="task_due_date?.invalid && task_due_date.touched"
+                        [min]="today"
                     />
                     <div class="error-field">
-                        @if (task_due_date?.invalid && task_due_date.touched) {
-                            <span class="error-message">Due date required</span>
+                        @if (
+                            task_due_date.hasError('beforeToday') &&
+                            (task_due_date.touched || task_due_date.dirty)
+                        ) {
+                            <small class="error-message"> Date can't be in past. </small>
+                        }
+
+                        @if (task_due_date.hasError('required') && task_due_date.touched) {
+                            <small class="error-message"> Due date required. </small>
                         }
                     </div>
                 </div>

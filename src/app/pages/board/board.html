@@ -79,4 +79,12 @@
     </div>
 </div>
 <app-single-task-view />
-<dialog appDialog="task-form"><app-task-form></app-task-form></dialog>
+<dialog
+    appDialog="task-form"
+    class="task-form-dialog"
+    [class.task-form-dialog--animated]="
+        taskmanagementService.taskFormMode() === 'add'
+    "
+>
+    <app-task-form />
+</dialog>
