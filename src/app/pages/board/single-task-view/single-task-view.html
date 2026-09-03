@@ -1,5 +1,8 @@
-<!-- Loading signal to show dialog after loading all data -->
-<dialog appDialog="single-task" class="dialog-backdrop">
+<dialog
+    appDialog="single-task"
+    class="dialog-backdrop"
+    [class.dialog-backdrop--no-animation]="taskmanagement.taskFormMode() === 'edit'"
+>
     @if (taskmanagement.currentTask(); as task) {
         <article class="task-dialog">
             <header class="dialog-header">
@@ -99,7 +102,7 @@
 
                 <span class="divider"></span>
 
-                <button type="button" (click)="dialogService.openDialog('task-form', 'edit')" (click)="taskmanagement.taskFormMode.set('edit')">
+                <button type="button" (click)="openEditDialog()">
                     <img src="./assets/icons/edit.png" alt="" />
                     Edit
                 </button>

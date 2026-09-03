@@ -22,6 +22,7 @@ import { TaskMembers } from '../../shared/services/task-members';
 import { DialogService } from '../../shared/services/dialog-service';
 import { TaskForm } from "../../shared/components/task-form/task-form";
 import { Dialog } from '../../shared/directives/dialog-directive';
+import { ResponsiveService } from '../../shared/services/responsive-service';
 
 @Component({
     selector: 'app-board',
@@ -35,6 +36,7 @@ export class Board {
     private breakpointObserver = inject(BreakpointObserver);
     readonly dialogService = inject(DialogService);
     taskMembers = inject(TaskMembers);
+    responsive = inject(ResponsiveService);
     
     constructor() {
         this.loadData(); 
@@ -69,11 +71,7 @@ export class Board {
         }
         console.log(this.taskmanagementService.taskFormMode());
     }
-    
-    isDesktop = toSignal(
-        this.breakpointObserver.observe('(min-width: 1024px)').pipe(map(result => result.matches)),
-        { initialValue: false }
-    );
+
     
     
     async drop(event: CdkDragDrop<Task[]>) {

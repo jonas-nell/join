@@ -10,7 +10,7 @@
             <div
                 cdkDropList
                 [cdkDropListData]="taskmanagementService.todo()"
-                [cdkDropListDisabled]="!isDesktop()"
+                [cdkDropListDisabled]="!responsive.isDesktop()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
                 id="todo"
@@ -28,7 +28,7 @@
             <div
                 cdkDropList
                 [cdkDropListData]="taskmanagementService.progress()"
-                [cdkDropListDisabled]="!isDesktop()"
+                [cdkDropListDisabled]="!responsive.isDesktop()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
                 id="progress"
@@ -46,7 +46,7 @@
             <div
                 cdkDropList
                 [cdkDropListData]="taskmanagementService.feedback()"
-                [cdkDropListDisabled]="!isDesktop()"
+                [cdkDropListDisabled]="!responsive.isDesktop()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
                 id="feedback"
@@ -64,7 +64,7 @@
             <div
                 cdkDropList
                 [cdkDropListData]="taskmanagementService.done()"
-                [cdkDropListDisabled]="!isDesktop()"
+                [cdkDropListDisabled]="!responsive.isDesktop()"
                 class="task-list"
                 (cdkDropListDropped)="drop($event)"
                 id="done"
@@ -79,4 +79,12 @@
     </div>
 </div>
 <app-single-task-view />
-<dialog appDialog="task-form"><app-task-form></app-task-form></dialog>
+<dialog
+    appDialog="task-form"
+    class="task-form-dialog"
+    [class.task-form-dialog--animated]="
+        taskmanagementService.taskFormMode() === 'add'
+    "
+>
+    <app-task-form />
+</dialog>

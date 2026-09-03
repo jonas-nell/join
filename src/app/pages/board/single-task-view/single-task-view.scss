@@ -33,6 +33,21 @@ dialog {
     // }
 }
 
+dialog.dialog-backdrop.dialog-backdrop--no-animation {
+    animation: none;
+    transition: none;
+
+    .task-dialog {
+        animation: none;
+        transition: none;
+    }
+
+    &::backdrop {
+        animation: none;
+        transition: none;
+    }
+}
+
 // Final state after the closing transition.
 .dialog-backdrop:not([open]) {
     display: none;
@@ -274,13 +289,6 @@ dialog {
             margin: 0;
             accent-color: $dark;
             cursor: pointer;
-        }
-
-        span {
-            min-width: 0;
-            overflow-x: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
     }
 

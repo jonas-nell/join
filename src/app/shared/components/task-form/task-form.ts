@@ -25,6 +25,8 @@ import { UserBadge } from '../user-badge/user-badge';
 import { DialogService } from '../../services/dialog-service';
 import { TaskMembers } from '../../services/task-members';
 import { doubleTitle } from '../../helpers/double-title-validator';
+import { Router } from '@angular/router';
+import { formatLocalDate, notBeforeTodayValidator } from '../../helpers/date-validator';
 //#endregion
 
 interface SubtaskForm {
@@ -59,6 +61,7 @@ export class TaskForm {
     dialogService = inject(DialogService);
     taskMembers = inject(TaskMembers);
     fb = inject(FormBuilder);
+    router = inject(Router);
     //#endregion
 
     modeAdd = computed(() => this.taskService.taskFormMode() == 'add');
@@ -97,6 +100,8 @@ export class TaskForm {
     originalSubtaskTitle = '';
     subtasksToDelete: number[] = [];
 
+    readonly today = formatLocalDate();
+
     taskForm = new FormGroup({
         task_title: new FormControl('', {
             nonNullable: true,
@@ -110,7 +115,7 @@ export class TaskForm {
         }),
         task_due_date: new FormControl('', {
             nonNullable: true,
-            validators: [Validators.required],
+            validators: [Validators.required, notBeforeTodayValidator()],
         }),
         task_priority: new FormControl('medium', {
             nonNullable: true,
@@ -151,8 +156,8 @@ export class TaskForm {
     get task_description() {
         return this.taskForm.get('task_description');
     }
-    get task_due_date() {
-        return this.taskForm.get('dtask_due_date');
+    get task_due_date(): FormControl<string> {
+        return this.taskForm.controls.task_due_date;
     }
 
     get task_priority() {
@@ -273,8 +278,7 @@ export class TaskForm {
         this.clearTaskInput();
         this.dialogService.closeDialog();
         this.taskService.taskFormMode.set(null);
-        console.log(this.taskService.todo());
-        
+        this.router.navigate(['/board']);
     }
     //#endregion
 
@@ -299,12 +303,15 @@ export class TaskForm {
 
             this.editTaskMembers(taskId);
             this.clearTaskInput();
-            this.dialogService.closeDialog();
 
-            if (this.taskService.taskFormMode() == 'edit') {
-                this.dialogService.openDialog('single-task');
-            }
-            this.taskService.taskFormMode.set(null);
+            // Switching the active dialog automatically closes task-form
+            // and reopens single-task.
+
+            requestAnimationFrame(() => {
+                this.taskService.taskFormMode.set(null);
+            });
+
+            this.dialogService.openDialog('single-task');
         }
     }
     //#endregion
