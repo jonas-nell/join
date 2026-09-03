@@ -263,7 +263,7 @@ export class Taskmanagement {
     //#endregion
 
     //#region add
-    async addTaskDB(changes: TaskChanges, members: Profile[], subtasks: Subtask[]): Promise<Task> {
+    async addTaskDB(changes: TaskChanges, members:string[], subtasks: Subtask[]): Promise<Task> {
         const { data: task, error } = await this.database.client
             .from('tasks')
             .insert({ ...changes })
@@ -313,10 +313,10 @@ export class Taskmanagement {
     // nach erstellung von task (wenn task id verfügbar)
     // prüfung ob members zu task hunzugefügt
     // arr mit objekten (task id + user id) wird erstellt und in datenbanktabelle geschrieben
-    async filterTaskMembers(members: Profile[], taskId: number) {
-        const assignments: { task_id: number; user_id: string }[] = members.map((member) => ({
+    async filterTaskMembers(members: string[], taskId: number) {
+        const assignments: { task_id: number; user_id: string }[] = members.map((memberId) => ({
             task_id: taskId,
-            user_id: member.id,
+            user_id: memberId,
         }));
 
         const { error: assignmentError } = await this.database.client

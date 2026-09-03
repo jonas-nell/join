@@ -173,6 +173,10 @@ export class TaskForm {
     get subTasks(): FormArray<FormGroup<SubtaskForm>> {
         return this.taskForm.controls.subtasks;
     }
+
+    get members() {
+        return this.taskForm.controls.member;
+    }
     //#endregion
 
     //#region fill/reset form
@@ -184,12 +188,24 @@ export class TaskForm {
                 task_description: currentTask?.task_description ?? '',
                 task_due_date: currentTask?.task_due_date ?? '',
                 task_priority: currentTask?.task_priority ?? '',
-                member: [],
+                member: this.getTaskMembers(currentTask?.TASK_ID) ?? [],
                 task_category: currentTask?.task_category ?? '',
                 subtaskInput: '',
             });
             this.setSubtasks();
         }
+    }
+
+    // get assigned profiles to fill task form
+    getTaskMembers(taskId: number | undefined): Profile[] {
+        if (taskId == undefined) {
+            return [];
+        }
+        const memberIds = this.taskMembers.taskMembers()[taskId] ?? [];
+        const members = this.profileService
+            .profiles()
+            .filter((profile) => memberIds.includes(profile.id));
+        return members;
     }
 
     // set subtask values in edit mode
@@ -249,24 +265,26 @@ export class TaskForm {
         const orderIndex = this.taskService.todo().length;
         const rawValues = this.taskForm.getRawValue();
         const taskValues = new TaskModel(rawValues, orderIndex);
-
+        const memberIdArray = this.memberIdArr(this.members.value);
         // TASK_ID nicht mitgeben, da von DB erstellt
         const { TASK_ID, subtasks, ...taskValuesNeeded } = taskValues;
 
-        await this.taskService.addTaskDB(taskValuesNeeded, this.memberArray(), subtasks);
-
+        await this.taskService.addTaskDB(taskValuesNeeded, memberIdArray, subtasks);
         this.clearTaskInput();
         this.dialogService.closeDialog();
         this.taskService.taskFormMode.set(null);
+        console.log(this.taskService.todo());
+        
     }
     //#endregion
 
     //#region task edit
     async editFormValues() {
+        const currentTask = this.taskService.currentTask();
         const orderIndex = this.taskService.currentTask()?.order_index;
         const taskId = this.taskService.currentTask()?.TASK_ID;
         const rawValues = this.taskForm.getRawValue();
-        const taskValues = new TaskModel(rawValues, orderIndex, taskId);
+        const taskValues = new TaskModel(rawValues, orderIndex, taskId, currentTask?.task_status);
         const { subtasks, ...taskValuesNeeded } = taskValues;
 
         if (taskId) {
@@ -426,7 +444,7 @@ export class TaskForm {
 
     //#region taskmembers
     editTaskMembers(taskId: number) {
-        this.taskMembers.updateTaskMembers(taskId, this.memberIdArr(this.memberArray()));
+        this.taskMembers.updateTaskMembers(taskId, this.memberIdArr(this.members.value));
     }
 
     // array mit objects von task zugewiesenen kontakten wird zurückgegeben
@@ -439,13 +457,7 @@ export class TaskForm {
     }
 
     memberIdArr(members: Profile[]): string[] {
-        const idArr = [];
-        if (members) {
-            for (const member of members) {
-                idArr.push(member.id);
-            }
-        }
-        return idArr;
+        return members.map((member) => member.id);
     }
     //#endregion
     //#endregion
