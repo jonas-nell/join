@@ -114,6 +114,7 @@
         .contacts-layout__profile {
             display: block;
             min-height: 0;
+            min-width: 0;
         }
 
         .contacts-layout__list {
@@ -155,6 +156,7 @@
         padding-top: 9dvh;
         background-color: $light-gray;
         overflow-y: auto;
+        overflow-x: hidden;
         overflow-wrap: anywhere;
     }
 
@@ -163,6 +165,7 @@
     .contacts-layout__profile {
         display: block;
         min-height: 0;
+        min-width: 0;
     }
 
     .contacts-layout__list {

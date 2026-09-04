@@ -119,6 +119,9 @@ $scrollbar-width: px-to-rem(5);
             flex: 1;
             min-height: 0;
         }
+        @media (min-width: 1245px){
+            padding-bottom: px-to-rem(34);
+        }
         @media screen and (min-width: 1620px) {
             @include flex($direction: row, $align: start, $justify: start, $gap: 28);
         }
