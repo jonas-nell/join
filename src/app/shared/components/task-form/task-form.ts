@@ -143,6 +143,12 @@ export class TaskForm {
         void this.profileService.ensureProfilesLoaded();
 
         effect(() => {
+            this.taskService.tasks();
+            this.taskService.currentTaskId();
+            this.taskForm.controls.task_title.updateValueAndValidity({ emitEvent: false });
+        });
+
+        effect(() => {
             const taskFormOpen = this.taskService.taskFormMode();
             const dueDateControl = this.taskForm.controls.task_due_date;
 
@@ -278,6 +284,7 @@ export class TaskForm {
     clearTaskForm(event: Event): void {
         event.preventDefault();
         this.taskForm.reset();
+        this.subTasks.clear();
     }
 
     clearSubtaskInput(event: Event): void {
@@ -290,12 +297,15 @@ export class TaskForm {
     // method for form submit, creates task if in add mode, edits task if in edit mode
     async setTask() {
         this.taskService.ensureTasksLoaded();
-        if (this.task_title?.valid && this.taskForm.valid) {
-            if (this.taskService.taskFormMode() == 'add') {
-                await this.createTask();
-            } else if (this.taskService.taskFormMode() == 'edit') {
-                this.editFormValues();
-            }
+
+        if (!this.taskForm.valid) {
+            this.taskForm.markAllAsTouched();
+            return;
+        }
+        if (this.taskService.taskFormMode() == 'add') {
+            await this.createTask();
+        } else if (this.taskService.taskFormMode() == 'edit') {
+            this.editFormValues();
         }
     }
     //#endregion
@@ -437,9 +447,8 @@ export class TaskForm {
         });
 
         this.clearSubtaskInput(event);
-            this.taskForm.markAsDirty();
-        console.log("this.taskForm.dirty " + this.taskForm.dirty);
-        
+        this.taskForm.markAsDirty();
+        console.log('this.taskForm.dirty ' + this.taskForm.dirty);
     }
 
     onAddSubtaskKeydown(event: KeyboardEvent) {
