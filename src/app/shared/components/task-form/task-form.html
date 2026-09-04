@@ -26,8 +26,11 @@
                         [class.input-error]="task_title?.invalid && task_title.touched"
                     />
                     <div class="error-field">
-                        @if (task_title?.invalid && task_title.touched) {
+                        @if (task_title?.hasError('required') && task_title.touched) {
                             <span class="error-message">Title required</span>
+                        }
+                        @if (task_title?.hasError('doubleTaskTitle') && task_title.touched) {
+                            <span class="error-message">Title already exists</span>
                         }
                     </div>
                 </div>
@@ -63,11 +66,11 @@
                             task_due_date.hasError('beforeToday') &&
                             (task_due_date.touched || task_due_date.dirty)
                         ) {
-                            <span class="error-message"> Date can't be in the past. </span>
+                            <span class="error-message"> Date can't be in the past</span>
                         }
 
                         @if (task_due_date.hasError('required') && task_due_date.touched) {
-                            <span class="error-message"> Due date required. </span>
+                            <span class="error-message"> Due date required</span>
                         }
                     </div>
                 </div>
@@ -292,6 +295,9 @@
             </div>
         </div>
         <div class="form-buttons">
+            <div class="req-wrapper">
+                <span class="req">*</span><span>This field is required</span>
+            </div>
             @if (modeAdd()) {
                 <button class="clear-btn" (click)="clearTaskForm($event)">
                     <span>Clear</span
