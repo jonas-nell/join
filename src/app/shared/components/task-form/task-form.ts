@@ -610,6 +610,8 @@ export class TaskForm {
         if (this.taskService.taskFormMode() === 'edit') {
             this.taskService.taskFormMode.set(null);
         }
+        this.taskForm.reset();
+        this.subTasks.clear();
         this.dialogService.closeDialog();
         this.dialogService.backdropEvent.set(false);
     }
