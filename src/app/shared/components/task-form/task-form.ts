@@ -284,6 +284,7 @@ export class TaskForm {
     clearTaskForm(event: Event): void {
         event.preventDefault();
         this.taskForm.reset();
+        this.subTasks.clear();
     }
 
     clearSubtaskInput(event: Event): void {
