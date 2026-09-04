@@ -158,6 +158,12 @@ export class TaskForm {
                 emitEvent: false,
             });
         });
+
+        effect(() => {
+            if (this.dialogService.backdropEvent() == true) {
+                this.awaitFeedbackBeforeSubmit();
+            }
+        });
     }
 
     //#region methods
@@ -297,6 +303,8 @@ export class TaskForm {
                 this.editFormValues();
             }
         }
+        // set dialog backdrop event false after save
+        this.dialogService.backdropEvent.set(false);
     }
     //#endregion
 
@@ -437,9 +445,7 @@ export class TaskForm {
         });
 
         this.clearSubtaskInput(event);
-            this.taskForm.markAsDirty();
-        console.log("this.taskForm.dirty " + this.taskForm.dirty);
-        
+        this.taskForm.markAsDirty();
     }
 
     onAddSubtaskKeydown(event: KeyboardEvent) {
@@ -570,6 +576,35 @@ export class TaskForm {
     memberIdArr(members: Profile[]): string[] {
         return members.map((member) => member.id);
     }
+    //#endregion
+
+    //#region dialog management
+
+    // wait for user feedback if dialog is closed on backdrop
+    async awaitFeedbackBeforeSubmit(): Promise<void> {
+
+        // The user clicked directly on the dialog backdrop.
+        await this.confirmationService.confirmUnsavedChanges(
+            // True when the user changed at least one form field.
+            this.taskForm.dirty,
+
+            // This function runs when the user chooses to save.
+            () => this.setTask(),
+
+            // This function runs when there are no changes
+            // or the user chooses to discard them.
+            () => this.closeDialog(),
+        );
+    }
+    
+    closeDialog() {
+        if (this.taskService.taskFormMode() === 'edit') {
+            this.taskService.taskFormMode.set(null);            
+        }
+        this.dialogService.closeDialog();
+        this.dialogService.backdropEvent.set(false);
+    }
+
     //#endregion
     //#endregion
 }

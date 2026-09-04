@@ -36,7 +36,7 @@ export class Taskmanagement {
     currentTask: Signal<Task | null> = computed(
         () => this.tasks().find((task) => task.TASK_ID === this.currentTaskId()) ?? null,
     );
-    taskFormMode = signal<'edit' | 'add' | null>(null);
+    taskFormMode = signal<'edit' | 'add' | null>('add');
     scrollToNewTask = signal<string | null>(null);
 
     //#region taskstatus computed

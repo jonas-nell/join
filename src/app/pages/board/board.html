@@ -80,11 +80,11 @@
 </div>
 <app-single-task-view />
 <dialog
+    [closeOnBackdrop]="false"
+    (click)="dialogService.handleBackdropClick($event)"
     appDialog="task-form"
     class="task-form-dialog"
-    [class.task-form-dialog--animated]="
-        taskmanagementService.taskFormMode() === 'add'
-    "
+    [class.task-form-dialog--animated]="taskmanagementService.taskFormMode() === 'add'"
 >
     <app-task-form />
 </dialog>

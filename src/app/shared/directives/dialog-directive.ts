@@ -1,4 +1,4 @@
-import { Directive, effect, ElementRef, HostListener, inject, input } from '@angular/core';
+import { Directive, effect, ElementRef, HostListener, inject, input, signal } from '@angular/core';
 import { DialogName, DialogService } from '../services/dialog-service';
 
 @Directive({
@@ -18,6 +18,7 @@ export class Dialog {
 
     // DAniel
     closeOnBackdrop = input<boolean>(true);
+    awaitData = signal<boolean>(true);
 
     constructor() {
         // wird ausgeführt wenn sich der wert von dialogOpen() im service verändert
@@ -48,18 +49,21 @@ export class Dialog {
 
     onClickClose(event: MouseEvent): void {
         if (event.target === event.currentTarget && this.closeOnBackdrop()) {
+            // console.log(this.dialogService.backdropEvent());
+
+            // this.dialogService.backdropEvent.set(true);
             this.dialogService.closeDialog();
         }
     }
 
-    @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent) {
-        if (this.modal()) return;
-        if (!this.dialog.nativeElement.open) return;
+    // @HostListener('document:click', ['$event'])
+    // onDocumentClick(event: MouseEvent) {
+    //     if (this.modal()) return;
+    //     if (!this.dialog.nativeElement.open) return;
 
-        const target = event.target as Node;
-        if (!this.dialog.nativeElement.contains(target)) {
-            this.dialogService.closeDialog();
-        }
-    }
+    //     const target = event.target as Node;
+    //     if (!this.dialog.nativeElement.contains(target)) {
+    //         this.dialogService.closeDialog();
+    //     }
+    // }
 }
