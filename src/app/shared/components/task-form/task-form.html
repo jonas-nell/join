@@ -301,20 +301,23 @@
                     <span class="req">*</span><span>This field is required</span>
                 }
             </div>
-            @if (modeAdd()) {
-                <button class="clear-btn" (click)="clearTaskForm($event)">
-                    <span>Clear</span
-                    ><img src="./assets/icons/btn-close-blue.svg" alt="button clear icon" />
-                </button>
-            }
-            <button class="submit-btn" type="submit">
+            <div class="btns-wrpr">
+
                 @if (modeAdd()) {
-                    <span>Create Task</span>
-                } @else {
-                    <span>Ok</span>
+                    <button class="clear-btn" (click)="clearTaskForm($event)">
+                        <span>Clear</span
+                        ><img src="./assets/icons/btn-close-blue.svg" alt="button clear icon" />
+                    </button>
                 }
-                <img src="./assets/icons/check-white.png" alt="icon check" />
-            </button>
+                <button class="submit-btn" type="submit">
+                    @if (modeAdd()) {
+                        <span>Create Task</span>
+                    } @else {
+                        <span>Ok</span>
+                    }
+                    <img src="./assets/icons/check-white.png" alt="icon check" />
+                </button>
+            </div>
         </div>
     </form>
     <app-confirmation />

@@ -9,6 +9,7 @@ $scrollbar-width: px-to-rem(5);
     inset: 0;
     // top: 50%;
     // left: 50%;
+    min-width: px-to-rem(320);
 
     margin: auto;
     // translate: -50% -50%;
@@ -57,7 +58,7 @@ $scrollbar-width: px-to-rem(5);
         height: calc(100dvh - 6rem);
     }
 
-    @media (min-width: 1245px) {
+    @media (min-width: 1275px) {
         @include flex($gap: 48);
         padding-left: calc(px-to-rem(250) + px-to-rem(24));
         padding-right: px-to-rem(24);
