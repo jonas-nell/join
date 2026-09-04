@@ -46,7 +46,7 @@
                 </div>
 
                 <!-- due date -->
-                <div>
+                <div class="date-wrapper">
                     <label for="due-date"
                         >Due date
                         @if (modeAdd()) {
@@ -140,16 +140,16 @@
                         </ng-template>
                     </ng-select>
 
+                    <div class="selected-members">
                     @if (taskForm.value.member?.length) {
-                        <div class="selected-members">
                             @for (member of taskForm.value.member; track member.id) {
                                 <app-user-badge
                                     [userId]="member.id"
                                     [userName]="member.user_name"
                                 />
                             }
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
 
                 <!-- category -->
