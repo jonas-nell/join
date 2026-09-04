@@ -295,8 +295,11 @@
             </div>
         </div>
         <div class="form-buttons">
+            
             <div class="req-wrapper">
-                <span class="req">*</span><span>This field is required</span>
+                @if (modeAdd()) {
+                    <span class="req">*</span><span>This field is required</span>
+                }
             </div>
             @if (modeAdd()) {
                 <button class="clear-btn" (click)="clearTaskForm($event)">
@@ -316,3 +319,4 @@
     </form>
     <app-confirmation />
 </section>
+
