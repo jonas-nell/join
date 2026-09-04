@@ -19,6 +19,7 @@
             width: min(90vw, px-to-rem(560));
             padding: px-to-rem(32);
             max-width: 100%;
+            padding-bottom: 0;
         }
 
         form {
@@ -281,9 +282,10 @@
         }
 
         .subtasks {
-            padding-top: px-to-rem(52);
-            max-height: px-to-rem(170);
+            padding-top: px-to-rem(0);
+            max-height: px-to-rem(150);
             overflow-y: auto;
+            justify-content: start;
         }
 
         .subtask-wrapper {
@@ -343,6 +345,12 @@
                 padding-inline: 0;
             }
 
+            .req-wrapper{
+                flex-direction: row;
+                justify-content: start;
+                gap: 0;
+            }
+
             .clear-btn {
                 @include flex(row, $gap: 8);
                 border: 1px solid $border-color;
@@ -362,6 +370,7 @@
                 padding: distance(8, 12, 8, 16);
                 border-radius: 8px;
                 height: px-to-rem(43);
+                width: 250px;
 
                 &:hover {
                     box-shadow: 0px 4px 4px 0px #00000040;
