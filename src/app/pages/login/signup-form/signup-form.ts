@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { DatabaseService } from '../../../shared/services/database-service';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-signup',
-  imports: [FormsModule],
-  templateUrl: './signup-component.html',
-  styleUrl: './signup-component.scss',
+    selector: 'app-signup-form',
+    imports: [FormsModule],
+    templateUrl: './signup-form.html',
+    styleUrl: './signup-form.scss',
 })
-export class SignupComponent {
+
+
+
+export class SignupForm {
   userName = '';
   email = '';
   password = '';

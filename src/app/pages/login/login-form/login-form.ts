@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
 import { DatabaseService } from '../../../shared/services/database-service';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-login',
-  imports: [FormsModule, RouterLink],
-  templateUrl: './login-component.html',
-    styleUrl: './login-component.scss',
+    selector: 'app-login-form',
+    imports: [FormsModule],
+    templateUrl: './login-form.html',
+    styleUrl: './login-form.scss',
 })
-export class LoginComponent {
+
+
+export class LoginForm {
   email: string = '';
   password: string = '';
 

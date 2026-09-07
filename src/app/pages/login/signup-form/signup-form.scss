@@ -1,5 +1,6 @@
-@use '../../../../../public/assets/styles/main.scss' as *;
 
+
+@use '../../../../../public/assets/styles/main.scss' as *;
 
 .signup-form {
     @include flex($align: start, $gap: 24);

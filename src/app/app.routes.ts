@@ -6,20 +6,18 @@ import { ContactsSite } from './pages/contacts-site/contacts-site';
 import { Board } from './pages/board/board';
 import { AddTask } from './pages/add-task/add-task';
 import { supabaseAuthGuard } from './auth-functional-guard';
-import { LoginComponent } from './pages/login/login-component/login-component';
-import { SignupComponent } from './pages/login/signup-component/signup-component';
+import { Login } from './pages/login/login';
+
 
 export const routes: Routes = [
-    { path: 'login', component: LoginComponent },
-    { path: 'signup', component: SignupComponent },
-    { path: 'contacts', component: ContactsSite },
-    { path: 'add-task', component: AddTask },
+    { path: 'login', component: Login },
+    { path: 'contacts', component: ContactsSite, canActivate: [supabaseAuthGuard]  },
+    { path: 'add-task', component: AddTask, canActivate: [supabaseAuthGuard]  },
     { path: 'legal-notice', component: LegalNotice },
     { path: 'privacy-policy', component: PrivacyPolicy },
-    { path: 'help', component: Help },
+    { path: 'help', component: Help, canActivate: [supabaseAuthGuard]  },
     { path: 'board', component: Board, canActivate: [supabaseAuthGuard] },
-    // default for part 1 of project is ContactsSite, to be changed later
-    { path: 'signup', component: SignupComponent },
+    { path: '', component: Login },
     
     {
         // Load the complete contacts page.

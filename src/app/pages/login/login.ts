@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { SignupComponent } from "../signup-component/signup-component";
+import { LoginForm } from "./login-form/login-form";
+import { SignupForm } from './signup-form/signup-form';
 
 @Component({
     selector: 'app-login',
-    imports: [SignupComponent],
+    imports: [LoginForm, SignupForm],
     templateUrl: './login.html',
     styleUrl: './login.scss',
 })
