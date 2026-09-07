@@ -7,10 +7,12 @@ import { Board } from './pages/board/board';
 import { AddTask } from './pages/add-task/add-task';
 import { supabaseAuthGuard } from './auth-functional-guard';
 import { Login } from './pages/login/login';
+import { Summary } from './pages/summary/summary';
 
 
 export const routes: Routes = [
     { path: 'login', component: Login },
+    { path: 'summary', component: Summary, canActivate: [supabaseAuthGuard]  },
     { path: 'contacts', component: ContactsSite, canActivate: [supabaseAuthGuard]  },
     { path: 'add-task', component: AddTask, canActivate: [supabaseAuthGuard]  },
     { path: 'legal-notice', component: LegalNotice },
