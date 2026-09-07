@@ -1,0 +1,55 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+
+.signup-form {
+    @include flex($align: start, $gap: 24);
+
+    width: 100%;
+    max-width: 100%;
+    padding: distance(22, 12);
+    padding-bottom: px-to-rem(80);
+
+    form {
+        @include flex($align: stretch, $gap: 16);
+
+        width: 100%;
+        max-width: px-to-rem(480);
+    }
+
+    form > div {
+        @include flex($align: stretch, $gap: 8);
+    }
+
+    input {
+        width: 100%;
+    }
+
+    button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    .message {
+        margin: 0;
+
+        &--error {
+            color: #b42318;
+        }
+
+        &--success {
+            color: #067647;
+        }
+    }
+
+    @include tablet {
+        padding: distance(36, 24, 0, 24);
+    }
+
+    @include desktop {
+        @include flex($justify: start, $align: start, $gap: 24);
+
+        height: calc(100dvh - 6rem);
+        padding-right: px-to-rem(24);
+        padding-left: calc(px-to-rem(250) + px-to-rem(34));
+    }
+}
