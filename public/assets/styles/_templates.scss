@@ -28,6 +28,7 @@
 
         &:hover {
             box-shadow: $hover-btn-shadow;
+            transform: scale(1.005);
         }
     }
 }
