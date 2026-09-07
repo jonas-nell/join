@@ -1,6 +1,15 @@
 <aside [class.board-nav]="isBoardPage()">
     <img class="logo" src="./assets/icons/logo.svg" alt="">
     <nav>
+        @if (!database.isAuthenticated()) {
+        <div class="nav-link">
+            <a routerLink="/login">
+                <img src="./assets/icons/Summary.svg" alt="">
+                <span>Log in</span>
+            </a>
+        </div>
+    }
+        @if (database.isAuthenticated()) {
         <div class="nav-link">
             <a routerLink="/">
                 <img src="./assets/icons/Summary.svg" alt="">
@@ -25,6 +34,7 @@
                 <span>Contacts</span>
             </a>
         </div>
+    }
     </nav>
     <div class="legal">
         <a routerLink="/privacy-policy" routerLinkActive="active">Privacy Policy</a>

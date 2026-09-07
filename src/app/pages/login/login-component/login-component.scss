@@ -1,0 +1,28 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+
+.login-form {
+    @include flex($align: start, $gap: 24);
+    padding: distance(22, 12);
+    width: 100%;
+    max-width: 100%;
+    padding-bottom: px-to-rem(80);
+
+    @include tablet {
+        padding: distance(36, 24, 0, 24);
+    }
+
+     @include desktop {
+        padding-left: calc(px-to-rem(250) + px-to-rem(34));
+        @include flex($justify: start, $align: start, $gap: 24);
+        height: calc(100dvh - 6rem);
+        padding-right: px-to-rem(24);
+    }
+
+    .signup-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+}
