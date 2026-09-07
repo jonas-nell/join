@@ -1,0 +1,33 @@
+@use './mixins' as *;
+@use './variables' as *;
+@use './functions' as *;
+
+@mixin button($type: dark, $img: false) {
+    @include flex(row);
+    padding: distance(8, 12, 8, 12);
+    border-radius: 10px;
+    height: px-to-rem(43);
+    width: fit-content;
+
+    @if $img {
+        gap: px-to-rem(8);
+    }
+
+    @if $type == dark {
+        background: $main-color;
+        color: white;
+
+        &:hover {
+            background-color: $button-hover-blue;
+            box-shadow: $hover-btn-shadow;
+            transform: scale(1.005);
+        }
+    } @else if $type == light {
+        color: $main-color;
+        border: 1px solid $border-color;
+
+        &:hover {
+            box-shadow: $hover-btn-shadow;
+        }
+    }
+}

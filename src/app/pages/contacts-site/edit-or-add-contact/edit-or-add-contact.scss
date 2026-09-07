@@ -244,21 +244,29 @@ form {
     @include font-inter(regular, 18, 18px, 18);
 }
 
-.button {
-    width: px-to-rem(80);
-    height: px-to-rem(40);
-    border: solid, 1px, $main-color;
-    border-radius: 10px;
-    padding: px-to-rem(8);
-    &-secondary {
-        color: white;
-        background-color: $main-color;
-    }
-
-    &:hover {
-        transform: scale(1.05);
-    }
+.button-primary {
+    @include button(light, false);
 }
+
+.button-secondary {
+    @include button(dark, false);
+}
+
+// .button {
+//     width: px-to-rem(80);
+//     height: px-to-rem(40);
+//     border: solid, 1px, $main-color;
+//     border-radius: 10px;
+//     padding: px-to-rem(8);
+//     &-secondary {
+//         color: white;
+//         background-color: $main-color;
+//     }
+
+//     &:hover {
+//         transform: scale(1.05);
+//     }
+// }
 
 .close-btn-desk {
     display: none;
