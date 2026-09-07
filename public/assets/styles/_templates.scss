@@ -31,3 +31,22 @@
         }
     }
 }
+
+@mixin input-style {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px #686868 solid;
+    height: px-to-rem(40);
+    padding: distance(13, 21);
+    padding-right: px-to-rem(40);
+}
+
+@mixin input-icon {
+    position: absolute;
+    top: 50%;
+    right: px-to-rem(16);
+    transform: translateY(-50%);
+    width: px-to-rem(20);
+    height: px-to-rem(20);
+    pointer-events: none;
+}
