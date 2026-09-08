@@ -88,8 +88,8 @@ export class SignupForm {
         return this.signupForm.get('confirmedPassword');
     }
 
-    get acceptPolicy(){
-      return this.signupForm.get('acceptPolicy')
+    get acceptPolicy() {
+        return this.signupForm.get('acceptPolicy');
     }
     //#endregion
 
@@ -116,11 +116,11 @@ export class SignupForm {
     }
 
     async onSubmit(): Promise<void> {
-      console.log(this.acceptPolicy?.errors);
-      
-      console.log('in method');
-      console.log(this.signupForm.valid);
-      
+        console.log(this.acceptPolicy?.errors);
+
+        console.log('in method');
+        console.log(this.signupForm.valid);
+
         this.signupForm.markAllAsTouched();
         this.errorMessage = '';
         this.successMessage = '';
@@ -158,6 +158,7 @@ export class SignupForm {
             this.successMessage = 'Account added. ';
         } catch (error: unknown) {
             console.error('Error signing up:', error);
+            this.successMessage = 'Account added. ';
 
             this.errorMessage = error instanceof Error ? error.message : 'Account error...';
         } finally {

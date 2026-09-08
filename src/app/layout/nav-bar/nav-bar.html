@@ -1,10 +1,10 @@
-<aside [class.board-nav]="isBoardPage()">
+<aside [class.board-nav]="isBoardPage()" [class.public-nav]="!database.isAuthenticated()">
     <img class="logo" src="./assets/icons/logo.svg" alt="">
     <nav>
         @if (!database.isAuthenticated()) {
         <div class="nav-link">
             <a routerLink="/login">
-                <img src="./assets/icons/Summary.svg" alt="">
+                <img src="./assets/icons/login.png" alt="">
                 <span>Log in</span>
             </a>
         </div>
