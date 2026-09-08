@@ -200,13 +200,7 @@ form {
     }
 
     input {
-        width: 100%;
-        border-radius: 10px;
-        border: 1px #686868 solid;
-        height: px-to-rem(40);
-        padding: distance(13, 21);
-        padding-right: px-to-rem(40);
-        margin-bottom: px-to-rem(6);
+        @include input-style();
     }
 
     .field {
@@ -214,15 +208,10 @@ form {
 
         .input-wrapper {
             width: 100%;
+            margin-bottom: px-to-rem(6);
 
             .input-icon {
-                position: absolute;
-                top: 50%;
-                right: px-to-rem(16);
-                transform: translateY(-50%);
-                width: px-to-rem(20);
-                height: px-to-rem(20);
-                pointer-events: none;
+                @include input-icon();
             }
         }
     }
@@ -244,21 +233,29 @@ form {
     @include font-inter(regular, 18, 18px, 18);
 }
 
-.button {
-    width: px-to-rem(80);
-    height: px-to-rem(40);
-    border: solid, 1px, $main-color;
-    border-radius: 10px;
-    padding: px-to-rem(8);
-    &-secondary {
-        color: white;
-        background-color: $main-color;
-    }
-
-    &:hover {
-        transform: scale(1.05);
-    }
+.button-primary {
+    @include button(light, false);
 }
+
+.button-secondary {
+    @include button(dark, false);
+}
+
+// .button {
+//     width: px-to-rem(80);
+//     height: px-to-rem(40);
+//     border: solid, 1px, $main-color;
+//     border-radius: 10px;
+//     padding: px-to-rem(8);
+//     &-secondary {
+//         color: white;
+//         background-color: $main-color;
+//     }
+
+//     &:hover {
+//         transform: scale(1.05);
+//     }
+// }
 
 .close-btn-desk {
     display: none;

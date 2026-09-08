@@ -2,8 +2,10 @@
 
 <main>
     <router-outlet />
-    
+
     <app-notification />
 </main>
 
-<app-nav-bar></app-nav-bar>
+@if (database.isAuthenticated()) {
+    <app-nav-bar></app-nav-bar>
+}

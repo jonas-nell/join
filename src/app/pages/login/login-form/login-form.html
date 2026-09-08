@@ -1,33 +1,47 @@
-
 <section class="login-form">
+    <div class="header-form">
+        <h1>Log in</h1>
+        <div class="line"></div>
+    </div>
     <form (ngSubmit)="onSubmit()">
-        <div>
-            <label for="email">E-Mail-address:</label>
+        <div class="input-wrapper">
+            <label for="email"></label>
 
-            <input
-                type="email"
-                id="email"
-                [(ngModel)]="email"
-                name="email"
-                autocomplete="email"
-                required
-            />
+            <div class="input-and-icon">
+                <input
+                    placeholder="Email"
+                    type="email"
+                    id="email"
+                    [(ngModel)]="email"
+                    name="email"
+                    autocomplete="email"
+                    required
+                />
+                <img src="./assets/icons/mail.png" alt="mail icon" />
+            </div>
         </div>
 
-        <div>
-            <label for="password">Password:</label>
+        <div class="input-wrapper">
+            <label for="password"></label>
 
-            <input
-                type="password"
-                id="password"
-                [(ngModel)]="password"
-                name="password"
-                autocomplete="current-password"
-                required
-            />
+            <div class="input-and-icon">
+                <input
+                    placeholder="Password"
+                    type="password"
+                    id="password"
+                    [(ngModel)]="password"
+                    name="password"
+                    autocomplete="current-password"
+                    required
+                />
+                <img src="./assets/icons/lock.png" alt="lock icon" />
+            </div>
         </div>
 
-        <button type="submit">Login</button>
+        <div class="button-wrapper">
+            <button class="btn-login" type="submit">Login</button>
+            <button (click)="loginAsGuest()" class="btn-guest" type="button">Guest Log in</button>
+        </div>
     </form>
-    <!-- <a routerLink="/signup-form" class="signup-button"> Signup </a> -->
+
 </section>

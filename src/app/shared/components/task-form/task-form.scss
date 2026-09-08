@@ -394,30 +394,21 @@
             }
 
             .clear-btn {
-                @include flex(row, $gap: 8);
-                border: 1px solid $border-color;
-                border-radius: 8px;
-                padding: distance(8, 12, 8, 16);
-                height: px-to-rem(43);
+                @include button(light, $img: true);
                 background-color: white;
 
-                &:hover {
-                    box-shadow: 0px 4px 4px 0px #00000040;
-                }
+                // &:hover {
+                //     box-shadow: 0px 4px 4px 0px #00000040;
+                // }
             }
 
             .submit-btn {
-                @include flex(row, $gap: 8);
-                background: $main-color;
-                color: white;
-                padding: distance(8, 12, 8, 16);
-                border-radius: 8px;
-                height: px-to-rem(43);
-                width: 150px;
+                @include button(dark, $img: true);
 
-                &:hover {
-                    box-shadow: 0px 4px 4px 0px #00000040;
-                }
+                // &:hover {
+                //     // box-shadow: $hover-btn-shadow;
+                //     // transform: scale(1.005);
+                // }
             }
         }
     }

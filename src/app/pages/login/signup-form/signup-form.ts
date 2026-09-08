@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DatabaseService } from '../../../shared/services/database-service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ProfileService } from '../../../shared/services/profile-service';
 
 @Component({
     selector: 'app-signup-form',
@@ -25,6 +26,7 @@ export class SignupForm {
   constructor(
     private databaseService: DatabaseService,
     private router: Router,
+    private readonly profileService: ProfileService,
   ) {}
 
   async onSubmit(): Promise<void> {
@@ -49,13 +51,18 @@ export class SignupForm {
         throw error;
       }
 
+      // The database trigger has now created or connected the profile.
+    // Force a reload so the shared profile list contains the new user.
+    await this.profileService.ensureProfilesLoaded(true);
+
+
       if (data.session) {
         await this.router.navigate(['/board']);
         return;
       }
 
       this.successMessage =
-        'Account added. Please confirm your E-Mail-adddress.';
+        'Account added. ';
     } catch (error: unknown) {
       console.error('Error signing up:', error);
 
