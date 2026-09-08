@@ -1,56 +1,118 @@
-
-
 @use '../../../../../public/assets/styles/main.scss' as *;
 
+// .signup-form {
+//     @include flex($align: start, $gap: 24);
+
+//     width: 100%;
+//     max-width: 100%;
+//     padding: distance(22, 12);
+//     padding-bottom: px-to-rem(80);
+
+//     form {
+//         @include flex($align: stretch, $gap: 16);
+
+//         width: 100%;
+//         max-width: px-to-rem(480);
+//     }
+
+//     form > div {
+//         @include flex($align: stretch, $gap: 8);
+//     }
+
+//     input {
+//         width: 100%;
+//     }
+
+//     button:disabled {
+//         cursor: not-allowed;
+//         opacity: 0.6;
+//     }
+
+//     .message {
+//         margin: 0;
+
+//         &--error {
+//             color: #b42318;
+//         }
+
+//         &--success {
+//             color: #067647;
+//         }
+//     }
+
+//     @include tablet {
+//         padding: distance(36, 24, 0, 24);
+//     }
+
+//     @include desktop {
+//         @include flex($justify: start, $align: start, $gap: 24);
+
+//         height: calc(100dvh - 6rem);
+//         padding-right: px-to-rem(24);
+//         padding-left: calc(px-to-rem(250) + px-to-rem(34));
+//     }
+// }
+
 .signup-form {
-    @include flex($align: start, $gap: 24);
-
-    width: 100%;
-    max-width: 100%;
-    padding: distance(22, 12);
-    padding-bottom: px-to-rem(80);
-
-    form {
-        @include flex($align: stretch, $gap: 16);
-
-        width: 100%;
-        max-width: px-to-rem(480);
-    }
-
-    form > div {
-        @include flex($align: stretch, $gap: 8);
-    }
-
-    input {
-        width: 100%;
-    }
-
-    button:disabled {
-        cursor: not-allowed;
-        opacity: 0.6;
-    }
-
-    .message {
-        margin: 0;
-
-        &--error {
-            color: #b42318;
-        }
-
-        &--success {
-            color: #067647;
-        }
-    }
-
-    @include tablet {
-        padding: distance(36, 24, 0, 24);
-    }
+    @include font-inter(regular, 18, 2vw, 20);
+    height: fit-content;
+    width: use-clamp(300, 70vw, 650);
+    box-shadow: 0px 0px 14px 3px #00000024;
+    border-radius: 30px;
+    background-color: white;
+    padding: distance(48, 16);
+    @include flex();
 
     @include desktop {
-        @include flex($justify: start, $align: start, $gap: 24);
+        padding: distance(56, 40);
+    }
 
-        height: calc(100dvh - 6rem);
-        padding-right: px-to-rem(24);
-        padding-left: calc(px-to-rem(250) + px-to-rem(34));
+    .header-form {
+        @include flex();
+        margin-bottom: px-to-rem(32);
+        width: 100%;
+
+        button {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            &:hover {
+                transform: scale(1.08);
+            }
+        }
+
+        h1 {
+            @include font-inter($fz-h1...);
+            margin-bottom: px-to-rem(6);
+        }
+        .line {
+            width: 150px;
+            height: 3px;
+            background-color: $button-light;
+        }
+    }
+
+    form {
+        @include flex($justify: space-between, $gap: 32);
+        width: use-clamp(260, 70%, 450);
+    }
+
+    .input-wrapper {
+        width: 100%;
+
+        .input-and-icon {
+            input {
+                @include input-style();
+            }
+            img {
+                @include input-icon();
+            }
+        }
+    }
+
+    .btn-sign-up {
+        @include button(dark);
+        width: px-to-rem(150);
     }
 }
