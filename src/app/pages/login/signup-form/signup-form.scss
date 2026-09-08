@@ -94,7 +94,7 @@
     }
 
     form {
-        @include flex($justify: space-between, $gap: 32);
+        @include flex($justify: space-between);
         width: use-clamp(260, 70%, 450);
     }
 
@@ -104,9 +104,78 @@
         .input-and-icon {
             input {
                 @include input-style();
+                margin-bottom: px-to-rem(4);
             }
-            img {
+            .input-icon {
                 @include input-icon();
+            }
+            .toggleBtn {
+                @include input-icon(true);
+            }
+        }
+    }
+
+    .error-field {
+        min-height: px-to-rem(38);
+        p {
+            @include font-inter(regular, 16, 16px, 16);
+            color: $error-color;
+            line-height: 1;
+        }
+    }
+
+    .input-wrpr-checkbox {
+        font-size: 16px;
+        align-items: center;
+
+        .error-field {
+            text-align: center;
+        }
+
+        .input-checkbox-wrapper {
+            @include flex($direction: row, $gap: 16);
+            font-size: 16px;
+
+            label {
+                color: $border-color;
+                font-size: 16px;
+            }
+
+            #privacy-policy {
+                cursor: pointer;
+                appearance: none;
+                width: 18px;
+                height: 18px;
+                border: 2px solid $button-blue;
+                border-radius: 4px;
+                position: relative;
+
+                &:hover {
+                    border-width: 1px;
+                }
+
+                &:checked {
+                    border-color: $button-blue;
+                }
+
+                &:checked::after {
+                    content: '\2714';
+                    color: $button-blue;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 13px;
+                }
+            }
+
+            a {
+                color: $button-blue;
+                font-size: 16px;
+
+                &:hover {
+                    color: $highlight-color;
+                }
             }
         }
     }
@@ -115,4 +184,8 @@
         @include button(dark);
         width: px-to-rem(150);
     }
+}
+
+.btn-disabled {
+    pointer-events: none;
 }

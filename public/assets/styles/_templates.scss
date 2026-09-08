@@ -42,12 +42,14 @@
     padding-right: px-to-rem(40);
 }
 
-@mixin input-icon {
+@mixin input-icon($button: false) {
     position: absolute;
     top: 50%;
     right: px-to-rem(16);
     transform: translateY(-50%);
     width: px-to-rem(20);
     height: px-to-rem(20);
-    pointer-events: none;
+    @if ($button == false) {
+        pointer-events: none;
+    }
 }
