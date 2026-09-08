@@ -1,1 +1,78 @@
-<p>summary works!</p>
+<div class="summary-wrapper">
+    <div class="summary-top">
+        <h1>Join 360</h1>
+        <p>Key Metrics at a Glance</p>
+    </div>
+    <div class="summary-content">
+        <div class="task-overview" (click)="navigateIfButton($event)">
+            <div class="top">
+                <button>
+                    <img class="icon-default" src="./assets/icons/to-do-icon.svg" alt="" />
+                    <img class="icon-hover" src="./assets/icons/to-do-hover-icon.svg" alt="" />
+                    <div>
+                        <div class="counter">{{ taskmanagement.todo().length }}</div>
+                        <span>To-do</span>
+                    </div>
+                </button>
+                <button>
+                    <img class="icon-default" src="./assets/icons/done-icon.svg" alt="" />
+                    <img class="icon-hover" src="./assets/icons/done-hover-icon.svg" alt="">
+                    <div>
+                        <div class="counter">{{ taskmanagement.done().length }}</div>
+                        <span>Done</span>
+                    </div>
+                </button>
+            </div>
+            <div class="middle">
+                @if (taskmanagement.nextDeadlineDate(); as deadline){
+                    @if (taskmanagement.highestPriorityOnDeadline(); as prio) {
+                        <button>
+                            <div class="left">
+                                <div class="prio-icon" [class]="priorityDisplay[prio].color">
+                                    <img [src]="'./assets/icons/' + priorityDisplay[prio].icon " alt="" />
+                                </div>
+                                <div>
+                                    <div class="counter">{{ taskmanagement.highestPriorityCountOnDeadline() }}</div>
+                                    <span>{{ taskmanagement.highestPriorityOnDeadline() }}</span>
+                                </div>
+                            </div>
+                            <div class="devider"></div>
+                            <div class="right">
+                                <div class="date">{{ taskmanagement.nextDeadlineDate() | date:'longDate' }}</div>
+                                <span>Upcoming Deadline</span>
+                            </div>
+                        </button>
+                    }
+                } @else {
+                    <button>
+                        <span>No upcoming Deadlines</span>
+                    </button>
+                }
+            </div>
+            <div class="bottom">
+                <button>
+                    <div class="counter">{{ taskmanagement.tasks().length }}</div>
+                    <span
+                        >Tasks in <br />
+                        Board</span
+                    >
+                </button>
+                <button>
+                    <div class="counter">{{ taskmanagement.progress().length }}</div>
+                    <span
+                        >Tasks in <br />
+                        Progress</span
+                    >
+                </button>
+                <button>
+                    <div class="counter">{{ taskmanagement.feedback().length }}</div>
+                    <span
+                        >Awaiting <br />
+                        feedback</span
+                    >
+                </button>
+            </div>
+        </div>
+        <div class="welcome-message">welcome message</div>
+    </div>
+</div>
