@@ -40,12 +40,8 @@
 
         <div class="button-wrapper">
             <button class="btn-login" type="submit">Login</button>
-            <button class="btn-guest" type="button">Guest Log in</button>
+            <button (click)="loginAsGuest()" class="btn-guest" type="button">Guest Log in</button>
         </div>
     </form>
-    <!-- <a routerLink="/signup-form" class="signup-button"> Signup </a> -->
 
-    <button type="submit">Login</button>
-
-    <button type="button" (click)="loginAsGuest()">Continue as guest</button>
 </section>
