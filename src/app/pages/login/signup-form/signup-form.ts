@@ -151,7 +151,7 @@ export class SignupForm {
             await this.profileService.ensureProfilesLoaded(true);
 
             if (data.session) {
-                await this.router.navigate(['/board']);
+                await this.router.navigate(['/summary']);
                 return;
             }
 
