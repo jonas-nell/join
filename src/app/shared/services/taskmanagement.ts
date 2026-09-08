@@ -603,8 +603,8 @@ export class Taskmanagement {
     nextDeadlineDate = computed(() => {
 
         const upcoming = this.tasks()
+            .filter((t) => t.task_status !== 'Done')
             .filter((t) => t.task_due_date)
-            .filter((t) => new Date(t.task_due_date).setHours(0, 0, 0, 0))
             .map((t) => t.task_due_date)
             .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
@@ -615,7 +615,7 @@ export class Taskmanagement {
     tasksOnNextDeadline = computed(() => {
         const date = this.nextDeadlineDate();
         if (!date) return [];
-        return this.tasks().filter((t) => t.task_due_date === date);
+        return this.tasks().filter((t) => t.task_due_date === date && t.task_status !== 'Done');
     });
 
     //highest prio present in those task

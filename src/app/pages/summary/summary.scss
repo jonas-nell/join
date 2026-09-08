@@ -2,11 +2,13 @@
 
 .summary-wrapper {
     padding: distance(22, 12, 80, 12);
-    @include flex($align: start, $gap: 24);
+    @include flex($align: start, $justify: start, $gap: 24);
     @include font-inter(regular, 16, 2%, 16);
+    min-height: calc(100dvh - 6rem - 100px);
 
     @include desktop {
         padding-left: calc(px-to-rem(250) + px-to-rem(24));
+        padding-bottom: px-to-rem(100);
     }
 
     .summary-top {
