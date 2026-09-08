@@ -57,3 +57,12 @@
         }
     }
 }
+
+.mobile-signup-component {
+    display: block;
+    margin-top: px-to-rem(32);
+
+    @include desktop {
+        display: none;
+    }
+}

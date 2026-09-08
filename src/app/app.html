@@ -1,11 +1,16 @@
-<app-header></app-header>
+@if (database.isAuthenticated() || isLegalPage()) {
+  <app-header></app-header>
+} @else {
+  <app-header-public></app-header-public>
+}
 
 <main>
-    <router-outlet />
-
-    <app-notification />
+  <router-outlet></router-outlet>
+  <app-notification></app-notification>
 </main>
 
-@if (database.isAuthenticated()) {
-    <app-nav-bar></app-nav-bar>
+@if (database.isAuthenticated() || isLegalPage()) {
+  <app-nav-bar></app-nav-bar>
+} @else {
+    <app-footer></app-footer>
 }

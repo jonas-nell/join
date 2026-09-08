@@ -1,0 +1,13 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+.sign-up-wrapper {
+    @include flex(row, center, center, 24);
+    @include font-inter(regular, 16, 20px, 0);
+}
+
+.btn-sign-up {
+    @include button(dark);
+    width: px-to-rem(91);
+    min-height: px-to-rem(49);
+    white-space: nowrap;
+}

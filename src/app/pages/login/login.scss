@@ -1,21 +1,27 @@
 @use '../../../../public/assets/styles/main.scss' as *;
 
 .login-page {
-    background-color: $light-gray;
-    @include flex($align: start, $gap: 24);
+    position: fixed;
+    top: px-to-rem(80);
+    right: 0;
+    bottom: px-to-rem(80);
+    left: 0;
+
+    width: auto;
+    height: auto;
     padding: distance(22, 12);
-    width: 100%;
-    max-width: 100%;
-    padding-bottom: px-to-rem(80);
+    background-color: $light-gray;
+
+    @include flex($align: center, $justify: center, $gap: 24);
 
     @include tablet {
-        padding: distance(36, 24, 0, 24);
+        padding: distance(36, 24);
     }
 
     @include desktop {
-        padding-left: calc(px-to-rem(250) + px-to-rem(34));
-        @include flex($justify: start, $align: start, $gap: 24);
-        height: calc(100dvh - 6rem);
-        padding-right: px-to-rem(24);
+        top: px-to-rem(96);
+        padding: px-to-rem(24);
     }
 }
+
+
