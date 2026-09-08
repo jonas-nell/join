@@ -1,57 +1,77 @@
-
 <section class="signup-form">
+
+    <div class="header-form">
+        <button><img src="./assets/icons/arrow-left.svg" alt="arrow left icon"></button>
+        <h1>Sign up</h1>
+        <div class="line"></div>
+    </div>
     <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
-        <div>
-            <label for="userName">Benutzername:</label>
+        <div class="input-wrapper">
+            <label for="userName"></label>
 
-            <input
-                type="text"
-                id="userName"
-                name="userName"
-                [(ngModel)]="userName"
-                autocomplete="username"
-                required
-            />
+            <div class="input-and-icon">
+                <input
+                    type="text"
+                    id="userName"
+                    name="userName"
+                    [(ngModel)]="userName"
+                    autocomplete="username"
+                    required
+                    placeholder="Name"
+                />
+                <img src="./assets/icons/person.png" alt="" />
+            </div>
         </div>
 
-        <div>
-            <label for="email">E-Mail-address:</label>
-
-            <input
-                type="email"
-                id="email"
-                name="email"
-                [(ngModel)]="email"
-                autocomplete="email"
-                required
-                email
-            />
+        <div class="input-wrapper">
+            <label for="email"></label>
+            <div class="input-and-icon">
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    [(ngModel)]="email"
+                    autocomplete="email"
+                    required
+                    email
+                    placeholder="Email"
+                />
+                <img src="./assets/icons/mail.png" alt="mail icon" />
+            </div>
         </div>
 
-        <div>
-            <label for="password">Password:</label>
+        <div class="input-wrapper">
+            <label for="password"></label>
 
-            <input
-                type="password"
-                id="password"
-                name="password"
-                [(ngModel)]="password"
-                autocomplete="new-password"
-                required
-            />
+            <div class="input-and-icon">
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    [(ngModel)]="password"
+                    autocomplete="new-password"
+                    required
+                    placeholder="Password"
+                />
+                <img src="./assets/icons/lock.png" alt="lock icon" />
+            </div>
         </div>
 
-        <div>
-            <label for="passwordConfirmation">Reapet password:</label>
+        <div class="input-wrapper">
+            <label for="passwordConfirmation"></label>
 
-            <input
-                type="password"
-                id="passwordConfirmation"
-                name="passwordConfirmation"
-                [(ngModel)]="passwordConfirmation"
-                autocomplete="new-password"
-                required
-            />
+            <div class="input-and-icon">
+                <input
+                    type="password"
+                    id="passwordConfirmation"
+                    name="passwordConfirmation"
+                    [(ngModel)]="passwordConfirmation"
+                    autocomplete="new-password"
+                    required
+                    placeholder="Confirm Password"
+                />
+                <img src="./assets/icons/lock.png" alt="lock icon" />
+            </div>
         </div>
 
         @if (errorMessage) {
@@ -66,8 +86,8 @@
             </p>
         }
 
-        <button type="submit" [disabled]="signupForm.invalid || loading">
-            {{ loading ? 'Account added…' : 'Register' }}
+        <button class="btn-sign-up" type="submit" [disabled]="signupForm.invalid || loading">
+            {{ loading ? 'Account added…' : 'Sign up' }}
         </button>
     </form>
 </section>

@@ -1,31 +1,59 @@
-
-
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-
 .login-form {
-    @include flex($align: start, $gap: 24);
-    padding: distance(22, 12);
-    width: 100%;
-    max-width: 100%;
-    padding-bottom: px-to-rem(80);
+    @include font-inter(regular, 18, 2vw, 20);
+    height: fit-content;
+    width: use-clamp(300, 70vw, 650);
+    box-shadow: 0px 0px 14px 3px #00000024;
+    border-radius: 30px;
+    background-color: white;
+    padding: distance(48, 16);
+    @include flex();
 
-    @include tablet {
-        padding: distance(36, 24, 0, 24);
+    .header-form {
+        @include flex();
+        margin-bottom: px-to-rem(32);
+
+        h1 {
+            @include font-inter($fz-h1...);
+            margin-bottom: px-to-rem(6);
+        }
+        .line {
+            width: 150px;
+            height: 3px;
+            background-color: $button-light;
+        }
     }
 
-     @include desktop {
-        padding-left: calc(px-to-rem(250) + px-to-rem(34));
-        @include flex($justify: start, $align: start, $gap: 24);
-        height: calc(100dvh - 6rem);
-        padding-right: px-to-rem(24);
+    form {
+        @include flex($justify: space-between, $gap: 32);
+        width: use-clamp(260, 70%, 450);
     }
 
-    .signup-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-}
-}
+    .input-wrapper {
+        width: 100%;
 
+        .input-and-icon {
+            input {
+                @include input-style();
+            }
+            img {
+                @include input-icon();
+            }
+        }
+    }
+
+    .button-wrapper {
+        width: 100%;
+        @include flex($direction: row, $gap: 30);
+        margin-top: px-to-rem(16);
+
+        .btn-login {
+            @include button(dark);
+        }
+
+        .btn-guest {
+            @include button(light);
+        }
+    }
+}
