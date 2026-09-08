@@ -27,10 +27,18 @@ header {
         @include flex(row, center, space-between, 20);
 
         .btn-menu {
-            border: $main-color solid 3px;
-            border-radius: 50%;
-            width: px-to-rem(40);
-            aspect-ratio: 1 / 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+
+            app-user-badge {
+                --badge-size: #{px-to-rem(48)};
+                --badge-font-size: #{px-to-rem(18)};
+            }
         }
 
         .btn-help {

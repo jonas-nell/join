@@ -65,6 +65,10 @@ export class UserList {
     //     }
     // }
     constructor() {
+
+        // Load profiles if they have not already been loaded.
+  void this.profileService.ensureProfilesLoaded();
+  
         effect(() => {
             const contactId = this.profileService.scrollToNewContact();
             const profiles = this.profiles();

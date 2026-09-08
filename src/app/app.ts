@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavBar } from "./layout/nav-bar/nav-bar";
 import { Header } from "./layout/header/header";
 import { NavigationHistoryService } from './shared/services/navigation-history.service';
 import { Notification } from './shared/components/notification/notification/notification';
+import { DatabaseService } from './shared/services/database-service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { Notification } from './shared/components/notification/notification/noti
 })
 export class App {
   protected readonly title = signal('join');
+  readonly database = inject(DatabaseService);
 
   // injectinng on app startup for not missing first navEnd event
   constructor(private navHistory: NavigationHistoryService){
