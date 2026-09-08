@@ -111,7 +111,7 @@
                 <!-- assigned to -->
                 <div>
                     <ng-select
-                        [items]="profileService.profiles()"
+                        [items]="profileService.profilesCurrentUserFirst()"
                         [multiple]="true"
                         [closeOnSelect]="false"
                         bindLabel="user_name"
@@ -128,7 +128,13 @@
                             let-index="index"
                         >
                             <app-user-badge [userId]="item.id" [userName]="item.user_name" />
-                            <span class="option-name">{{ item.user_name }}</span>
+                            <span class="option-name">
+                                {{ item.user_name }}
+
+                                @if (profileService.isCurrentUser(item.id)) {
+                                    <span class="option-name__current">(You)</span>
+                                }
+                            </span>
                             <label class="custom-checkbox">
                                 <input
                                     id="item-{{ index }}"
@@ -141,7 +147,7 @@
                     </ng-select>
 
                     <div class="selected-members">
-                    @if (taskForm.value.member?.length) {
+                        @if (taskForm.value.member?.length) {
                             @for (member of taskForm.value.member; track member.id) {
                                 <app-user-badge
                                     [userId]="member.id"
@@ -295,14 +301,12 @@
             </div>
         </div>
         <div class="form-buttons">
-            
             <div class="req-wrapper">
                 @if (modeAdd()) {
                     <span class="req">*</span><span>This field is required</span>
                 }
             </div>
             <div class="btns-wrpr">
-
                 @if (modeAdd()) {
                     <button class="clear-btn" (click)="clearTaskForm($event)">
                         <span>Clear</span
@@ -322,4 +326,3 @@
     </form>
     <app-confirmation />
 </section>
-

@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { Profile, ProfileChanges } from '../interfaces/profile';
 import { DatabaseService } from './database-service';
 
@@ -34,8 +34,10 @@ export class ProfileService {
 
     private profilesResquest: Promise<void> | null = null;
 
-    getProfileName(profileId: string): string{
-        return this.profiles().find(profile => profile.id === profileId)?.user_name ?? 'not found';
+    getProfileName(profileId: string): string {
+        return (
+            this.profiles().find((profile) => profile.id === profileId)?.user_name ?? 'not found'
+        );
     }
 
     async ensureProfilesLoaded(forceReload = false): Promise<void> {
@@ -191,5 +193,30 @@ export class ProfileService {
     // Tell the user list that its data has changed.
     private notifyProfilesChanged(): void {
         void this.ensureProfilesLoaded(true);
+    }
+
+    // Return all profiles with the logged-in profile first.
+    // All other profiles remain in alphabetical order.
+    readonly profilesCurrentUserFirst = computed(() => {
+        const currentProfileId = this.database.profileId();
+
+        return [...this.profiles()]
+            .filter((profile) => profile.user_name.trim())
+            .sort((first, second) => {
+                if (first.id === currentProfileId) {
+                    return -1;
+                }
+
+                if (second.id === currentProfileId) {
+                    return 1;
+                }
+
+                return first.user_name.localeCompare(second.user_name);
+            });
+    });
+
+    // Check whether a profile belongs to the logged-in user.
+    isCurrentUser(profileId: string): boolean {
+        return this.database.profileId() === profileId;
     }
 }

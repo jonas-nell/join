@@ -1,10 +1,27 @@
 <header [class.board-header]="isBoardPage()">
-    <img class="logo" src="./assets/icons/logo-blue.png" alt="join logo" />
+    <img class="logo" src="./assets/icons/logo-blue.png" alt="Join logo" />
+
     <p>Kanban Project Management Tool</p>
+
     <div class="btn-wrpr">
-        <button class="btn-help" [routerLink]="['/help']"><img src="./assets/icons/help.png" alt="help button icon" /></button>
-        <button class="btn-menu" (click)="dialogService.openDialog('menu')">SM</button>
+        @if (isAuthenticated()) {
+            <button type="button" class="btn-help" [routerLink]="['/help']" aria-label="Open help">
+                <img src="./assets/icons/help.png" alt="" />
+            </button>
+        }
+        <button
+            type="button"
+            class="btn-menu"
+            (click)="dialogService.openDialog('menu')"
+            aria-label="Open user menu"
+        >
+            @if (loggedInProfile(); as profile) {
+                <app-user-badge [userId]="profile.id" [userName]="profile.user_name"/>
+            } @else if (isAnonymous()) {
+                <app-user-badge [userId]="authUserId() ?? 'guest'" userName="Guest"/>
+            }
+        </button>
     </div>
 </header>
 
-<app-header-menu></app-header-menu>
+<app-header-menu />
