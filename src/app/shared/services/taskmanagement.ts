@@ -595,4 +595,36 @@ export class Taskmanagement {
     }
     //#endregion
     //#endregion
+
+    //#region deadlines
+    private readonly PRIORITY_ORDER: Task['task_priority'][] = ['urgent', 'medium', 'low'];
+
+    //next due date from tasks
+    nextDeadlineDate = computed(() => {
+
+        const upcoming = this.tasks()
+            .filter((t) => t.task_due_date)
+            .filter((t) => new Date(t.task_due_date).setHours(0, 0, 0, 0))
+            .map((t) => t.task_due_date)
+            .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+
+        return upcoming [0] ?? null;
+    });
+
+    // all due tasks on that date
+    tasksOnNextDeadline = computed(() => {
+        const date = this.nextDeadlineDate();
+        if (!date) return [];
+        return this.tasks().filter((t) => t.task_due_date === date);
+    });
+
+    //highest prio present in those task
+    highestPriorityOnDeadline = computed(() => {
+        const tasksOnDate = this.tasksOnNextDeadline();
+        return this.PRIORITY_ORDER.find((p) => tasksOnDate.some((t) => t.task_priority === p)) ?? null;
+    });
+    // honw many tasks have this prio
+    highestPriorityCountOnDeadline = computed(() =>
+    this.tasksOnNextDeadline().filter((t) => t.task_priority === this.highestPriorityOnDeadline()).length);
+    //#endregion
 }

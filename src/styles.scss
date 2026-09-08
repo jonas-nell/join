@@ -35,6 +35,7 @@ main {
     width: 100%;
     height: 100%;
     max-width: 1920px;
+    background-color: $light-gray;
 
     @include desktop {
         padding-top: px-to-rem(96);
