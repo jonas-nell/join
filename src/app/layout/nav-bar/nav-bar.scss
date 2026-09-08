@@ -19,7 +19,9 @@ aside {
             padding: distance(64, 0);
             @include flex($justify: start, $gap: 84);
 
-            .logo { display: flex; }
+            .logo {
+                display: flex;
+            }
 
             .legal {
                 @include flex($gap: 16);
@@ -27,7 +29,9 @@ aside {
                 font-family: Open Sans;
                 margin-top: auto;
 
-                a:hover { color: $button-blue; }
+                a:hover {
+                    color: $button-blue;
+                }
             }
 
             nav {
@@ -40,7 +44,9 @@ aside {
                 padding: distance(10, 0);
                 width: 100%;
 
-                &:hover { background: $button-blue; }
+                &:hover {
+                    background: $button-blue;
+                }
 
                 &.active {
                     border-radius: 0;
@@ -65,7 +71,9 @@ aside {
             padding: distance(64, 0);
             @include flex($justify: start, $gap: 84);
 
-            .logo { display: flex; }
+            .logo {
+                display: flex;
+            }
 
             .legal {
                 @include flex($gap: 16);
@@ -73,7 +81,9 @@ aside {
                 font-family: Open Sans;
                 margin-top: auto;
 
-                a:hover { color: $button-blue; }
+                a:hover {
+                    color: $button-blue;
+                }
             }
 
             nav {
@@ -86,7 +96,9 @@ aside {
                 padding: distance(10, 0);
                 width: 100%;
 
-                &:hover { background: $button-blue; }
+                &:hover {
+                    background: $button-blue;
+                }
 
                 &.active {
                     border-radius: 0;
@@ -103,8 +115,12 @@ aside {
         }
     }
 
-    .logo { display: none; }
-    .legal { display: none; }
+    .logo {
+        display: none;
+    }
+    .legal {
+        display: none;
+    }
 
     nav {
         width: 100%;
@@ -119,7 +135,9 @@ aside {
         padding: distance(0, 8);
         @include flex();
 
-        a span { text-align: center; }
+        a span {
+            text-align: center;
+        }
 
         &.active {
             background: $highlight-color;
@@ -131,7 +149,41 @@ aside {
             color: $font-dirty-white;
             font-family: Open Sans;
 
-            img { height: px-to-rem(30); }
+            img {
+                height: px-to-rem(30);
+            }
+        }
+    }
+}
+
+@media (max-width: 1023px) {
+    aside.public-nav {
+        @include flex(row, center, space-between, 0);
+
+        nav {
+            width: 33%;
+        }
+
+        .legal {
+            width: 67%;
+            height: 100%;
+            @include flex(row, center, center, 16);
+
+            a {
+                height: 100%;
+                padding: 0 px-to-rem(18);
+                @include flex(row, center, center, 0);
+                color: $font-dirty-white;
+                font-family: Open Sans;
+                font-size: px-to-rem(16);
+                text-decoration: none;
+
+                &.active {
+                    background: $highlight-color;
+                    border-radius: px-to-rem(24);
+                    border-radius: 30px;
+                }
+            }
         }
     }
 }

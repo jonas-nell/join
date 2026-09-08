@@ -1,0 +1,28 @@
+@use '../../../../public/assets/styles/main.scss' as *;
+
+header {
+    height: px-to-rem(80);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: distance(20, 16);
+    background-color: $light-gray;
+    z-index: 50;
+
+    @include flex(row, center, flex-end, 0);
+    
+    .desktop-signup-component {
+        display: none;
+    }
+
+    @include desktop {
+        height: px-to-rem(96);
+        padding: distance(20, 36);
+
+    .desktop-signup-component {
+        display: block;
+    }
+}
+}
+

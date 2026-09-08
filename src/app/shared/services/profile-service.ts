@@ -200,22 +200,29 @@ export class ProfileService {
     readonly profilesCurrentUserFirst = computed(() => {
         const currentProfileId = this.database.profileId();
 
-        return [...this.profiles()]
-            .filter((profile) => profile.user_name.trim())
-            .sort((first, second) => {
-                if (first.id === currentProfileId) {
-                    return -1;
-                }
+        return (
+            [...this.profiles()]
+                .filter((profile) => profile.user_name.trim())
+                // Sort the current user's profile first and all others alphabetically.
+                .sort((first, second) => {
+                    // Move the current user's profile before the second profile.
+                    if (first.id === currentProfileId) {
+                        return -1;
+                    }
 
-                if (second.id === currentProfileId) {
-                    return 1;
-                }
+                    // Move the current user's profile before the first profile.
+                    if (second.id === currentProfileId) {
+                        return 1;
+                    }
 
-                return first.user_name.localeCompare(second.user_name);
-            });
+                    // Sort all remaining profiles alphabetically by username.
+                    return first.user_name.localeCompare(second.user_name);
+                })
+        );
     });
 
-    // Check whether a profile belongs to the logged-in user.
+    // Check whether a profile belongs to the logged-in user, 
+    // to add (You) behind the users name in html
     isCurrentUser(profileId: string): boolean {
         return this.database.profileId() === profileId;
     }

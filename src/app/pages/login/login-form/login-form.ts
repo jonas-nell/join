@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { DatabaseService } from '../../../shared/services/database-service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { SignupComponent } from "../signup-component/signup-component";
 
 @Component({
     selector: 'app-login-form',
-    imports: [FormsModule],
+    imports: [FormsModule, SignupComponent],
     templateUrl: './login-form.html',
     styleUrl: './login-form.scss',
 })
