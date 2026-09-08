@@ -3,6 +3,7 @@
 .user-list {
     max-width: px-to-rem(400);
     padding-bottom: px-to-rem(140);
+    background-color: white;
 
     @include tablet {
         padding-bottom: px-to-rem(40);

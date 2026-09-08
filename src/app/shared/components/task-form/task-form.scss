@@ -150,6 +150,7 @@
             outline: none;
             width: 100%;
             height: px-to-rem(40);
+            background-color: white;
 
             &.input-error {
                 border: 1px solid $required-color;
@@ -203,6 +204,7 @@
                 width: px-to-rem(94);
                 box-shadow: 0px 0px 4px 0px #00000066;
                 cursor: pointer;
+                background-color: white;
 
                 @media (min-width: 555px) {
                     padding: distance(16, 24);
@@ -269,6 +271,7 @@
             @include font-inter(regular, 16, 2%, 16);
             cursor: pointer;
             outline: none;
+            background-color: white;
 
             &.input-error {
                 border: 1px solid $required-color;
@@ -281,6 +284,7 @@
             input {
                 padding-right: px-to-rem(70);
                 width: 100%;
+                background-color: white;
             }
 
             .input-actions {
@@ -357,7 +361,6 @@
             width: 100%;
             box-sizing: border-box;
             padding-inline: px-to-rem(16);
-            background: white;
             padding-bottom: px-to-rem(16);
             padding-top: 36px;
             z-index: 100;
@@ -396,6 +399,7 @@
                 border-radius: 8px;
                 padding: distance(8, 12, 8, 16);
                 height: px-to-rem(43);
+                background-color: white;
 
                 &:hover {
                     box-shadow: 0px 4px 4px 0px #00000040;
