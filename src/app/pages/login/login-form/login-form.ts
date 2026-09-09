@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { DatabaseService } from '../../../shared/services/database-service';
 import { Router } from '@angular/router';
 import {
@@ -18,24 +18,16 @@ import { advancedEmailValidator } from '../../../shared/helpers/advancedEmailVal
     styleUrl: './login-form.scss',
 })
 export class LoginForm {
-
     //#region properties
     fb = inject(FormBuilder);
     databaseService = inject(DatabaseService);
     router = inject(Router);
 
     passwordVisible: boolean = false;
+    errorMessage: WritableSignal<string | null> = signal(null);
 
     loginForm: FormGroup = this.fb.nonNullable.group({
-        email: [
-            '',
-            [
-                Validators.required,
-                Validators.email,
-                Validators.pattern(/\.[a-zA-Z]{2,}$/),
-                advancedEmailValidator(),
-            ],
-        ],
+        email: ['', [Validators.required]],
         password: ['', [Validators.required]],
     });
     //#endregion
@@ -65,9 +57,11 @@ export class LoginForm {
                 this.password?.value,
             );
             if (error) throw error;
+            // this.databaseService.logIn.set(true);
             this.router.navigate(['/summary']);
         } catch (error) {
-            console.error('Error logging in:', error);
+            this.errorMessage.set('Check your email and password. Please try again.');
+            // console.error('Error logging in:', error);
         }
     }
 
@@ -81,7 +75,8 @@ export class LoginForm {
 
             await this.router.navigate(['/summary']);
         } catch (error) {
-            console.error('Guest login failed:', error);
+            this.errorMessage.set('Guest login failed');
+            // console.error('Guest login failed:', error);
         }
     }
     //#endregion

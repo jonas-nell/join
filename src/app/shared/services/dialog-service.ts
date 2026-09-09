@@ -7,7 +7,8 @@ export type DialogName =
     | 'contact-btn-dialog'
     | 'single-task'
     | `move-menu-${number}`
-    | 'task-form';
+    | 'task-form'
+    | 'valid-password-info';
 export type DialogMode = 'edit' | 'add';
 
 @Injectable({ providedIn: 'root' })

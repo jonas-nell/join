@@ -8,7 +8,6 @@
     </div>
 
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-
         <!-- #region input name -->
         <div class="input-wrapper">
             <div class="input-and-icon">
@@ -32,10 +31,20 @@
         <div class="input-wrapper">
             <div class="input-and-icon">
                 <label for="email"></label>
-                <input type="email" id="email" placeholder="Email" formControlName="email" />
+                <input
+                    (focus)="this.errorInput.set(null)"
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    formControlName="email"
+                    [class.input-error]="errorInput()"
+                />
                 <img class="input-icon" src="./assets/icons/mail (1).png" alt="mail icon" />
             </div>
             <div class="error-field">
+                @if (errorInput()) {
+                    <p>{{ errorInput() }}</p>
+                }
                 @if (email?.hasError('required') && email?.touched) {
                     <p>This field is required</p>
                 }
@@ -84,9 +93,20 @@
                     <p>This field is required</p>
                 }
                 @if (password?.hasError('pattern') && password?.touched) {
-                    <p>Please choose a valid password</p>
+                    <div class="error-valid-password">
+                        <p>Please choose a valid password</p>
+                        <button type="button" (click)="dialogService.openDialog('valid-password-info')">?</button>
+                    </div>
                 }
             </div>
+            <dialog class="dialog-valid-password" appDialog="valid-password-info" [modal]="false">
+                <div class="valid-password-info">
+                    <p>
+                        At least 8 characters, including an uppercase letter, a lowercase letter, a
+                        number, and a special character.
+                    </p>
+                </div>
+            </dialog>
         </div>
         <!-- #endregion -->
 
@@ -100,6 +120,11 @@
                     formControlName="confirmedPassword"
                     autocomplete="new-password"
                     placeholder="Confirm Password"
+                    [class.input-error]="
+                        confirmedPassword?.hasError('notSamePassword') &&
+                        password?.touched &&
+                        confirmedPassword?.touched
+                    "
                 />
                 <button
                     [class.btn-disabled]="!confirmedPassword?.value"
@@ -123,9 +148,7 @@
                 } @else if (
                     confirmedPassword?.hasError('notSamePassword') &&
                     password?.touched &&
-                    password?.dirty &&
-                    confirmedPassword?.touched &&
-                    confirmedPassword?.dirty
+                    confirmedPassword?.touched
                 ) {
                     <p>Passwords do not match</p>
                 }

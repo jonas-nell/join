@@ -24,6 +24,7 @@ export class DatabaseService {
     // Get the logged-in user's ID from Supabase Auth.
     // This ID matches profiles.auth_user_id.
     readonly authUserId = computed<string | null>(() => this.session()?.user.id ?? null);
+    // logIn = signal(false);
 
     // Make the profile ID available to other components and services...
     readonly profileId = this.currentProfileId.asReadonly();
@@ -73,7 +74,13 @@ export class DatabaseService {
     // The username is saved as user metadata, The database trigger
     // uses this metadata to create the newprofile.
     async signUp(email: string, password: string, userName: string) {
-        return this.client.auth.signUp({
+        const signupClient = createClient(environment.supabaseUrl, environment.supabaseKey, {
+        auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+        },
+    });
+        const result = signupClient.auth.signUp({
             email: email.trim().toLowerCase(),
             password,
             options: {
@@ -82,6 +89,7 @@ export class DatabaseService {
                 },
             },
         });
+        return result;
     }
 
     // Log in with an email address and password...

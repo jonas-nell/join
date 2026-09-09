@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal, WritableSignal } from '@angular/core';
 import { DatabaseService } from '../../../shared/services/database-service';
 import { Router, RouterLink } from '@angular/router';
 import {
@@ -12,10 +12,13 @@ import { ProfileService } from '../../../shared/services/profile-service';
 import { minLengthWithoutSpaces } from '../../../shared/helpers/function-min-length';
 import { advancedEmailValidator } from '../../../shared/helpers/advancedEmailValidator';
 import { passwordConfirm } from '../../../shared/helpers/password-confirmation-valid';
+import { Dialog } from '../../../shared/directives/dialog-directive';
+import { DialogService } from '../../../shared/services/dialog-service';
+import { NotificationService } from '../../../shared/services/notification-service';
 
 @Component({
     selector: 'app-signup-form',
-    imports: [FormsModule, ReactiveFormsModule, RouterLink],
+    imports: [FormsModule, ReactiveFormsModule, RouterLink, Dialog],
     templateUrl: './signup-form.html',
     styleUrl: './signup-form.scss',
 })
@@ -24,12 +27,15 @@ export class SignupForm {
     databaseService = inject(DatabaseService);
     router = inject(Router);
     profileService = inject(ProfileService);
+    dialogService = inject(DialogService);
+    notificationService = inject(NotificationService);
 
     fb = inject(FormBuilder);
 
     loading = false;
     errorMessage = '';
     successMessage = '';
+    errorInput: WritableSignal<string | null> = signal(null);
 
     passwordVisible: boolean = false;
     passwordConfirmVisible: boolean = false;
@@ -144,26 +150,31 @@ export class SignupForm {
                 this.password?.value,
                 this.name?.value,
             );
-
+            
             if (error) {
                 throw error;
             }
+            this.notificationService.success('Account added');
+            setTimeout(() => {
+
+                this.router.navigate(['/login']);
+            }, 1500)
 
             // The database trigger has now created or connected the profile.
             // Force a reload so the shared profile list contains the new user.
-            await this.profileService.ensureProfilesLoaded(true);
+            // await this.databaseService.signOut();
+        // await this.databaseService.client.auth.signOut({ scope: 'local' });
 
-            if (data.session) {
-                await this.router.navigate(['/summary']);
-                return;
-            }
+            
+                
+                
+            
 
             this.successMessage = 'Account added. ';
         } catch (error: unknown) {
-            console.error('Error signing up:', error);
-            this.successMessage = 'Account added. ';
-
-            this.errorMessage = error instanceof Error ? error.message : 'Account error...';
+            // console.error('Error signing up:', error);
+            // this.errorMessage = error instanceof Error ? error.message : 'Account error...';
+            this.errorInput.set('This E-Mail-Adress is already registered');
         } finally {
             this.loading = false;
         }
