@@ -165,23 +165,32 @@ export class ProfileService {
     }
 
     async deleteProfile(profileId: string): Promise<void> {
-        const { data, error } = await this.database.client
-            .from('profiles')
-            .delete()
-            .eq('id', profileId)
-            .eq('user_role', 'dummy')
-            .select('id');
+        const isOwnProfile = profileId === this.database.profileId();
 
-        if (error) {
-            console.error('The profile could not be deleted:', error);
-            throw error;
+        if (isOwnProfile) {
+            // Delete the logged-in Auth account.
+            // and "cascade" also deletes its profile.
+            // Calls supabase function...
+            const { error } = await this.database.client.rpc('delete_own_account');
+
+            if (error) throw error;
+        } else {
+            // Other profiles may only be deleted when they are dummy profiles
+            const { data, error } = await this.database.client
+                .from('profiles')
+                .delete()
+                .eq('id', profileId)
+                .eq('user_role', 'dummy')
+                .select('id');
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                throw new Error('No dummy profile was deleted.');
+            }
         }
 
-        if (!data || data.length === 0) {
-            throw new Error('No dummy profile was deleted.');
-        }
-
-        // Remove the deleted profile from the local list.
+        // Remove the deleted profile from the displayed list.
         this.profiles.update((profiles) => profiles.filter((profile) => profile.id !== profileId));
 
         // Clear the selected profile when it was deleted.
@@ -221,7 +230,7 @@ export class ProfileService {
         );
     });
 
-    // Check whether a profile belongs to the logged-in user, 
+    // Check whether a profile belongs to the logged-in user,
     // to add (You) behind the users name in html
     isCurrentUser(profileId: string): boolean {
         return this.database.profileId() === profileId;

@@ -1,14 +1,16 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
 .signup-form {
-    @include font-inter(regular, 18, 2vw, 20);
+    @include font-inter(regular, 16, 2vw, 20);
     height: fit-content;
-    width: use-clamp(300, 70vw, 650);
+    width: use-clamp(280, 70vw, 650);
     box-shadow: 0px 0px 14px 3px #00000024;
     border-radius: 30px;
     background-color: white;
     padding: distance(48, 16);
     @include flex();
+    margin-left: auto;
+    margin-right: auto;
 
     @include desktop {
         padding: distance(56, 40);

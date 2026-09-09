@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { SignupComponent } from '../signup-component/signup-component';
 import { advancedEmailValidator } from '../../../shared/helpers/advancedEmailValidator';
+import { LoginTransitionService } from '../../../shared/services/login-transition-service';
 
 @Component({
     selector: 'app-login-form',
@@ -31,6 +32,8 @@ export class LoginForm {
         password: ['', [Validators.required]],
     });
     //#endregion
+
+    private loginTransition = inject(LoginTransitionService);
 
     constructor() {}
 
@@ -57,6 +60,8 @@ export class LoginForm {
                 this.password?.value,
             );
             if (error) throw error;
+
+            this.loginTransition.trigger();
             // this.databaseService.logIn.set(true);
             this.router.navigate(['/summary']);
         } catch (error) {
@@ -73,6 +78,7 @@ export class LoginForm {
                 throw error;
             }
 
+            this.loginTransition.trigger();
             await this.router.navigate(['/summary']);
         } catch (error) {
             this.errorMessage.set('Guest login failed');
