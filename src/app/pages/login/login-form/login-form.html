@@ -8,21 +8,18 @@
         <div class="input-wrapper">
             <div class="input-and-icon">
                 <label for="email"></label>
-                <input type="email" id="email" placeholder="Email" formControlName="email" />
+                <input
+                    (focus)="errorMessage.set(null)"
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    formControlName="email"
+                />
                 <img class="input-icon" src="./assets/icons/mail (1).png" alt="mail icon" />
             </div>
             <div class="error-field">
                 @if (email?.hasError('required') && email?.touched) {
                     <p>This field is required</p>
-                }
-                @if (
-                    ((email?.hasError('email') && email?.touched) ||
-                        email?.hasError('pattern') ||
-                        email?.hasError('tooManyDots') ||
-                        email?.hasError('adjacentSpecialCharacters')) &&
-                    email?.touched
-                ) {
-                    <p>Please use a valid email</p>
                 }
             </div>
         </div>
@@ -31,6 +28,7 @@
             <div class="input-and-icon">
                 <label for="password"></label>
                 <input
+                    (focus)="errorMessage.set(null)"
                     type="password"
                     id="password"
                     formControlName="password"
@@ -56,6 +54,9 @@
             <div class="error-field">
                 @if (password?.hasError('required') && password.touched) {
                     <p>This field is required</p>
+                }
+                @if (errorMessage()) {
+                    <p>{{ errorMessage() }}</p>
                 }
             </div>
         </div>

@@ -32,10 +32,13 @@
         <div class="input-wrapper">
             <div class="input-and-icon">
                 <label for="email"></label>
-                <input type="email" id="email" placeholder="Email" formControlName="email" />
+                <input (focus)="this.errorInput.set(null)" type="email" id="email" placeholder="Email" formControlName="email" />
                 <img class="input-icon" src="./assets/icons/mail (1).png" alt="mail icon" />
             </div>
             <div class="error-field">
+                @if(errorInput()){
+                    <p>{{errorInput()}}</p>
+                }
                 @if (email?.hasError('required') && email?.touched) {
                     <p>This field is required</p>
                 }

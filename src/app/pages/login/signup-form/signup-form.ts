@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal, WritableSignal } from '@angular/core';
 import { DatabaseService } from '../../../shared/services/database-service';
 import { Router, RouterLink } from '@angular/router';
 import {
@@ -30,6 +30,7 @@ export class SignupForm {
     loading = false;
     errorMessage = '';
     successMessage = '';
+    errorInput: WritableSignal<string | null> = signal(null);
 
     passwordVisible: boolean = false;
     passwordConfirmVisible: boolean = false;
@@ -156,16 +157,15 @@ export class SignupForm {
             if (data.session) {
                 setTimeout(() => {
                     this.router.navigate(['/login']);
-                }, 1500)
+                }, 1500);
                 return;
             }
 
             this.successMessage = 'Account added. ';
         } catch (error: unknown) {
-            console.error('Error signing up:', error);
-            this.successMessage = 'Account added. ';
-
-            this.errorMessage = error instanceof Error ? error.message : 'Account error...';
+            // console.error('Error signing up:', error);
+            // this.errorMessage = error instanceof Error ? error.message : 'Account error...';
+            this.errorInput.set('This E-Mail-Adress is already registered');
         } finally {
             this.loading = false;
         }
