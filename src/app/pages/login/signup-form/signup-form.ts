@@ -154,7 +154,9 @@ export class SignupForm {
             await this.profileService.ensureProfilesLoaded(true);
 
             if (data.session) {
-                await this.router.navigate(['/summary']);
+                setTimeout(() => {
+                    this.router.navigate(['/login']);
+                }, 1500)
                 return;
             }
 
