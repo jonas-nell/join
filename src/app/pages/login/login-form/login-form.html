@@ -14,6 +14,7 @@
                     id="email"
                     placeholder="Email"
                     formControlName="email"
+                    [class.input-error]="errorMessage()"
                 />
                 <img class="input-icon" src="./assets/icons/mail (1).png" alt="mail icon" />
             </div>
@@ -34,6 +35,7 @@
                     formControlName="password"
                     autocomplete="current-password"
                     placeholder="Password"
+                    [class.input-error]="errorMessage()"
                 />
                 <button
                     [class.btn-disabled]="!password?.value"

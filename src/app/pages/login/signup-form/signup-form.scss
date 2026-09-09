@@ -52,6 +52,9 @@
             input {
                 @include input-style();
                 margin-bottom: px-to-rem(4);
+                &.input-error {
+                    border: 1px solid $required-color;
+                }
             }
             .input-icon {
                 @include input-icon();
