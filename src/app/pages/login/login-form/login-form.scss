@@ -26,7 +26,7 @@
     }
 
     form {
-        @include flex($justify: space-between, $gap: 32);
+        @include flex($justify: space-between);
         width: use-clamp(260, 70%, 450);
     }
 
@@ -36,10 +36,23 @@
         .input-and-icon {
             input {
                 @include input-style();
+                margin-bottom: px-to-rem(4);
             }
-            img {
+            .input-icon {
                 @include input-icon();
             }
+            .toggleBtn {
+                @include input-icon(true);
+            }
+        }
+    }
+
+    .error-field {
+        min-height: px-to-rem(38);
+        p {
+            @include font-inter(regular, 16, 16px, 16);
+            color: $error-color;
+            line-height: 1;
         }
     }
 
@@ -56,6 +69,10 @@
             @include button(light);
         }
     }
+}
+
+.btn-disabled {
+    pointer-events: none;
 }
 
 .mobile-signup-component {
