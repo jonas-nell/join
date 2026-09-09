@@ -14,4 +14,5 @@ export class HeaderPublic {
     openSignUpForm(): void {
         this.router.navigate(['/signup']);
     }
+    
 }
