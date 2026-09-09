@@ -41,13 +41,12 @@
             }
 
             .form-buttons {
+                width: 100%;
+                @include flex($direction: row, $justify: space-between, $gap: 16);
                 position: sticky;
                 bottom: 0;
                 background: white;
-                padding-top: px-to-rem(16);
-                padding-bottom: px-to-rem(8);
-                padding-left: px-to-rem(24);
-                padding-right: 0;
+                padding: distance(16, 0, 8, 24);
                 z-index: 10;
             }
         }
