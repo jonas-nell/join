@@ -93,9 +93,9 @@
                         <img class="input-icon" src="./assets/icons/call (1).png" alt="" />
                     </div>
                     <div class="error-field">
-                        @if (phone?.hasError('required') && phone?.touched) {
+                        <!-- @if (phone?.hasError('required') && phone?.touched) {
                             <p>This field is required</p>
-                        }
+                        } -->
                         <!-- validator error einfügen -->
                         @if (phone?.hasError('pattern') || phone?.hasError('stringTooShort')) {
                             <p>Please use a valid phone number</p>

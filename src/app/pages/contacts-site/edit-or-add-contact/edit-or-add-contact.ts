@@ -52,7 +52,7 @@ export class EditOrAddContact {
         ],
         phone: [
             '',
-            [Validators.required, minLengthWithoutSpaces(8), Validators.pattern(/^\+?[0-9 ]+$/)],
+            [minLengthWithoutSpaces(8), Validators.pattern(/^\+?[0-9 ]+$/)],
         ],
     });
 

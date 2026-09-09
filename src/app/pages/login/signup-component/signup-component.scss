@@ -7,7 +7,11 @@
 
 .btn-sign-up {
     @include button(dark);
-    width: px-to-rem(91);
-    min-height: px-to-rem(49);
+    width: px-to-rem(90);
+    min-height: px-to-rem(50);
     white-space: nowrap;
+}
+
+.sign-up-wrapper.signup-active {
+    display: none;
 }

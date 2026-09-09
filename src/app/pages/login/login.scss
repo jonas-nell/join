@@ -7,12 +7,17 @@
     bottom: px-to-rem(80);
     left: 0;
 
-    width: auto;
+    max-width: 1920px;
     height: auto;
     padding: distance(22, 12);
     background-color: $light-gray;
 
-    @include flex($align: center, $justify: center, $gap: 24);
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+
+    @include flex($justify: safe center);
+    padding-top: 50px;
 
     @include tablet {
         padding: distance(36, 24);
@@ -24,4 +29,131 @@
     }
 }
 
+.splash-background {
+    // Cover the entire viewport during the splash animation...
+    position: fixed;
+    inset: 0;
 
+    // background below logo, which uses z-index 9999
+    z-index: 9998;
+
+    // Initial splash-screen background color.
+    background: $main-color;
+
+    // Run once, then hide...
+    animation: hide-splash 1.5s ease forwards;
+}
+
+.splash-logo {
+    // Final logo size and position on mobile.
+    --splash-end-width: #{px-to-rem(32)};
+    --splash-end-top: #{px-to-rem(20)};
+    --splash-end-left: #{px-to-rem(16)};
+
+    @include desktop {
+        // Final logo size and position ondesktop
+        --splash-end-width: #{px-to-rem(100)};
+        --splash-end-top: #{px-to-rem(65)};
+        --splash-end-left: #{px-to-rem(75)};
+    }
+
+    position: fixed;
+
+    // animation start => logo in viewport center
+    top: 50%;
+    left: 50%;
+    z-index: 9999;
+
+    width: px-to-rem(150);
+
+    // Move logo from center to  final position
+    animation: move-logo 1.5s ease forwards;
+
+    img {
+        width: 100%;
+    }
+
+    .white-logo {
+        //white logo over dark logo
+        position: absolute;
+        inset: 0;
+
+        // White logo fade-out to dark logo...
+        animation: switch-logo 2s ease forwards;
+    }
+}
+
+// Move and resize logo from center to final position
+@keyframes move-logo {
+    0% {
+        // Begin centered, full-sized and invisible
+        top: 50%;
+        left: 50%;
+        width: px-to-rem(100);
+        opacity: 0;
+        transform: translate(-50%, -50%);
+    }
+
+    20% {
+        // Fade logo into view.
+        opacity: 1;
+    }
+
+    40% {
+        // centered briefly before starting movement
+        top: 50%;
+        left: 50%;
+        width: px-to-rem(100);
+        transform: translate(-50%, -50%);
+    }
+
+    85%,
+    100% {
+        // final location different for mobile and desktip
+        top: var(--splash-end-top);
+        left: var(--splash-end-left);
+        width: var(--splash-end-width);
+
+        opacity: 1;
+        transform: none;
+    }
+}
+
+// Fade out white logo and reveal the dark logo underneath.
+@keyframes switch-logo {
+    0%,
+    40% {
+        // Start white logo visible 
+        opacity: 1;
+    }
+
+    75%,
+    100% {
+        // Reveal  dark logo
+        opacity: 0;
+    }
+}
+
+// Transition the background from the dark to light gray.
+@keyframes hide-splash {
+    0%,
+    40% {
+        // Keep the original background visible at the beginning...
+        background: $main-color;
+        opacity: 1;
+    }
+
+    85%,
+    90% {
+        // Match login-page background before disappearing.
+        background: $light-gray;
+        opacity: 1;
+    }
+
+    100% {
+        // Hide only the background; the logo remains vissible.
+        background: $light-gray;
+        opacity: 0;
+        visibility: hidden;
+    }
+}
