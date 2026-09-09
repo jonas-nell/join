@@ -3,6 +3,7 @@ import { Taskmanagement } from '../../shared/services/taskmanagement';
 import { DatePipe } from '@angular/common';
 import { Task } from '../../shared/interfaces/task';
 import { Router } from '@angular/router';
+import { Greeting } from "../../shared/components/greeting/greeting";
 
 const PRIORITY_DISPLAY: Record<Task['task_priority'], { icon: string; color: string }> = {
     urgent: { icon: 'Prio urgent white.png', color: 'red' },
@@ -12,7 +13,7 @@ const PRIORITY_DISPLAY: Record<Task['task_priority'], { icon: string; color: str
 
 @Component({
     selector: 'app-summary',
-    imports: [DatePipe],
+    imports: [DatePipe, Greeting],
     templateUrl: './summary.html',
     styleUrl: './summary.scss',
 })
