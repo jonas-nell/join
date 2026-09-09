@@ -21,7 +21,7 @@
 
         &.edit-mode {
             padding: distance(32, 10, 0, 10);
-            max-width: 100%;
+            max-width: px-to-rem(525);
             padding-bottom: 0;
 
             @media (min-width: 380px) {
