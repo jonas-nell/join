@@ -93,6 +93,7 @@ export class SignupForm {
     }
     //#endregion
 
+    //#region password input
     // toggles password visibility on button klick
     toggleVisibility(inputElement: string) {
         const inputPassword: HTMLInputElement = document.getElementById(
@@ -114,7 +115,9 @@ export class SignupForm {
             this.passwordConfirmVisible = !this.passwordConfirmVisible;
         }
     }
+    //#endregion
 
+    //#region submit
     async onSubmit(): Promise<void> {
         console.log(this.acceptPolicy?.errors);
 
@@ -165,48 +168,6 @@ export class SignupForm {
             this.loading = false;
         }
     }
-
-    // async onSubmit(): Promise<void> {
-    //     this.errorMessage = '';
-    //     this.successMessage = '';
-
-    //     if (this.password !== this.passwordConfirmation) {
-    //         this.errorMessage = 'Passwords do not match....';
-    //         return;
-    //     }
-
-    //     this.loading = true;
-
-    //     try {
-    //         const { data, error } = await this.databaseService.signUp(
-    //             this.email,
-    //             this.password,
-    //             this.userName,
-    //         );
-
-    //         if (error) {
-    //             throw error;
-    //         }
-
-    //         // The database trigger has now created or connected the profile.
-    //         // Force a reload so the shared profile list contains the new user.
-    //         await this.profileService.ensureProfilesLoaded(true);
-
-    //         if (data.session) {
-    //             await this.router.navigate(['/board']);
-    //             return;
-    //         }
-
-    //         this.successMessage = 'Account added. ';
-    //     } catch (error: unknown) {
-    //         console.error('Error signing up:', error);
-
-    //         this.errorMessage = error instanceof Error ? error.message : 'Account error...';
-    //     } finally {
-    //         this.loading = false;
-    //     }
-    // }
-
-    // onSubmit() {}
+    //#endregion
     //#endregion
 }

@@ -21,7 +21,7 @@
 
         &.edit-mode {
             padding: distance(32, 10, 0, 10);
-            max-width: 100%;
+            max-width: px-to-rem(525);
             padding-bottom: 0;
 
             @media (min-width: 380px) {
@@ -41,13 +41,12 @@
             }
 
             .form-buttons {
+                width: 100%;
+                @include flex($direction: row, $justify: space-between, $gap: 16);
                 position: sticky;
                 bottom: 0;
                 background: white;
-                padding-top: px-to-rem(16);
-                padding-bottom: px-to-rem(8);
-                padding-left: px-to-rem(24);
-                padding-right: 0;
+                padding: distance(16, 0, 8, 24);
                 z-index: 10;
             }
         }
@@ -352,7 +351,7 @@
         }
 
         .form-buttons {
-            @include flex(row, $justify: flex-end, $gap: 24);
+            @include flex($direction: row, $justify: space-between, $gap: 24);
             @include font-inter(regular, 16, 2%, 16);
             position: fixed;
             bottom: 100px;
@@ -367,14 +366,15 @@
             padding: 24px;
 
             .btns-wrpr {
-                @include flex($direction: row, $gap: 24);
+                @include flex($direction: row, $gap: 16);
+                min-width: px-to-rem(260);
             }
 
             @media (max-width: 450px) {
                 @include flex(column-reverse, $justify: center, $gap: 16);
 
                 .btns-wrpr {
-                    @include flex($direction: row, $justify: space-around, $gap: 24);
+                    @include flex($direction: row, $justify: space-around, $gap: 16);
                 }
             }
 
