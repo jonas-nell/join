@@ -14,7 +14,7 @@ import { advancedEmailValidator } from '../../../shared/helpers/advancedEmailVal
 import { passwordConfirm } from '../../../shared/helpers/password-confirmation-valid';
 import { Dialog } from '../../../shared/directives/dialog-directive';
 import { DialogService } from '../../../shared/services/dialog-service';
-
+import { NotificationService } from '../../../shared/services/notification-service';
 
 @Component({
     selector: 'app-signup-form',
@@ -27,7 +27,8 @@ export class SignupForm {
     databaseService = inject(DatabaseService);
     router = inject(Router);
     profileService = inject(ProfileService);
-    dialogService = inject(DialogService)
+    dialogService = inject(DialogService);
+    notificationService = inject(NotificationService);
 
     fb = inject(FormBuilder);
 
@@ -149,21 +150,25 @@ export class SignupForm {
                 this.password?.value,
                 this.name?.value,
             );
-
+            
             if (error) {
                 throw error;
             }
+            this.notificationService.success('Account added');
+            setTimeout(() => {
+
+                this.router.navigate(['/login']);
+            }, 1500)
 
             // The database trigger has now created or connected the profile.
             // Force a reload so the shared profile list contains the new user.
-            await this.profileService.ensureProfilesLoaded(true);
+            // await this.databaseService.signOut();
+        // await this.databaseService.client.auth.signOut({ scope: 'local' });
 
-            if (data.session) {
-                setTimeout(() => {
-                    this.router.navigate(['/login']);
-                }, 1500);
-                return;
-            }
+            
+                
+                
+            
 
             this.successMessage = 'Account added. ';
         } catch (error: unknown) {

@@ -57,6 +57,7 @@ export class LoginForm {
                 this.password?.value,
             );
             if (error) throw error;
+            // this.databaseService.logIn.set(true);
             this.router.navigate(['/summary']);
         } catch (error) {
             this.errorMessage.set('Check your email and password. Please try again.');
