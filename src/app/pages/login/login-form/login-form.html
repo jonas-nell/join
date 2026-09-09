@@ -3,47 +3,67 @@
         <h1>Log in</h1>
         <div class="line"></div>
     </div>
-    <form (ngSubmit)="onSubmit()">
-        <div class="input-wrapper">
-            <label for="email"></label>
 
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="input-wrapper">
             <div class="input-and-icon">
-                <input
-                    placeholder="Email"
-                    type="email"
-                    id="email"
-                    [(ngModel)]="email"
-                    name="email"
-                    autocomplete="email"
-                    required
-                />
-                <img src="./assets/icons/mail.png" alt="mail icon" />
+                <label for="email"></label>
+                <input type="email" id="email" placeholder="Email" formControlName="email" />
+                <img class="input-icon" src="./assets/icons/mail (1).png" alt="mail icon" />
+            </div>
+            <div class="error-field">
+                @if (email?.hasError('required') && email?.touched) {
+                    <p>This field is required</p>
+                }
+                @if (
+                    ((email?.hasError('email') && email?.touched) ||
+                        email?.hasError('pattern') ||
+                        email?.hasError('tooManyDots') ||
+                        email?.hasError('adjacentSpecialCharacters')) &&
+                    email?.touched
+                ) {
+                    <p>Please use a valid email</p>
+                }
             </div>
         </div>
 
         <div class="input-wrapper">
-            <label for="password"></label>
-
             <div class="input-and-icon">
+                <label for="password"></label>
                 <input
-                    placeholder="Password"
                     type="password"
                     id="password"
-                    [(ngModel)]="password"
-                    name="password"
+                    formControlName="password"
                     autocomplete="current-password"
-                    required
+                    placeholder="Password"
                 />
-                <img src="./assets/icons/lock.png" alt="lock icon" />
+                <button
+                    [class.btn-disabled]="!password?.value"
+                    class="toggleBtn"
+                    (click)="toggleVisibility('password')"
+                >
+                    @if (!password?.value) {
+                        <img src="./assets/icons/lock.png" alt="lock icon" />
+                    }
+                    @if (passwordVisible && password?.value) {
+                        <img src="./assets/icons/visibility-on.png" alt="icon eye open" />
+                    }
+                    @if (!passwordVisible && password?.value) {
+                        <img src="./assets/icons/visibility_off.png" alt="eye closed" />
+                    }
+                </button>
+            </div>
+            <div class="error-field">
+                @if (password?.hasError('required') && password.touched) {
+                    <p>This field is required</p>
+                }
             </div>
         </div>
-
         <div class="button-wrapper">
             <button class="btn-login" type="submit">Login</button>
             <button (click)="loginAsGuest()" class="btn-guest" type="button">Guest Log in</button>
         </div>
     </form>
-
 </section>
 
 <app-signup-component class="mobile-signup-component" />
