@@ -352,7 +352,7 @@
         }
 
         .form-buttons {
-            @include flex(row, $justify: flex-end, $gap: 24);
+            @include flex($direction: row, $justify: space-between, $gap: 24);
             @include font-inter(regular, 16, 2%, 16);
             position: fixed;
             bottom: 100px;
@@ -367,14 +367,15 @@
             padding: 24px;
 
             .btns-wrpr {
-                @include flex($direction: row, $gap: 24);
+                @include flex($direction: row, $gap: 16);
+                min-width: px-to-rem(260);
             }
 
             @media (max-width: 450px) {
                 @include flex(column-reverse, $justify: center, $gap: 16);
 
                 .btns-wrpr {
-                    @include flex($direction: row, $justify: space-around, $gap: 24);
+                    @include flex($direction: row, $justify: space-around, $gap: 16);
                 }
             }
 
