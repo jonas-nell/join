@@ -8,6 +8,8 @@
     </div>
 
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+        <!-- #region input name -->
         <div class="input-wrapper">
             <div class="input-and-icon">
                 <label for="name"></label>
@@ -24,7 +26,9 @@
                 }
             </div>
         </div>
+        <!-- #endregion -->
 
+        <!-- #region input mail -->
         <div class="input-wrapper">
             <div class="input-and-icon">
                 <label for="email"></label>
@@ -46,7 +50,9 @@
                 }
             </div>
         </div>
+        <!-- #endregion -->
 
+        <!-- #region input password -->
         <div class="input-wrapper">
             <div class="input-and-icon">
                 <label for="password"></label>
@@ -82,7 +88,9 @@
                 }
             </div>
         </div>
+        <!-- #endregion -->
 
+        <!-- #region input password confirmation -->
         <div class="input-wrapper">
             <div class="input-and-icon">
                 <label for="confirmedPassword"></label>
@@ -123,133 +131,38 @@
                 }
             </div>
         </div>
+        <!-- #endregion -->
 
+        <!-- #region checkbox -->
         <div class="input-wrpr-checkbox">
             <div class="input-checkbox-wrapper">
                 <input type="checkbox" id="privacy-policy" formControlName="acceptPolicy" />
-                <label for="privacy-policy" (click)="$event.preventDefault()">I accept the <a routerLink="/privacy-policy">Privacy policy</a></label>
+                <label for="privacy-policy" (click)="$event.preventDefault()"
+                    >I accept the <a routerLink="/privacy-policy">Privacy policy</a></label
+                >
             </div>
             <div class="error-field">
                 @if (acceptPolicy?.hasError('required') && acceptPolicy?.touched) {
-                    
                     <p>Please accept the privacy policy</p>
                 }
             </div>
         </div>
+        <!-- #endregion -->
 
         <button class="btn-sign-up" type="submit">
             {{ loading ? 'loading…' : 'Sign up' }}
         </button>
-
-        <!-- <div class="buttons">
-                    @if (dialogService.dialogMode() == 'edit') {
-                        @if (profileService.selectedProfile(); as selected) {
-                            <button
-                                class="button button-primary"
-                                type="button"
-                                (click)="profileDeletion.deleteProfile(selected)"
-                                [disabled]="profileDeletion.deleting()"
-                            >
-                                {{ profileDeletion.deleting() ? 'Deleting...' : 'Delete' }}
-                            </button>
-                        }
-                        <button class="button button-secondary" type="submit">Save</button>
-                    }
-                    @if (dialogService.dialogMode() == 'add') {
-                        <button
-                            class="button button-primary"
-                            type="button"
-                            (click)="dialogService.closeDialog()"
-                        >
-                            Cancel
-                        </button>
-                        <button class="button button-secondary" type="submit">Create</button>
-                    }
-                </div>  -->
     </form>
-    <!-- <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
-        <div class="input-wrapper">
-            <label for="userName"></label>
 
-            <div class="input-and-icon">
-                <input
-                    type="text"
-                    id="userName"
-                    name="userName"
-                    [(ngModel)]="userName"
-                    autocomplete="username"
-                    required
-                    placeholder="Name"
-                />
-                <img src="./assets/icons/person.png" alt="" />
-            </div>
-        </div>
+    @if (errorMessage) {
+        <p class="message message--error" role="alert">
+            {{ errorMessage }}
+        </p>
+    }
 
-        <div class="input-wrapper">
-            <label for="email"></label>
-            <div class="input-and-icon">
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    [(ngModel)]="email"
-                    autocomplete="email"
-                    required
-                    email
-                    placeholder="Email"
-                />
-                <img src="./assets/icons/mail.png" alt="mail icon" />
-            </div>
-        </div>
-
-        <div class="input-wrapper">
-            <label for="password"></label>
-
-            <div class="input-and-icon">
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    [(ngModel)]="password"
-                    autocomplete="new-password"
-                    required
-                    placeholder="Password"
-                />
-                <img src="./assets/icons/lock.png" alt="lock icon" />
-            </div>
-        </div>
-
-        <div class="input-wrapper">
-            <label for="passwordConfirmation"></label>
-
-            <div class="input-and-icon">
-                <input
-                    type="password"
-                    id="passwordConfirmation"
-                    name="passwordConfirmation"
-                    [(ngModel)]="passwordConfirmation"
-                    autocomplete="new-password"
-                    required
-                    placeholder="Confirm Password"
-                />
-                <img src="./assets/icons/lock.png" alt="lock icon" />
-            </div>
-        </div>
-
-        @if (errorMessage) {
-            <p class="message message--error" role="alert">
-                {{ errorMessage }}
-            </p>
-        }
-
-        @if (successMessage) {
-            <p class="message message--success" role="status">
-                {{ successMessage }}
-            </p>
-        }
-
-        <button class="btn-sign-up" type="submit" [disabled]="signupForm.invalid || loading">
-            {{ loading ? 'Account added…' : 'Sign up' }}
-        </button>
-    </form> -->
+    @if (successMessage) {
+        <p class="message message--success" role="status">
+            {{ successMessage }}
+        </p>
+    }
 </section>

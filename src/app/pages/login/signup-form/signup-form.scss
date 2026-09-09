@@ -1,58 +1,5 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-// .signup-form {
-//     @include flex($align: start, $gap: 24);
-
-//     width: 100%;
-//     max-width: 100%;
-//     padding: distance(22, 12);
-//     padding-bottom: px-to-rem(80);
-
-//     form {
-//         @include flex($align: stretch, $gap: 16);
-
-//         width: 100%;
-//         max-width: px-to-rem(480);
-//     }
-
-//     form > div {
-//         @include flex($align: stretch, $gap: 8);
-//     }
-
-//     input {
-//         width: 100%;
-//     }
-
-//     button:disabled {
-//         cursor: not-allowed;
-//         opacity: 0.6;
-//     }
-
-//     .message {
-//         margin: 0;
-
-//         &--error {
-//             color: #b42318;
-//         }
-
-//         &--success {
-//             color: #067647;
-//         }
-//     }
-
-//     @include tablet {
-//         padding: distance(36, 24, 0, 24);
-//     }
-
-//     @include desktop {
-//         @include flex($justify: start, $align: start, $gap: 24);
-
-//         height: calc(100dvh - 6rem);
-//         padding-right: px-to-rem(24);
-//         padding-left: calc(px-to-rem(250) + px-to-rem(34));
-//     }
-// }
-
 .signup-form {
     @include font-inter(regular, 18, 2vw, 20);
     height: fit-content;
@@ -87,7 +34,7 @@
             margin-bottom: px-to-rem(6);
         }
         .line {
-            width: 150px;
+            width: px-to-rem(150);
             height: 3px;
             background-color: $button-light;
         }
@@ -134,18 +81,16 @@
 
         .input-checkbox-wrapper {
             @include flex($direction: row, $gap: 16);
-            font-size: 16px;
 
             label {
                 color: $border-color;
-                font-size: 16px;
             }
 
             #privacy-policy {
                 cursor: pointer;
                 appearance: none;
-                width: 18px;
-                height: 18px;
+                width: px-to-rem(18);
+                height: px-to-rem(18);
                 border: 2px solid $button-blue;
                 border-radius: 4px;
                 position: relative;
@@ -165,13 +110,12 @@
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    font-size: 13px;
+                    font-size: 15px;
                 }
             }
 
             a {
                 color: $button-blue;
-                font-size: 16px;
 
                 &:hover {
                     color: $highlight-color;
@@ -188,4 +132,16 @@
 
 .btn-disabled {
     pointer-events: none;
+}
+
+.message {
+    margin: 0;
+
+    &--error {
+        color: #b42318;
+    }
+
+    &--success {
+        color: #067647;
+    }
 }
