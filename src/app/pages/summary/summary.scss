@@ -6,9 +6,17 @@
     @include font-inter(regular, 16, 2%, 16);
     min-height: calc(100dvh - 6rem - 100px);
 
+    @media (min-width: 445px){
+        padding-left: 11dvw;
+    }
+
     @include desktop {
-        padding-left: calc(px-to-rem(250) + px-to-rem(24));
+        padding-left: calc(px-to-rem(250) + px-to-rem(32));
         padding-bottom: px-to-rem(100);
+    }
+
+    @media (min-width: 1400px){
+        padding-left: calc(px-to-rem(250) + px-to-rem(48));
     }
 
     .summary-top {
@@ -35,7 +43,7 @@
     }
 
     .summary-content {
-        @include flex($align: start);
+        @include flex($align: start, $gap: 42);
         width: 100%;
 
         @include desktop {
@@ -46,8 +54,13 @@
 
         .task-overview {
             @include flex($gap: 18);
-            width: 100%;
             max-width: 356px;
+            width: 100%;
+
+            @include desktop{
+                width: 50%;
+                max-width: 450px;
+            }
 
             .counter {
                 font-size: 32px;
@@ -55,17 +68,17 @@
             }
 
             .top {
-                @include flex(row, $justify: space-between);
+                @include flex(row, $justify: space-between, $gap:10);
                 width: 100%;
 
                 button {
                     @include flex(row, $gap: 10);
                     border-radius: 16px;
-                    width: 140px;
+                    width: 50%;
                     height: 95px;
 
-                    @media (min-width: 379px) {
-                        width: 170px;
+                    @include tablet{
+                        height: 110px;
                     }
 
                     .icon-default {
@@ -103,6 +116,10 @@
                     border-radius: 16px;
                     height: 95px;
 
+                    @include tablet{
+                        height: 110px;
+                    }
+
                     &:hover{
                         .right .date{
                             color: white;
@@ -136,6 +153,10 @@
                         width: 2px;
                         height: 70%;
                         background-color: $font-light;
+                        
+                        @include tablet {
+                            margin-inline: px-to-rem(12);
+                        }
                     }
 
                     .right {
@@ -149,17 +170,17 @@
             }
 
             .bottom {
-                @include flex(row, $justify: space-between);
+                @include flex(row, $justify: space-between, $gap: 5);
                 width: 100%;
 
                 button {
                     @include flex();
                     border-radius: 16px;
-                    width: 95px;
+                    width: 30%;
                     height: 95px;
 
-                    @media (min-width: 379px) {
-                        width: 110px;
+                    @include tablet{
+                        height: 110px;
                     }
                 }
             }
@@ -167,6 +188,15 @@
 
         .welcome-message {
             display: none;
+            
+            app-greeting{
+                width: 100%;
+            }
+            
+            @include desktop{
+                display: flex;
+                width: 50%;
+            }
         }
     }
 }

@@ -365,6 +365,7 @@
             padding-top: 36px;
             z-index: 100;
             padding: 24px;
+            background-color: $light-gray;
 
             .btns-wrpr {
                 @include flex($direction: row, $gap: 24);

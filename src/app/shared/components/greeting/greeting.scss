@@ -1,0 +1,18 @@
+@use '../../../../../public/assets/styles/main.scss' as *;
+
+.welcome-wrapper{
+    @include flex($align:start, $gap:18);
+    color: $main-color;
+    @include font-inter(medium, 42, 2%, 42);
+    width: 100%;
+    margin-left: 15%;
+
+    .greeting-name{
+        color: $button-blue;
+        font-weight: bold;
+        font-size: 54px;
+        text-align: left;
+    }
+
+
+}
