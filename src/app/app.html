@@ -4,7 +4,7 @@
   <app-header-public></app-header-public>
 }
 
-<main>
+<main [style.background-color]="layoutService.mainBackground()">
   <router-outlet></router-outlet>
   <app-notification></app-notification>
 </main>
