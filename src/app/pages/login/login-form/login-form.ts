@@ -23,7 +23,7 @@ export class LoginForm {
         try {
             const { error } = await this.databaseService.signIn(this.email, this.password);
             if (error) throw error;
-            this.router.navigate(['/board']);
+            this.router.navigate(['/summary']);
         } catch (error) {
             console.error('Error logging in:', error);
         }
