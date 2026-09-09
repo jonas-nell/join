@@ -10,6 +10,7 @@ import { Footer } from './layout/footer/footer';
 import { NavigationHistoryService } from './shared/services/navigation-history.service';
 import { Notification } from './shared/components/notification/notification/notification';
 import { DatabaseService } from './shared/services/database-service';
+import { LayoutService } from './shared/services/layout-service';
 
 @Component({
     selector: 'app-root',
@@ -22,6 +23,7 @@ export class App {
 
     readonly database = inject(DatabaseService);
     private readonly router = inject(Router);
+    readonly layoutService = inject(LayoutService);
 
     // used to display the standard navbar even when the user
 // is not authenticated.

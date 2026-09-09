@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { UserList } from './user-list/user-list';
 import { RouterOutlet } from '@angular/router';
 import { NotificationService } from '../../shared/services/notification-service';
@@ -11,6 +11,7 @@ import { ProfileService } from '../../shared/services/profile-service';
 import { ProfileDeletionService } from '../../shared/services/profile-deletion-service';
 import { ConfirmationDialog } from '../../shared/components/confirmation/confirmation/confirmation';
 import { Profile } from '../../shared/interfaces/profile';
+import { LayoutService } from '../../shared/services/layout-service';
 
 @Component({
     selector: 'app-contacts-site',
@@ -18,7 +19,7 @@ import { Profile } from '../../shared/interfaces/profile';
     templateUrl: './contacts-site.html',
     styleUrl: './contacts-site.scss',
 })
-export class ContactsSite {
+export class ContactsSite implements OnInit{
     // True when a profile route is open.
     readonly profileOpen = signal(false);
 
@@ -26,6 +27,7 @@ export class ContactsSite {
     readonly notificationService = inject(NotificationService);
     readonly profileDeletion = inject(ProfileDeletionService);
     readonly profileService = inject(ProfileService);
+    readonly layoutService = inject(LayoutService);
 
     dialogservice = inject(DialogService);
 
@@ -42,7 +44,17 @@ export class ContactsSite {
     }
 
     async deleteFromMenu(profile: Profile): Promise<void> {
-    this.dialogservice.closeDialog();
-    await this.profileDeletion.deleteProfile(profile);
-}
+        this.dialogservice.closeDialog();
+        await this.profileDeletion.deleteProfile(profile);
+    }
+
+    ngOnInit(){
+        this.layoutService.mainBackground.set('white');
+    }
+
+    ngOnDestroy(){
+        this.layoutService.mainBackground.set('#F6F7F8');
+    }
+
+
 }
