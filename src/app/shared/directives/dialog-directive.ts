@@ -56,14 +56,14 @@ export class Dialog {
         }
     }
 
-    // @HostListener('document:click', ['$event'])
-    // onDocumentClick(event: MouseEvent) {
-    //     if (this.modal()) return;
-    //     if (!this.dialog.nativeElement.open) return;
+    @HostListener('document:click', ['$event'])
+    onDocumentClick(event: MouseEvent) {
+        if (this.modal()) return;
+        if (!this.dialog.nativeElement.open) return;
 
-    //     const target = event.target as Node;
-    //     if (!this.dialog.nativeElement.contains(target)) {
-    //         this.dialogService.closeDialog();
-    //     }
-    // }
+        const target = event.target as Node;
+        if (!this.dialog.nativeElement.contains(target)) {
+            this.dialogService.closeDialog();
+        }
+    }
 }

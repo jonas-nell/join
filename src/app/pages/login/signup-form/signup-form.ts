@@ -12,10 +12,13 @@ import { ProfileService } from '../../../shared/services/profile-service';
 import { minLengthWithoutSpaces } from '../../../shared/helpers/function-min-length';
 import { advancedEmailValidator } from '../../../shared/helpers/advancedEmailValidator';
 import { passwordConfirm } from '../../../shared/helpers/password-confirmation-valid';
+import { Dialog } from '../../../shared/directives/dialog-directive';
+import { DialogService } from '../../../shared/services/dialog-service';
+
 
 @Component({
     selector: 'app-signup-form',
-    imports: [FormsModule, ReactiveFormsModule, RouterLink],
+    imports: [FormsModule, ReactiveFormsModule, RouterLink, Dialog],
     templateUrl: './signup-form.html',
     styleUrl: './signup-form.scss',
 })
@@ -24,6 +27,7 @@ export class SignupForm {
     databaseService = inject(DatabaseService);
     router = inject(Router);
     profileService = inject(ProfileService);
+    dialogService = inject(DialogService)
 
     fb = inject(FormBuilder);
 
