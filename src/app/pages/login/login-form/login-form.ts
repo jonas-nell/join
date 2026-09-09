@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DatabaseService } from '../../../shared/services/database-service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SignupComponent } from "../signup-component/signup-component";
+import { LoginTransitionService } from '../../../shared/services/login-transition-service';
 
 @Component({
     selector: 'app-login-form',
@@ -14,6 +15,8 @@ export class LoginForm {
     email: string = '';
     password: string = '';
 
+    private loginTransition = inject(LoginTransitionService);
+
     constructor(
         private databaseService: DatabaseService,
         private router: Router,
@@ -23,7 +26,9 @@ export class LoginForm {
         try {
             const { error } = await this.databaseService.signIn(this.email, this.password);
             if (error) throw error;
-            this.router.navigate(['/board']);
+
+            this.loginTransition.trigger();
+            this.router.navigate(['/summary']);
         } catch (error) {
             console.error('Error logging in:', error);
         }
@@ -37,7 +42,8 @@ export class LoginForm {
                 throw error;
             }
 
-            await this.router.navigate(['/board']);
+            this.loginTransition.trigger();
+            await this.router.navigate(['/summary']);
         } catch (error) {
             console.error('Guest login failed:', error);
         }

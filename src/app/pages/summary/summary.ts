@@ -1,9 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Taskmanagement } from '../../shared/services/taskmanagement';
 import { DatePipe } from '@angular/common';
 import { Task } from '../../shared/interfaces/task';
 import { Router } from '@angular/router';
 import { Greeting } from "../../shared/components/greeting/greeting";
+import { LoginTransitionService } from '../../shared/services/login-transition-service';
 
 const PRIORITY_DISPLAY: Record<Task['task_priority'], { icon: string; color: string }> = {
     urgent: { icon: 'Prio urgent white.png', color: 'red' },
@@ -21,9 +22,23 @@ export class Summary implements OnInit {
     taskmanagement = inject(Taskmanagement);
     priorityDisplay = PRIORITY_DISPLAY;
     private router = inject(Router);
+    private loginTransition = inject(LoginTransitionService);
+
+    readonly showLoginOverlay = signal(false);
+    readonly loginOverlayFadingOut = signal(false);
 
     ngOnInit(): void {
         this.taskmanagement.ensureTasksLoaded();
+
+        if (this.loginTransition.consume()){
+            this.showLoginOverlay.set(true);
+
+            setTimeout(() => this.loginOverlayFadingOut.set(true), 2000);
+        }
+    }
+
+    onLoginOverlayTransitionEnd(): void {
+        this.showLoginOverlay.set(false);
     }
 
     navigateIfButton(event: MouseEvent) {

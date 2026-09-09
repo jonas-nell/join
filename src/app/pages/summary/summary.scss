@@ -1,5 +1,23 @@
 @use '../../../../public/assets/styles/main.scss' as *;
 
+.login-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    @include flex();
+    background-color: $light-gray;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+
+    @include tablet {
+        display: none;
+    }
+
+    &.fading-out{
+        opacity: 0;
+    }
+}
+
 .summary-wrapper {
     padding: distance(22, 12, 80, 12);
     @include flex($align: start, $justify: start, $gap: 24);
@@ -43,13 +61,18 @@
     }
 
     .summary-content {
-        @include flex($align: start, $gap: 42);
+        @include flex($align: start, $gap: 15);
+        gap: 8%;
         width: 100%;
 
-        @include desktop {
+        @include tablet {
             flex-direction: row;
             align-items: center;
             justify-content: start;
+        }
+
+        @media (min-width: 1440px){
+            gap: 10%
         }
 
         .task-overview {
@@ -193,9 +216,12 @@
                 width: 100%;
             }
             
-            @include desktop{
+            @include tablet{
                 display: flex;
                 width: 50%;
+            }
+            
+            @include desktop{
             }
         }
     }
