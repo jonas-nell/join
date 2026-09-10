@@ -78,6 +78,7 @@ export class DatabaseService {
         auth: {
             persistSession: false,
             autoRefreshToken: false,
+            storageKey: 'blablabla'
         },
     });
         const result = signupClient.auth.signUp({
