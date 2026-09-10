@@ -34,7 +34,9 @@ export class ProfileDeletionService {
         }
 
         const confirmed = await this.confirmationService.confirm(
-            `Do you really want to delete ${profile.user_name}?`,
+            isOwnProfile
+                ? 'Do you really want to delete your own profile?'
+                : `Do you really want to delete ${profile.user_name}?`,
         );
 
         if (!confirmed) {
@@ -46,7 +48,9 @@ export class ProfileDeletionService {
         try {
             await this.profileService.deleteProfile(profile.id);
 
-            this.notificationService.success(`${profile.user_name} was deleted.`);
+            this.notificationService.success(
+                isOwnProfile ? 'Your profile was deleted.' : `${profile.user_name} was deleted.`,
+            );
 
             this.dialogService.closeDialog();
 
