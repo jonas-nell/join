@@ -50,10 +50,7 @@ export class EditOrAddContact {
                 advancedEmailValidator(),
             ],
         ],
-        phone: [
-            '',
-            [minLengthWithoutSpaces(8), Validators.pattern(/^\+?[0-9 ]+$/)],
-        ],
+        phone: ['', [minLengthWithoutSpaces(8), Validators.pattern(/^\+?[0-9 ]+$/)]],
     });
 
     constructor() {
@@ -126,6 +123,8 @@ export class EditOrAddContact {
 
                 const updated = await this.profileService.updateProfile(selected.id, changes);
                 this.profileService.selectedProfile.set(updated);
+                this.profileService.scrollToNewContact.set(selected.id);
+
                 this.notificationService.success(`${updated.user_name} was updated`);
             } else {
                 const created = await this.profileService.createProfile(changes);
