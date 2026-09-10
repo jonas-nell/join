@@ -63,7 +63,10 @@ export class LoginForm {
 
             this.loginTransition.trigger();
             // this.databaseService.logIn.set(true);
-            this.router.navigate(['/summary']);
+            await this.router.navigate(['/summary'], {
+                // avoid showing login with browser back click after login
+                replaceUrl: true,
+            });
         } catch (error) {
             this.errorMessage.set('Check your email and password. Please try again.');
             // console.error('Error logging in:', error);
@@ -79,7 +82,10 @@ export class LoginForm {
             }
 
             this.loginTransition.trigger();
-            await this.router.navigate(['/summary']);
+            await this.router.navigate(['/summary'], {
+                // avoid showing login with browser back click after login
+                replaceUrl: true,
+            });
         } catch (error) {
             this.errorMessage.set('Guest login failed');
             // console.error('Guest login failed:', error);

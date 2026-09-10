@@ -166,7 +166,7 @@ export class SignupForm {
         // await this.databaseService.client.auth.signOut({ scope: 'local' });
 
             
-                
+                await this.profileService.ensureProfilesLoaded(true);
                 
             
 
