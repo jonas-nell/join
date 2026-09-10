@@ -125,10 +125,6 @@ export class SignupForm {
 
     //#region submit
     async onSubmit(): Promise<void> {
-        console.log(this.acceptPolicy?.errors);
-
-        console.log('in method');
-        console.log(this.signupForm.valid);
 
         this.signupForm.markAllAsTouched();
         this.errorMessage = '';
