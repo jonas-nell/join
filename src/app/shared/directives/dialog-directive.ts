@@ -49,9 +49,6 @@ export class Dialog {
 
     onClickClose(event: MouseEvent): void {
         if (event.target === event.currentTarget && this.closeOnBackdrop()) {
-            // console.log(this.dialogService.backdropEvent());
-
-            // this.dialogService.backdropEvent.set(true);
             this.dialogService.closeDialog();
         }
     }

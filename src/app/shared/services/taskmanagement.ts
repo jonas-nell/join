@@ -97,7 +97,6 @@ export class Taskmanagement {
                 (payload) => {
                     let tmpTask = new TaskModel(payload.new);
                     this.tasks.update((list) => [...list, tmpTask]);
-                    // console.log('Change received!', payload);
                 },
             )
             .subscribe();
@@ -139,7 +138,6 @@ export class Taskmanagement {
     //#endregion
 
     subscribeTaskmemberInsert() {
-        // console.log('works');
 
         this.taskMemberInsertChannel = this.database.client
             .channel('custom-taskmember-insert-channel')
@@ -175,7 +173,6 @@ export class Taskmanagement {
                             subtask.id === changes.id ? changes : subtask,
                         ),
                     }));
-                    // console.log('Change received!', payload);
                 },
             )
             .subscribe();
@@ -197,7 +194,6 @@ export class Taskmanagement {
                         ...subtasks,
                         [taskId]: [...(subtasks[taskId] ?? []), tmpSubtask],
                     }));
-                    // console.log('Change received!', payload);
                 },
             )
             .subscribe();
