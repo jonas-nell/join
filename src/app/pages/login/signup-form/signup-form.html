@@ -73,6 +73,7 @@
                     placeholder="Password"
                 />
                 <button
+                    type="button"
                     [class.btn-disabled]="!password?.value"
                     class="toggleBtn"
                     (click)="toggleVisibility('password')"
@@ -95,7 +96,12 @@
                 @if (password?.hasError('pattern') && password?.touched) {
                     <div class="error-valid-password">
                         <p>Please choose a valid password</p>
-                        <button type="button" (click)="dialogService.openDialog('valid-password-info')">?</button>
+                        <button
+                            type="button"
+                            (click)="dialogService.openDialog('valid-password-info')"
+                        >
+                            ?
+                        </button>
                     </div>
                 }
             </div>
@@ -127,6 +133,7 @@
                     "
                 />
                 <button
+                    type="button"
                     [class.btn-disabled]="!confirmedPassword?.value"
                     class="toggleBtn"
                     (click)="toggleVisibility('confirmedPassword')"
