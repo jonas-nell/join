@@ -31,6 +31,7 @@
     @include desktop {
         padding-left: calc(px-to-rem(250) + px-to-rem(32));
         padding-bottom: px-to-rem(100);
+        min-height: calc(100dvh - 6rem);
     }
 
     @media (min-width: 1400px){
