@@ -27,7 +27,7 @@ export class Header {
     private readonly profileService = inject(ProfileService);
 
     // Anonymous guests also have an Auth user ID,
-    // which is needed to create the user-badge color 
+    // which is needed to create the user-badge color
     readonly authUserId = this.databaseService.authUserId;
 
     // Return true when the current user is an anonymous guest.
@@ -45,6 +45,9 @@ export class Header {
         // Load the profile when a registered user logs in.
         // Remove the profile when the user logs out or a guest logs in.
         effect(() => {
+            // also rerun when the shared profile list changes.
+            this.profileService.profiles();
+
             const profileId = this.databaseService.profileId();
 
             if (!profileId) {
