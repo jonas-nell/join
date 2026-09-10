@@ -4,6 +4,7 @@ import { StatusChange, Subtask, Task, TaskChanges } from '../interfaces/task';
 import { Profile } from '../interfaces/profile';
 import { TaskModel } from '../models/task-model';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { TaskMembers } from './task-members';
 
 const TASK_COLUMNS = `TASK_ID, task_title, task_description, task_due_date, task_priority, task_category, task_status, order_index`;
 const STATUS_COLUMNS = `task_status`;
@@ -24,6 +25,8 @@ export class Taskmanagement {
     subtaskDeleteChannel: RealtimeChannel | undefined;
     taskMemberInsertChannel: RealtimeChannel | undefined;
     //#endregion
+
+    taskMembers = inject(TaskMembers);
 
     tasksRequested = false;
     private tasksRequest: Promise<void> | null = null;
@@ -290,6 +293,7 @@ export class Taskmanagement {
         this.scrollToNewTask.set(task.TASK_ID);
 
         if (members.length > 0) {
+            this.taskMembers.updateTaskMembers(task.TASK_ID, members)
             this.insertTaskMembers(members, task.TASK_ID);
         }
 
