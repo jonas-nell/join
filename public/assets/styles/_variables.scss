@@ -11,8 +11,8 @@ $nav-bar: 250;
 
 $hover-btn-shadow: 0px 4px 4px 0px #00000040;
 
-$card-width: clamp(#{px-to-rem(210)}, 15dvw, #{px-to-rem(250)});
-$scrollbar-width: px-to-rem(5);
+$card-width: func.use-clamp(210, 15dvw, 250);
+$scrollbar-width: func.px-to-rem(5);
 
 // #region colors
 $main-color: #2a3647;
