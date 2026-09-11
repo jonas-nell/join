@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 
-const MAIN_ROUTES = ['/summary', '/tasks', '/board', '/contacts'];
+const MAIN_ROUTES = ['/summary', '/tasks', '/board', '/contacts', '/login', '/login/signup'];
 
 // CHANGE THIS TO /summary !!!!! (once site exists)
 const DEFAULT_MAIN_ROUTE = '/contacts';
