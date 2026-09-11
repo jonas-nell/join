@@ -1,10 +1,10 @@
 import { Injectable, inject, signal, computed, Signal } from '@angular/core';
 import { DatabaseService } from './database-service';
 import { StatusChange, Subtask, Task, TaskChanges } from '../interfaces/task';
-import { Profile } from '../interfaces/profile';
 import { TaskModel } from '../models/task-model';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { TaskMembers } from './task-members';
+import { Subtaskmanagement } from './subtaskmanagement';
 
 const TASK_COLUMNS = `TASK_ID, task_title, task_description, task_due_date, task_priority, task_category, task_status, order_index`;
 const STATUS_COLUMNS = `task_status`;
@@ -14,19 +14,16 @@ const STATUS_COLUMNS = `task_status`;
 })
 export class Taskmanagement {
     //#region properties
-
     //#region properties DB
     private readonly database = inject(DatabaseService);
     taskInsertChannel: RealtimeChannel | undefined;
     taskUpdateChannel: RealtimeChannel | undefined;
     taskDeleteChannel: RealtimeChannel | undefined;
-    subtaskUpdateChannel: RealtimeChannel | undefined;
-    subtaskInsertChannel: RealtimeChannel | undefined;
-    subtaskDeleteChannel: RealtimeChannel | undefined;
     taskMemberInsertChannel: RealtimeChannel | undefined;
     //#endregion
 
     taskMembers = inject(TaskMembers);
+    subtaskService = inject(Subtaskmanagement);
 
     tasksRequested = false;
     private tasksRequest: Promise<void> | null = null;
@@ -34,7 +31,6 @@ export class Taskmanagement {
     readonly tasksError = signal('');
 
     tasks = signal<Task[]>([]);
-    subtasks = signal<Record<number, Subtask[]>>({});
     currentTaskId = signal<number | null>(null);
     currentTask: Signal<Task | null> = computed(
         () => this.tasks().find((task) => task.TASK_ID === this.currentTaskId()) ?? null,
@@ -69,27 +65,17 @@ export class Taskmanagement {
     constructor() {
         this.subscribeInsert();
         this.subscribeUpdate();
-        this.subscribeSubtaskUpdate();
-        this.subscribeSubtaskInsert();
-        this.subscribeSubtaskDelete();
         this.subscribeDelete();
-        this.subscribeTaskmemberInsert();
     }
 
     ngOnDestroy() {
         this.unsubscribeInsert();
         this.unsubscribeUpdate();
         this.unsubscribeDelete();
-        this.unsubscrSubtaskInsert();
-        this.unsubscrSubtaskUpdate();
-        this.unsubscribeSubtaskDelete();
     }
 
     //#region methods
 
-    //#region realtime
-
-    //#region subscribe
     //#region subscribe task
     subscribeInsert() {
         this.taskInsertChannel = this.database.client
@@ -140,99 +126,6 @@ export class Taskmanagement {
     }
     //#endregion
 
-    subscribeTaskmemberInsert() {
-
-        this.taskMemberInsertChannel = this.database.client
-            .channel('custom-taskmember-insert-channel')
-            .on(
-                'postgres_changes',
-                { event: 'DELETE', schema: 'public', table: 'tasks_profiles' },
-                (payload) => {},
-            )
-            .subscribe();
-    }
-
-    //#region subscribe subtask
-    subscribeSubtaskUpdate() {
-        this.subtaskUpdateChannel = this.database.client
-            .channel('custom-subtask-update-channel')
-            .on(
-                'postgres_changes',
-                {
-                    event: 'UPDATE',
-                    schema: 'public',
-                    table: 'subtasks',
-                },
-                (payload) => {
-                    const changes = payload.new as Subtask;
-                    const taskId = changes.task_id;
-                    if (taskId === undefined) {
-                        return;
-                    }
-
-                    this.subtasks.update((subtasks) => ({
-                        ...subtasks,
-                        [taskId]: (subtasks[taskId] ?? []).map((subtask) =>
-                            subtask.id === changes.id ? changes : subtask,
-                        ),
-                    }));
-                },
-            )
-            .subscribe();
-    }
-
-    subscribeSubtaskInsert() {
-        this.subtaskInsertChannel = this.database.client
-            .channel('custom-subtask-insert-channel')
-            .on(
-                'postgres_changes',
-                { event: 'INSERT', schema: 'public', table: 'subtasks' },
-                (payload) => {
-                    let tmpSubtask = payload.new as Subtask;
-                    const taskId = tmpSubtask.task_id;
-                    if (taskId === undefined) {
-                        return;
-                    }
-                    this.subtasks.update((subtasks) => ({
-                        ...subtasks,
-                        [taskId]: [...(subtasks[taskId] ?? []), tmpSubtask],
-                    }));
-                },
-            )
-            .subscribe();
-    }
-
-    subscribeSubtaskDelete() {
-        this.subtaskDeleteChannel = this.database.client
-            .channel('custom-subtask-delete-channel')
-            .on(
-                'postgres_changes',
-                { event: 'DELETE', schema: 'public', table: 'subtasks' },
-                (payload) => {
-                    let tmpSubtask = payload.old as Subtask;
-                    const subtaskId = tmpSubtask.id;
-                    if (subtaskId === undefined) {
-                        return;
-                    }
-                    this.subtasks.update((subtasks) => {
-                        const updated = { ...subtasks };
-
-                        for (const taskId in updated) {
-                            updated[Number(taskId)] = updated[Number(taskId)].filter(
-                                (subtask) => subtask.id !== subtaskId,
-                            );
-                        }
-
-                        return updated;
-                    });
-                },
-            )
-            .subscribe();
-    }
-    //#endregion
-    //#endregion
-
-    //#region unsubscribe
     //#region unsubscribe task
     unsubscribeInsert() {
         if (this.taskInsertChannel) {
@@ -253,29 +146,6 @@ export class Taskmanagement {
     }
     //#endregion
 
-    //#region unsubscribe subtask
-    unsubscrSubtaskInsert() {
-        if (this.subtaskInsertChannel) {
-            this.database.client.removeChannel(this.subtaskInsertChannel);
-        }
-    }
-
-    unsubscrSubtaskUpdate() {
-        if (this.subtaskUpdateChannel) {
-            this.database.client.removeChannel(this.subtaskUpdateChannel);
-        }
-    }
-
-    unsubscribeSubtaskDelete() {
-        if (this.subtaskDeleteChannel) {
-            this.database.client.removeChannel(this.subtaskDeleteChannel);
-        }
-    }
-    //#endregion
-    //#endregion
-
-    //#endregion
-
     //#region add
     async addTaskDB(changes: TaskChanges, members: string[], subtasks: Subtask[]): Promise<Task> {
         const { data: task, error } = await this.database.client
@@ -286,40 +156,20 @@ export class Taskmanagement {
 
         if (error) {
             console.error('The task could not be created:', error);
-
             throw error;
         }
 
         this.scrollToNewTask.set(task.TASK_ID);
 
         if (members.length > 0) {
-            this.taskMembers.updateTaskMembers(task.TASK_ID, members)
+            this.taskMembers.updateTaskMembers(task.TASK_ID, members);
             this.insertTaskMembers(members, task.TASK_ID);
         }
 
         if (subtasks.length > 0) {
-            this.addSubtasks(subtasks, task.TASK_ID);
+            this.subtaskService.addSubtasks(subtasks, task.TASK_ID);
         }
         return task as Task;
-    }
-
-    // db
-    async addSubtasks(subtasks: Subtask[], taskId: number) {
-        // Omit: Use the Subtask interface but leave out the id...
-        const subtaskArr: Omit<Subtask, 'id'>[] = subtasks.map((subtask) => ({
-            task_id: taskId,
-            subtask_title: subtask.subtask_title,
-            subtask_done: false,
-        }));
-
-        const { error: assignmentError } = await this.database.client
-            .from('subtasks')
-            .insert(subtaskArr);
-
-        if (assignmentError) {
-            console.error('The subtasks could not be assigned to the task:', assignmentError);
-            throw assignmentError;
-        }
     }
 
     // nach erstellung von task (wenn task id verfügbar)
@@ -356,8 +206,7 @@ export class Taskmanagement {
             }
 
             this.tasks.set(data ?? []);
-            // await this.setSubtasks();
-            await this.loadAllSubtasks();
+            await this.subtaskService.loadAllSubtasks();
 
             this.tasksRequested = true; //prevent loading issues
         } catch (error) {
@@ -369,69 +218,22 @@ export class Taskmanagement {
         }
     }
 
-    // loads all subtasks from db into subtasks() signal
-    async loadAllSubtasks(): Promise<void> {
-        const { data, error } = await this.database.client.from('subtasks').select('*').order('id');
-
-        if (error) {
-            console.error('The subtasks could not be loaded:', error);
-            throw error;
-        }
-
-        const groupedSubtasks: Record<number, Subtask[]> = {};
-
-        for (const subtask of data ?? []) {
-            const taskId = subtask.task_id;
-
-            if (!groupedSubtasks[taskId]) {
-                groupedSubtasks[taskId] = [];
+    async ensureTasksLoaded(forceReload = false): Promise<void> {
+        if (!forceReload && this.tasksRequested) {
+            if (this.tasksRequest) {
+                await this.tasksRequest;
             }
-
-            groupedSubtasks[taskId].push(subtask);
+            return;
         }
 
-        this.subtasks.set(groupedSubtasks);
+        this.tasksRequested = true;
+        this.tasksRequest = this.loadTasks();
+
+        await this.tasksRequest;
     }
+    //#endregion
 
-    // updates subtasks() signal
-    updateSubtasks(subtaskId: number, taskId: number, changes: Partial<Subtask>) {
-        this.subtasks.update((subtasks) => ({
-            ...subtasks,
-            [taskId]: (subtasks[taskId] ?? []).map((subtask) =>
-                subtask.id === subtaskId ? { ...subtask, ...changes } : subtask,
-            ),
-        }));
-    }
-
-    // updated subtask in db
-    async updateSubtaskDone(subtaskId: number, subtaskDone: boolean): Promise<void> {
-        const { error } = await this.database.client
-            .from('subtasks')
-            .update({ subtask_done: subtaskDone })
-            .eq('id', subtaskId);
-
-        if (error) {
-            console.error('The subtask could not be updated:', error);
-            throw error;
-        }
-    }
-
-    deleteSubtaskLocal(subtaskId: number, taskId: number) {
-        this.subtasks.update((subtasks) => ({
-            ...subtasks,
-            [taskId]: (subtasks[taskId] ?? []).filter((subtask) => subtask.id !== subtaskId),
-        }));
-    }
-
-    async deleteSubTask(subtaskId: number): Promise<void> {
-        const { error } = await this.database.client.from('subtasks').delete().eq('id', subtaskId);
-
-        if (error) {
-            console.error('The subtask could not be deleted:', error);
-            throw error;
-        }
-    }
-
+    //#region delete task
     async deleteTask(taskId: number): Promise<void> {
         // Remove the deleted task from the board signal...
         this.tasks.update((tasks) => tasks.filter((task) => task.TASK_ID !== taskId));
@@ -456,21 +258,6 @@ export class Taskmanagement {
             throw assignmentError;
         }
     }
-
-    async ensureTasksLoaded(forceReload = false): Promise<void> {
-        if (!forceReload && this.tasksRequested) {
-            if (this.tasksRequest) {
-                await this.tasksRequest;
-            }
-
-            return;
-        }
-
-        this.tasksRequested = true;
-        this.tasksRequest = this.loadTasks();
-
-        await this.tasksRequest;
-    }
     //#endregion
 
     //#region update data
@@ -485,10 +272,8 @@ export class Taskmanagement {
         // Stop when Supabase cannot update the task.
         if (error) {
             console.error('The task could not be updated:', error);
-
             throw error;
         }
-
         // Return the updated task.
         return data as Task;
     }
@@ -513,10 +298,8 @@ export class Taskmanagement {
         // Stop when Supabase cannot update the status.
         if (error) {
             console.error('The status could not be updated:', error);
-
             throw error;
         }
-
         // Return the updated profile.
         return data as Task;
     }
@@ -565,10 +348,13 @@ export class Taskmanagement {
         await this.updateStatus(task.TASK_ID, { task_status: newStatus });
         await this.updateOrderIndices(updates);
     }
-    // Search tasks by name and descrition
+    //#endregion
 
+    //#region searchbar
     // Contains the text entered into the search field on the board
     readonly searchTerm = signal('');
+    // True while a search filter is active.
+    readonly isSearchActive = computed(() => this.searchTerm().trim().length >= 3);
 
     // Show all tasks until at least three characters were entered
     // After that, title and description are searched through
@@ -586,14 +372,6 @@ export class Taskmanagement {
             return title.includes(searchText) || description.includes(searchText);
         });
     });
-
-    // True while a search filter is active.
-    readonly isSearchActive = computed(() => this.searchTerm().trim().length >= 3);
-
-    setCurrentTask(taskId: number | null) {
-        this.currentTaskId.set(taskId);
-    }
-    //#endregion
     //#endregion
 
     //#region deadlines
@@ -601,14 +379,13 @@ export class Taskmanagement {
 
     //next due date from tasks
     nextDeadlineDate = computed(() => {
-
         const upcoming = this.tasks()
             .filter((t) => t.task_status !== 'Done')
             .filter((t) => t.task_due_date)
             .map((t) => t.task_due_date)
             .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
-        return upcoming [0] ?? null;
+        return upcoming[0] ?? null;
     });
 
     // all due tasks on that date
@@ -621,10 +398,21 @@ export class Taskmanagement {
     //highest prio present in those task
     highestPriorityOnDeadline = computed(() => {
         const tasksOnDate = this.tasksOnNextDeadline();
-        return this.PRIORITY_ORDER.find((p) => tasksOnDate.some((t) => t.task_priority === p)) ?? null;
+        return (
+            this.PRIORITY_ORDER.find((p) => tasksOnDate.some((t) => t.task_priority === p)) ?? null
+        );
     });
     // honw many tasks have this prio
-    highestPriorityCountOnDeadline = computed(() =>
-    this.tasksOnNextDeadline().filter((t) => t.task_priority === this.highestPriorityOnDeadline()).length);
+    highestPriorityCountOnDeadline = computed(
+        () =>
+            this.tasksOnNextDeadline().filter(
+                (t) => t.task_priority === this.highestPriorityOnDeadline(),
+            ).length,
+    );
+    //#endregion
+
+    setCurrentTask(taskId: number | null) {
+        this.currentTaskId.set(taskId);
+    }
     //#endregion
 }
