@@ -125,7 +125,6 @@ export class SignupForm {
 
     //#region submit
     async onSubmit(): Promise<void> {
-
         this.signupForm.markAllAsTouched();
         this.errorMessage = '';
         this.successMessage = '';
@@ -146,30 +145,21 @@ export class SignupForm {
                 this.password?.value,
                 this.name?.value,
             );
-            
+
             if (error) {
                 throw error;
             }
             this.notificationService.success('Account added');
             setTimeout(() => {
-
                 this.router.navigate(['/login']);
-            }, 1500)
+            }, 1500);
 
             // The database trigger has now created or connected the profile.
             // Force a reload so the shared profile list contains the new user.
-            // await this.databaseService.signOut();
-        // await this.databaseService.client.auth.signOut({ scope: 'local' });
-
-            
-                await this.profileService.ensureProfilesLoaded(true);
-                
-            
+            await this.profileService.ensureProfilesLoaded(true);
 
             this.successMessage = 'Account added. ';
         } catch (error: unknown) {
-            // console.error('Error signing up:', error);
-            // this.errorMessage = error instanceof Error ? error.message : 'Account error...';
             this.errorInput.set('This E-Mail-Adress is already registered');
         } finally {
             this.loading = false;

@@ -1,6 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { createClient, Session, SupabaseClient } from '@supabase/supabase-js';
-
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -17,19 +16,16 @@ export class DatabaseService {
     // The value is "null" when no user is logged in.
     private readonly session = signal<Session | null>(null);
 
-    // Store the ID from the profiles table.
-    // This is differrent from the authUserId
+    // Store the ID from the profiles table => This is differrent from the authUserId
     private readonly currentProfileId = signal<string | null>(null);
 
-    // Get the logged-in user's ID from Supabase Auth.
-    // This ID matches profiles.auth_user_id.
+    // Get the logged-in user's ID from Supabase Auth => This ID matches profiles.auth_user_id.
     readonly authUserId = computed<string | null>(() => this.session()?.user.id ?? null);
-    // logIn = signal(false);
 
     // Make the profile ID available to other components and services...
     readonly profileId = this.currentProfileId.asReadonly();
 
-    // Return true when a user is logged in.
+    // Return true when a user is logged in
     readonly isAuthenticated = computed(() => this.authUserId() !== null);
 
     //  Guest-login...Return true when the current user is an anonymous guest.

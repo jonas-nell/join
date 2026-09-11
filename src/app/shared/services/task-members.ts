@@ -61,7 +61,7 @@ export class TaskMembers {
         return newMembers;
     }
 
-    findDeletedTaskMembers(newMemberArr: string[], taskId: number) { 
+    findDeletedTaskMembers(newMemberArr: string[], taskId: number) {
         // aktuell im signal
         const oldMembers: string[] = this.taskMembers()[taskId];
         // members die im arr übrig bleiben (im signal vorhanden, nach edit nicht)

@@ -9,7 +9,6 @@ import {
     Validators,
 } from '@angular/forms';
 import { SignupComponent } from '../signup-component/signup-component';
-import { advancedEmailValidator } from '../../../shared/helpers/advancedEmailValidator';
 import { LoginTransitionService } from '../../../shared/services/login-transition-service';
 
 @Component({
@@ -62,14 +61,12 @@ export class LoginForm {
             if (error) throw error;
 
             this.loginTransition.trigger();
-            // this.databaseService.logIn.set(true);
             await this.router.navigate(['/summary'], {
                 // avoid showing login with browser back click after login
                 replaceUrl: true,
             });
         } catch (error) {
             this.errorMessage.set('Check your email and password. Please try again.');
-            // console.error('Error logging in:', error);
         }
     }
 
@@ -88,7 +85,6 @@ export class LoginForm {
             });
         } catch (error) {
             this.errorMessage.set('Guest login failed');
-            // console.error('Guest login failed:', error);
         }
     }
     //#endregion

@@ -85,7 +85,6 @@ app-user-badge {
         margin: 0;
         padding: distance(30, 25);
 
-        // @include slide-in($duration: 250ms, $from-x: 100%);
         @include slide-in-right($duration: 500ms);
     }
 
@@ -123,12 +122,3 @@ app-user-badge {
         gap: px-to-rem(60);
     }
 }
-
-// @keyframes profile-slide-in {
-//     from {
-//         transform: translateX(100%);
-//     }
-//     to {
-//         transform: translateX(0);
-//     }
-// }

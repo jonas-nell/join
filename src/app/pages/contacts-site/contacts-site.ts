@@ -7,7 +7,6 @@ import { EditOrAddContact } from './edit-or-add-contact/edit-or-add-contact';
 import { DialogService } from '../../shared/services/dialog-service';
 import { Dialog } from '../../shared/directives/dialog-directive';
 import { ProfileService } from '../../shared/services/profile-service';
-// import { DeleteProfile } from "../../shared/components/delete-profile/delete-profile";
 import { ProfileDeletionService } from '../../shared/services/profile-deletion-service';
 import { ConfirmationDialog } from '../../shared/components/confirmation/confirmation/confirmation';
 import { Profile } from '../../shared/interfaces/profile';
@@ -19,7 +18,7 @@ import { LayoutService } from '../../shared/services/layout-service';
     templateUrl: './contacts-site.html',
     styleUrl: './contacts-site.scss',
 })
-export class ContactsSite implements OnInit{
+export class ContactsSite implements OnInit {
     // True when a profile route is open.
     readonly profileOpen = signal(false);
 
@@ -48,13 +47,11 @@ export class ContactsSite implements OnInit{
         await this.profileDeletion.deleteProfile(profile);
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.layoutService.mainBackground.set('white');
     }
 
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.layoutService.mainBackground.set('#F6F7F8');
     }
-
-
 }

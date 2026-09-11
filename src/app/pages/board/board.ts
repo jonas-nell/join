@@ -2,13 +2,11 @@ import { Component, effect, inject, computed, signal } from '@angular/core';
 import { SearchBar } from './search-bar/search-bar/search-bar';
 import { AddTaskButton } from '../../shared/components/add-task-button/add-task-button';
 import {
-    CdkDrag,
     CdkDragDrop,
     CdkDropList,
     moveItemInArray,
     transferArrayItem,
     CdkDropListGroup,
-    CdkDragPlaceholder,
 } from '@angular/cdk/drag-drop';
 import { Task } from '../../shared/interfaces/task';
 import { Taskmanagement } from '../../shared/services/taskmanagement';
@@ -16,63 +14,66 @@ import { StatusChange } from '../../shared/interfaces/task';
 import { TaskCard } from './task-card/task-card';
 import { SingleTaskView } from './single-task-view/single-task-view';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
 import { TaskMembers } from '../../shared/services/task-members';
 import { DialogService } from '../../shared/services/dialog-service';
-import { TaskForm } from "../../shared/components/task-form/task-form";
+import { TaskForm } from '../../shared/components/task-form/task-form';
 import { Dialog } from '../../shared/directives/dialog-directive';
 import { ResponsiveService } from '../../shared/services/responsive-service';
 
 @Component({
     selector: 'app-board',
-    imports: [AddTaskButton, SearchBar, CdkDropList, CdkDropListGroup, TaskCard, SingleTaskView, TaskForm, Dialog],
+    imports: [
+        AddTaskButton,
+        SearchBar,
+        CdkDropList,
+        CdkDropListGroup,
+        TaskCard,
+        SingleTaskView,
+        TaskForm,
+        Dialog,
+    ],
     templateUrl: './board.html',
     styleUrl: './board.scss',
 })
 export class Board {
-    
     readonly taskmanagementService = inject(Taskmanagement);
-    private breakpointObserver = inject(BreakpointObserver);
     readonly dialogService = inject(DialogService);
     taskMembers = inject(TaskMembers);
     responsive = inject(ResponsiveService);
-    
+
     constructor() {
-        this.loadData(); 
+        this.loadData();
         effect(() => {
             const taskId = this.taskmanagementService.scrollToNewTask();
             const tasks = this.taskmanagementService.tasks();
 
-            if (!taskId || !tasks.length){
+            if (!taskId || !tasks.length) {
                 return;
             }
             setTimeout(() => {
                 const task = document.getElementById(`task-${taskId}`);
 
-                if(!task) {
+                if (!task) {
                     return;
                 }
 
                 task.scrollIntoView({
-                    block:'center'
+                    block: 'center',
                 });
 
                 this.taskmanagementService.scrollToNewTask.set(null);
             });
-        });       
+        });
     }
 
     // loads task data and task member data
-    async loadData(){
+    async loadData() {
         await this.taskmanagementService.ensureTasksLoaded();
-        for (const task of this.taskmanagementService.tasks()){
-            await this.taskMembers.setTaskMembers(task.TASK_ID)
+        for (const task of this.taskmanagementService.tasks()) {
+            await this.taskMembers.setTaskMembers(task.TASK_ID);
         }
     }
 
-    
-    
     async drop(event: CdkDragDrop<Task[]>) {
         const task = event.previousContainer.data[event.previousIndex];
 
@@ -81,7 +82,7 @@ export class Board {
             const reordered = [...event.container.data];
             moveItemInArray(reordered, event.previousIndex, event.currentIndex);
             const updates = this.calculateNewOrderIndices(reordered);
-            // useing optimistically so UI updates happen immediately (no waiting for db echoing)
+            // using optimistically so UI updates happen immediately (no waiting for db echoing)
             this.taskmanagementService.reorderLocally(task.TASK_ID, null, updates);
             await this.taskmanagementService.updateOrderIndices(updates);
             return;
@@ -130,5 +131,3 @@ export class Board {
         }));
     }
 }
-
-

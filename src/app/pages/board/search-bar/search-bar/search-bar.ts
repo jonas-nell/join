@@ -7,7 +7,6 @@ import { Taskmanagement } from '../../../../shared/services/taskmanagement';
     styleUrl: './search-bar.scss',
 })
 export class SearchBar {
-    // Make task service available in this component...
     readonly taskmanagementService = inject(Taskmanagement);
 
     // Store if minimum-character-length error should be shown

@@ -1,8 +1,5 @@
 @use '../../../../../public/assets/styles/main.scss' as *;
 
-$card-width: clamp(#{px-to-rem(210)}, 15dvw, #{px-to-rem(250)});
-$scrollbar-width: px-to-rem(5);
-
 .drag-placeholder {
     height: px-to-rem(260);
     width: $card-width;
@@ -14,30 +11,29 @@ $scrollbar-width: px-to-rem(5);
     @include desktop {
         height: px-to-rem(260);
     }
-
 }
 
 .task-card {
     height: px-to-rem(260);
     width: $card-width;
-    
+
     @include desktop {
         height: px-to-rem(260);
     }
-    
-    .task-card-body{
+
+    .task-card-body {
         height: 100%;
         width: 100%;
         box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
         border-radius: 24px;
         border: 1px solid transparent;
         background-color: white;
-        
+
         padding: distance(16, 16);
         @include flex($align: start, $justify: space-between);
-        
+
         @media (min-width: 1024px) {
-            &:hover{
+            &:hover {
                 border: 1px solid $main-color;
                 cursor: pointer;
             }
@@ -76,8 +72,8 @@ $scrollbar-width: px-to-rem(5);
         }
 
         ul {
-            width: 175px;
-            height: 140px;
+            width: px-to-rem(175);
+            height: px-to-rem(140);
             @include flex($gap: 12);
             @include font-inter(regular, 16, 2%, 16);
         }

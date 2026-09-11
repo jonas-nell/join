@@ -20,16 +20,16 @@ import { createProfileColor, createProfileInitials } from '../../helpers/profile
     styleUrl: './user-badge.scss',
 })
 export class UserBadge {
-    // Receive the unique profile ID.
+    // Receive the unique profile ID...
     readonly userId = input.required<string>();
 
     // True when the profile is currently selected.
     readonly active = input(false);
 
-    // Receive the username shown as initials.
+    // Receive the username shown as initials...
     readonly userName = input.required<string>();
 
-    // Use a small badge by default.
+    // Use a small badge by default
     readonly size = input<'xsmall' | 'small' | 'dialog' | 'large'>('small');
 
     // Make the helper functions available in the HTML.
