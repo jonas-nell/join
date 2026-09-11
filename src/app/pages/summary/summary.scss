@@ -22,7 +22,7 @@
     padding: distance(22, 12, 80, 12);
     @include flex($align: start, $justify: start, $gap: 24);
     @include font-inter(regular, 16, 2%, 16);
-    min-height: calc(100dvh - 6rem - px-to-rem(10));
+    height: calc(100dvh - 6rem - px-to-rem(100));
 
     @media (min-width: 445px) {
         padding-left: 11dvw;
