@@ -36,7 +36,7 @@ $scrollbar-width: px-to-rem(5);
         padding: distance(16, 16);
         @include flex($align: start, $justify: space-between);
         
-        @include desktop{
+        @media (min-width: 1024px) {
             &:hover{
                 border: 1px solid $main-color;
                 cursor: pointer;
@@ -52,7 +52,7 @@ $scrollbar-width: px-to-rem(5);
         border-radius: 50%;
         height: px-to-rem(26);
 
-        @include desktop {
+        @media (min-width: 1024px) {
             display: none;
         }
 
