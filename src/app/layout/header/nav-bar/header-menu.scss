@@ -28,28 +28,26 @@ dialog::backdrop {
 }
 
 nav {
-  background-color: $main-color;
-  padding: px-to-rem(8);
-  @include flex(column, flex-start, flex-start, 10);
-  @include font-inter(regular, 16, 2vw, 16);
-  border-radius: 20px 0 20px 20px;
+    background-color: $main-color;
+    padding: px-to-rem(8);
+    @include flex(column, flex-start, flex-start, 10);
+    @include font-inter(regular, 16, 2vw, 16);
+    border-radius: 20px 0 20px 20px;
 
-  a,
-  button {
-    color: $light-secondary;
-    @include use-padding(8, 16);
+    a,
+    button {
+        color: $light-secondary;
+        @include use-padding(8, 16);
 
-    // Reset default button styling
-    background: transparent;
-    border: 0;
-    font: inherit;
-    text-align: left;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
+        // Reset default button styling
+        background: transparent;
+        border: 0;
+        font: inherit;
+        text-align: left;
+        text-decoration: none;
+        cursor: pointer;
+    }
 }
-
 
 @include desktop {
     dialog {
@@ -57,11 +55,11 @@ nav {
         right: px-to-rem(18);
     }
 
-    nav{
+    nav {
         @include use-padding(16, 8);
     }
 
-    .help-btn{
+    .help-btn {
         display: none;
     }
 }
