@@ -16,9 +16,9 @@
             aria-label="Open user menu"
         >
             @if (loggedInProfile(); as profile) {
-                <app-user-badge [userId]="profile.id" [userName]="profile.user_name"/>
+                <app-user-badge [userId]="profile.id" [userName]="profile.user_name" />
             } @else if (isAnonymous()) {
-                <app-user-badge [userId]="authUserId() ?? 'guest'" userName="Guest"/>
+                <app-user-badge [userId]="authUserId() ?? 'guest'" userName="Guest" />
             }
         </button>
     </div>
