@@ -13,7 +13,12 @@ export class TaskModel implements Task {
     task_id?: number;
     subtasks: Subtask[] | [];
 
-    constructor(data: Partial<Task> = {}, _order_index?: number, _taskId?: number, _task_status?: string) {
+    constructor(
+        data: Partial<Task> = {},
+        _order_index?: number,
+        _taskId?: number,
+        _task_status?: string,
+    ) {
         this.TASK_ID = _taskId ?? data.TASK_ID ?? 0;
         this.task_title = data.task_title ?? '';
         this.task_description = data.task_description ?? '';

@@ -1,6 +1,5 @@
 import { Component, inject, signal, computed, effect } from '@angular/core';
 import { Profile } from '../../../shared/interfaces/profile';
-// import { createProfileColor, createProfileInitials } from '../../../shared/helpers/profile-helper';
 import { ProfileService } from '../../../shared/services/profile-service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { DialogService } from '../../../shared/services/dialog-service';
@@ -14,7 +13,6 @@ import { UserBadge } from '../../../shared/components/user-badge/user-badge';
     styleUrl: './user-list.scss',
 })
 export class UserList {
-    // inject() gives this component access to the Supabase service
     private readonly profileService = inject(ProfileService);
 
     dialogservice = inject(DialogService);
@@ -27,64 +25,26 @@ export class UserList {
     // Contains a error message if loading fails...
     readonly errorMessage = this.profileService.profilesError;
 
-    // Connecting the color helper to the HTML template.
-    // readonly getProfileColor = createProfileColor;
-    // readonly getInitials = createProfileInitials;
-
-    // INstead of ngOnInit...
-    // The effect runs once when the component starts. 
-    // It runs again whenever profilesChanged increases.
-    // Reload the list when a profile is created or deleted.
-    // private readonly reloadProfiles = effect(() => {
-    //     // Reading this signal makes the effect listen to it.
-    //     this.profileService.profilesChanged();
-
-    //     // Load the current profiles from Supabase.
-    //     void this.loadProfiles();
-    // });
-
-    // Loads all profiles from the Supabase service.
-    // async loadProfiles(): Promise<void> {
-    //     // Show the loading message...
-    //     this.loading.set(true);
-    //     // "Reset" in case of old error message.
-    //     this.errorMessage.set('');
-
-    //     try {
-    //         const profiles = await this.profileService.getProfiles();
-
-    //         // Save the returned profiles in the signal.
-    //         this.profiles.set(profiles);
-    //     } catch (error) {
-    //         console.error('Profiles could not be loaded:');
-
-    //         this.errorMessage.set('The profiles could not be loaded.');
-    //     } finally {
-    //         // The request has finished. Stop showing the loading indicator...
-    //         this.loading.set(false);
-    //     }
-    // }
     constructor() {
-
         // Load profiles if they have not already been loaded.
-  void this.profileService.ensureProfilesLoaded();
-  
+        void this.profileService.ensureProfilesLoaded();
+
         effect(() => {
             const contactId = this.profileService.scrollToNewContact();
             const profiles = this.profiles();
 
-            if (!contactId || !profiles.length){
+            if (!contactId || !profiles.length) {
                 return;
             }
             setTimeout(() => {
                 const contact = document.getElementById(`contact-${contactId}`);
 
-                if(!contact) {
+                if (!contact) {
                     return;
                 }
 
                 contact.scrollIntoView({
-                    block:'center'
+                    block: 'center',
                 });
 
                 this.profileService.scrollToNewContact.set(null);

@@ -1,6 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { Profile } from '../interfaces/profile';
 import { ProfileService } from './profile-service';
 import { ConfirmationService } from './confirmation-service';
@@ -53,8 +52,6 @@ export class ProfileDeletionService {
             );
 
             this.dialogService.closeDialog();
-
-            // await this.router.navigate(['/contacts']);
 
             if (isOwnProfile) {
                 // The profile was deleted, now signout
