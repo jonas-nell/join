@@ -19,7 +19,7 @@ button {
     object-fit: contain;
   }
 
-  @include desktop {
+  @media (min-width:1024px) {
     @include flex($direction: row, $gap: 8);
 
     width: px-to-rem(160);

@@ -5,11 +5,12 @@ import { map } from 'rxjs';
 
 @Service()
 export class ResponsiveService {
-
     breakpointObserver = inject(BreakpointObserver);
 
-        isDesktop = toSignal(
-        this.breakpointObserver.observe('(min-width: 1024px)').pipe(map(result => result.matches)),
-        { initialValue: false }
+    isDesktop = toSignal(
+        this.breakpointObserver
+            .observe('(min-width: 1024px)')
+            .pipe(map((result) => result.matches)),
+        { initialValue: false },
     );
 }
