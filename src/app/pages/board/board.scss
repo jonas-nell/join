@@ -3,7 +3,6 @@
 $card-width: clamp(#{px-to-rem(210)}, 15dvw, #{px-to-rem(250)});
 $scrollbar-width: px-to-rem(5);
 
-
 .task-form-dialog {
     position: fixed;
     inset: 0;
@@ -30,18 +29,11 @@ $scrollbar-width: px-to-rem(5);
 
 .task-form-dialog--animated {
     // Add mode on mobile: form from below.
-    @include dialog-slide-in-out(
-        $from-y: 120%,
-        $duration: 400ms,
-        $backdrop: true
-    );
+    @include dialog-slide-in-out($from-y: 120%, $duration: 400ms, $backdrop: true);
 
     // Add mode on desktop: form from the right.
-     @media (min-width: 1024px) {
-        @include dialog-slide-in-out(
-            $from-x: 120%,
-            $duration: 400ms
-        );
+    @media (min-width: 1024px) {
+        @include dialog-slide-in-out($from-x: 120%, $duration: 400ms);
     }
 }
 
@@ -52,14 +44,14 @@ $scrollbar-width: px-to-rem(5);
     box-sizing: border-box;
     @include flex($align: start, $gap: 24);
 
-
     @media (min-width: 1024px) {
-        padding-bottom: 100px;
-        height: calc(100dvh - 6rem);
+        // padding-bottom: 100px;
+        height: calc(100dvh - 6rem - 100px);
     }
 
     @media (min-width: 1275px) {
         @include flex($gap: 48);
+        height: calc(100dvh - 6rem);
         padding-left: calc(px-to-rem(250) + px-to-rem(24));
         padding-right: px-to-rem(24);
         padding-bottom: 0;
@@ -75,7 +67,7 @@ $scrollbar-width: px-to-rem(5);
             margin: 0;
             @include font-inter(bold, 48, 2dvh, 64);
 
-             @media (min-width: 1024px) {
+            @media (min-width: 1024px) {
                 margin-left: 15px;
             }
         }
@@ -91,7 +83,7 @@ $scrollbar-width: px-to-rem(5);
             margin-top: px-to-rem(12);
         }
 
-         @media (min-width: 1024px) {
+        @media (min-width: 1024px) {
             flex-wrap: nowrap;
             gap: 0;
 
@@ -115,12 +107,12 @@ $scrollbar-width: px-to-rem(5);
         width: 100%;
         @include flex($align: start, $gap: 18);
 
-         @media (min-width: 1024px) {
+        @media (min-width: 1024px) {
             @include flex($direction: row, $align: start, $justify: start, $gap: 12);
             flex: 1;
             min-height: 0;
         }
-        @media (min-width: 1245px){
+        @media (min-width: 1245px) {
             padding-bottom: px-to-rem(34);
         }
         @media screen and (min-width: 1620px) {
@@ -130,7 +122,7 @@ $scrollbar-width: px-to-rem(5);
         .task-container {
             width: 100%;
             @include flex($align: start, $gap: 18);
-             @media (min-width: 1024px) {
+            @media (min-width: 1024px) {
                 width: calc(#{$card-width} + #{px-to-rem(24)} + #{$scrollbar-width});
                 height: 100%;
                 min-height: 0;
@@ -139,13 +131,12 @@ $scrollbar-width: px-to-rem(5);
             // @media (min-width: 1230px){
             //     width: clamp(px-to-rem(210), 20dvw, px-to-rem(250));
             // }
-            
 
             h3 {
                 @include font-inter(bold, 26, 2dvh, 26);
                 color: $board-text-color;
 
-                 @media (min-width: 1024px) {
+                @media (min-width: 1024px) {
                     margin-left: 15px;
                 }
             }
@@ -165,7 +156,7 @@ $scrollbar-width: px-to-rem(5);
                     }
                 }
 
-                 @media (min-width: 1024px) {
+                @media (min-width: 1024px) {
                     @include flex($direction: column, $align: start, $justify: start, $gap: 24);
                     flex: 1;
                     min-height: 0;
@@ -206,11 +197,10 @@ $scrollbar-width: px-to-rem(5);
     }
 }
 
-dialog[appDialog="task-form"] {
+dialog[appDialog='task-form'] {
     position: fixed;
     inset: 0;
     margin: auto;
     background: white;
     border-radius: 24px;
 }
-
