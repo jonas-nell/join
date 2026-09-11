@@ -8,6 +8,7 @@ import { UserBadge } from '../../../shared/components/user-badge/user-badge';
 import { DialogName, DialogService } from '../../../shared/services/dialog-service';
 import { Dialog } from '../../../shared/directives/dialog-directive';
 import { TaskMembers } from '../../../shared/services/task-members';
+import { Subtaskmanagement } from '../../../shared/services/subtaskmanagement';
 
 @Component({
     selector: 'app-task-card',
@@ -17,17 +18,18 @@ import { TaskMembers } from '../../../shared/services/task-members';
 })
 export class TaskCard {
     readonly taskmanagement = inject(Taskmanagement);
+    subtaskService = inject(Subtaskmanagement);
     readonly profileServicce = inject(ProfileService);
     readonly taskmembers = inject(TaskMembers);
     readonly dialogService = inject(DialogService);
     readonly task = input.required<Task>();
 
     readonly totalSubtasks = computed(
-        () => this.taskmanagement.subtasks()[this.task().TASK_ID]?.length ?? 0,
+        () => this.subtaskService.subtasks()[this.task().TASK_ID]?.length ?? 0,
     );
     readonly doneSubtasks = computed(
         () =>
-            this.taskmanagement
+            this.subtaskService
                 .subtasks()
                 [this.task().TASK_ID]?.filter((subtask) => subtask.subtask_done).length ?? 0,
     );

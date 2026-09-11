@@ -1,5 +1,5 @@
 //#region imports
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject} from '@angular/core';
 import {
     FormControl,
     FormGroup,
@@ -16,11 +16,10 @@ import {
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../services/profile-service';
-import { Subtask, Task, TaskChanges } from '../../interfaces/task';
+import { Subtask } from '../../interfaces/task';
 import { Taskmanagement } from '../../services/taskmanagement';
 import { Profile } from '../../interfaces/profile';
 import { TaskModel } from '../../models/task-model';
-import { validate } from '@angular/forms/signals';
 import { UserBadge } from '../user-badge/user-badge';
 import { DialogService } from '../../services/dialog-service';
 import { TaskMembers } from '../../services/task-members';
@@ -31,6 +30,7 @@ import { duplicateSubtaskValidator } from '../../helpers/duplicate-subtask-valid
 import { NotificationService } from '../../services/notification-service';
 import { ConfirmationService } from '../../services/confirmation-service';
 import { ConfirmationDialog } from '../confirmation/confirmation/confirmation';
+import { Subtaskmanagement } from '../../services/subtaskmanagement';
 //#endregion
 
 interface SubtaskForm {
@@ -38,7 +38,6 @@ interface SubtaskForm {
     subtask_done: FormControl<boolean>;
     id: FormControl<number | undefined>;
     task_id: FormControl<number | undefined>;
-    // task_id :
 }
 
 @Component({
@@ -63,6 +62,7 @@ export class TaskForm {
     //#region inject
     profileService = inject(ProfileService);
     taskService = inject(Taskmanagement);
+    subtaskService = inject(Subtaskmanagement);
     dialogService = inject(DialogService);
     taskMembers = inject(TaskMembers);
     fb = inject(FormBuilder);
@@ -269,7 +269,7 @@ export class TaskForm {
         if (!taskId) {
             return;
         }
-        const subtasks = this.taskService.subtasks()[taskId] ?? [];
+        const subtasks = this.subtaskService.subtasks()[taskId] ?? [];
         this.subTasks.clear();
         for (const subtask of subtasks) {
             this.subTasks.push(
@@ -396,7 +396,7 @@ export class TaskForm {
 
     // calls methods needed to update data on db and local signal
     editAssignedSubtasks(taskId: number, subtasks: Subtask[]) {
-        this.taskService.addSubtasks(this.onlyNewSubtasks(subtasks), taskId);
+        this.subtaskService.addSubtasks(this.onlyNewSubtasks(subtasks), taskId);
         this.editSubtasks(taskId, subtasks);
         if (this.subtasksToDelete.length > 0) {
             this.deleteSubtasks(taskId);
@@ -523,7 +523,7 @@ export class TaskForm {
     editSubtasks(taskId: number, subtasks: Subtask[]) {
         for (const subtask of subtasks) {
             if (subtask.id && taskId) {
-                this.taskService.updateSubtasks(subtask.id, taskId, subtask);
+                this.subtaskService.updateSubtasks(subtask.id, taskId, subtask);
             }
         }
     }
@@ -562,8 +562,8 @@ export class TaskForm {
 
     deleteSubtasks(taskId: number) {
         for (const subtaskId of this.subtasksToDelete) {
-            this.taskService.deleteSubtaskLocal(subtaskId, taskId);
-            this.taskService.deleteSubTask(subtaskId);
+            this.subtaskService.deleteSubtaskLocal(subtaskId, taskId);
+            this.subtaskService.deleteSubTask(subtaskId);
         }
     }
     //#endregion

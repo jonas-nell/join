@@ -80,7 +80,7 @@
                 <h3>Subtasks:</h3>
 
                 <div class="subtask-list">
-                    @for (subtask of taskmanagement.subtasks()[task.TASK_ID]; track subtask.id) {
+                    @for (subtask of subtaskService.subtasks()[task.TASK_ID]; track subtask.id) {
                         <label class="subtask">
                             <input
                                 type="checkbox"
