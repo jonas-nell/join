@@ -1,8 +1,7 @@
 import { Component, OnInit, inject, input, output, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Taskmanagement } from '../../../shared/services/taskmanagement';
-import { Profile } from '../../../shared/interfaces/profile';
-import { Subtask, Task } from '../../../shared/interfaces/task';
+import { Subtask } from '../../../shared/interfaces/task';
 import { UserBadge } from '../../../shared/components/user-badge/user-badge';
 import { ProfileService } from '../../../shared/services/profile-service';
 import { CategoryBadge } from '../../../shared/category-badge/category-badge';
@@ -13,6 +12,7 @@ import { Dialog } from '../../../shared/directives/dialog-directive';
 import { ConfirmationDialog } from '../../../shared/components/confirmation/confirmation/confirmation';
 import { TaskMembers } from '../../../shared/services/task-members';
 import { Notification } from '../../../shared/components/notification/notification/notification';
+import { Subtaskmanagement } from '../../../shared/services/subtaskmanagement';
 
 @Component({
     selector: 'app-single-task-view',
@@ -22,6 +22,7 @@ import { Notification } from '../../../shared/components/notification/notificati
 })
 export class SingleTaskView implements OnInit {
     readonly taskmanagement = inject(Taskmanagement);
+    subtaskService = inject(Subtaskmanagement);
     readonly profileService = inject(ProfileService);
     readonly dialogService = inject(DialogService);
     readonly taskmembers = inject(TaskMembers);
@@ -44,13 +45,13 @@ export class SingleTaskView implements OnInit {
 
         if (subtask.id && taskId) {
             // Update the displayed checkbox immediately.
-            this.taskmanagement.updateSubtasks(subtask.id, taskId, { subtask_done: newValue });
+            this.subtaskService.updateSubtasks(subtask.id, taskId, { subtask_done: newValue });
 
             try {
-                await this.taskmanagement.updateSubtaskDone(subtask.id, newValue);
+                await this.subtaskService.updateSubtaskDone(subtask.id, newValue);
             } catch {
                 // Restore the previous value when saving fails.
-                this.taskmanagement.updateSubtasks(subtask.id, taskId, {
+                this.subtaskService.updateSubtasks(subtask.id, taskId, {
                     subtask_done: previousValue,
                 });
                 this.errorMessage.set('The subtask could not be saved.');
