@@ -1,5 +1,4 @@
-//#region imports
-import { Component, computed, effect, inject} from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import {
     FormControl,
     FormGroup,
@@ -31,7 +30,6 @@ import { NotificationService } from '../../services/notification-service';
 import { ConfirmationService } from '../../services/confirmation-service';
 import { ConfirmationDialog } from '../confirmation/confirmation/confirmation';
 import { Subtaskmanagement } from '../../services/subtaskmanagement';
-//#endregion
 
 interface SubtaskForm {
     subtask_title: FormControl<string>;
@@ -58,19 +56,17 @@ interface SubtaskForm {
 })
 export class TaskForm {
     //#region properties
-
     //#region inject
     profileService = inject(ProfileService);
     taskService = inject(Taskmanagement);
     subtaskService = inject(Subtaskmanagement);
     dialogService = inject(DialogService);
+    notificationService = inject(NotificationService);
+    confirmationService = inject(ConfirmationService);
     taskMembers = inject(TaskMembers);
     fb = inject(FormBuilder);
     router = inject(Router);
     //#endregion
-
-    notificationService = inject(NotificationService);
-    confirmationService = inject(ConfirmationService);
 
     modeAdd = computed(() => this.taskService.taskFormMode() == 'add');
     priorities = [
@@ -139,7 +135,6 @@ export class TaskForm {
     //#endregion
 
     constructor() {
-        // sicherstellen, dass kontakte geladen sind wenn das taskform geöffnet ist
         void this.profileService.ensureProfilesLoaded();
 
         effect(() => {
@@ -173,7 +168,6 @@ export class TaskForm {
     }
 
     //#region methods
-
     //#region getter functions
     get task_title() {
         return this.taskForm.get('task_title');
@@ -325,7 +319,6 @@ export class TaskForm {
         const rawValues = this.taskForm.getRawValue();
         const taskValues = new TaskModel(rawValues, orderIndex);
         const memberIdArray = this.memberIdArr(this.members.value);
-        // TASK_ID nicht mitgeben, da von DB erstellt
         const { TASK_ID, subtasks, ...taskValuesNeeded } = taskValues;
 
         await this.taskService.addTaskDB(taskValuesNeeded, memberIdArray, subtasks);
@@ -406,7 +399,6 @@ export class TaskForm {
     //#endregion
 
     //#region subtask
-
     // returns subtask form group (for FormArray)
     createSubtask(
         title: string,
@@ -425,9 +417,6 @@ export class TaskForm {
     }
 
     //#region add subtask
-
-    // value aus add subtask input auslesen (title) und weitergeben an createSubtask()
-    // wird nur in form hinzugefügt, nicht lokal oder auf der db gespeichert
     addSubtaskk(event: Event): void {
         event.preventDefault();
 
@@ -469,13 +458,10 @@ export class TaskForm {
     //#region edit subtask
     editSubtask(subtaskIndex: number) {
         const subtask = this.subTasks.at(subtaskIndex);
-        // titel vor bearbeitung zwischenspeichern
         this.originalSubtaskTitle = subtask.controls.subtask_title.value;
-        // vergeben, damit im html entsprechendes input geladen wird
         this.editingSubtaskIndex = subtaskIndex;
     }
 
-    // speichert bearbeiteten subtask im form
     saveSubtask(subtaskIndex: number) {
         const subtask = this.subTasks.at(subtaskIndex);
         const title = subtask.controls.subtask_title.value.trim();
@@ -491,7 +477,6 @@ export class TaskForm {
         this.originalSubtaskTitle = '';
     }
 
-    // bearbeiten abbrechen, subtask bekommt ursprünglichen titel
     cancelEditSubtask() {
         if (this.editingSubtaskIndex === null) {
             return;
@@ -505,8 +490,6 @@ export class TaskForm {
         this.originalSubtaskTitle = '';
     }
 
-    // speichert editierten subtask auf enter
-    // bricht bearbeiten ab bei esc
     onEditSubtaskKeydown(event: KeyboardEvent, index: number): void {
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -574,7 +557,6 @@ export class TaskForm {
         this.taskMembers.updateTaskMembers(taskId, this.memberIdArr(this.members.value));
     }
 
-    // array mit objects von task zugewiesenen kontakten wird zurückgegeben
     memberArray(): Profile[] {
         let memberArr: Profile[] = [];
         if (this.taskForm.value.member) {
