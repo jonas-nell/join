@@ -1,6 +1,6 @@
-import { Injectable, Service, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
-// beim erstellen von weiteren dialogs namen hinzufügen
+// add name for each new dialog
 export type DialogName =
     | 'menu'
     | 'edit-and-add-contact'
@@ -9,13 +9,13 @@ export type DialogName =
     | `move-menu-${number}`
     | 'task-form'
     | 'valid-password-info';
+
 export type DialogMode = 'edit' | 'add';
 
 @Injectable({ providedIn: 'root' })
 export class DialogService {
     dialogOpen = signal<DialogName | null>(null);
     dialogMode = signal<DialogMode | null>(null);
-
     backdropEvent = signal<boolean>(false);
 
     openDialog(name: DialogName, mode: DialogMode | null = null) {

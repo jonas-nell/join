@@ -1,5 +1,3 @@
-<!-- Daniel -->
-<!-- <dialog appDialog="edit-and-add-contact" class="contactDialog"> -->
 <dialog
     appDialog="edit-and-add-contact"
     class="contactDialog"
@@ -58,9 +56,7 @@
                             <p>This field is required</p>
                         } @else if (name?.hasError('stringTooShort') && name?.touched) {
                             <p>Please enter at least three characters</p>
-                        }
-                        <!-- validator error einfügen -->
-                        @else if (name?.hasError('pattern') && name?.touched) {
+                        } @else if (name?.hasError('pattern') && name?.touched) {
                             <p>Please use only letters and valid name characters</p>
                         }
                     </div>
@@ -93,10 +89,6 @@
                         <img class="input-icon" src="./assets/icons/call (1).png" alt="" />
                     </div>
                     <div class="error-field">
-                        <!-- @if (phone?.hasError('required') && phone?.touched) {
-                            <p>This field is required</p>
-                        } -->
-                        <!-- validator error einfügen -->
                         @if (phone?.hasError('pattern') || phone?.hasError('stringTooShort')) {
                             <p>Please use a valid phone number</p>
                         }

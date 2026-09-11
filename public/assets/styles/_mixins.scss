@@ -35,6 +35,6 @@
     font-size: clamp(func.px-to-rem($min), $fluid, func.px-to-rem($max));
 }
 
-@mixin use-padding($top-bottom, $right-left){
+@mixin use-padding($top-bottom, $right-left) {
     padding: func.px-to-rem($top-bottom) func.px-to-rem($right-left);
 }

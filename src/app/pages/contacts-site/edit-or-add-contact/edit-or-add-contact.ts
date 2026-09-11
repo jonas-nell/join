@@ -4,7 +4,6 @@ import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { minLengthWithoutSpaces } from '../../../shared/helpers/function-min-length';
 import { DialogService } from '../../../shared/services/dialog-service';
 import { ProfileService } from '../../../shared/services/profile-service';
-// import { DeleteProfile } from "../../../shared/components/delete-profile/delete-profile";
 import { NotificationService } from '../../../shared/services/notification-service';
 import { ProfileChanges } from '../../../shared/interfaces/profile';
 import { UserBadge } from '../../../shared/components/user-badge/user-badge';
@@ -21,16 +20,17 @@ import { ConfirmationService } from '../../../shared/services/confirmation-servi
     styleUrl: './edit-or-add-contact.scss',
 })
 export class EditOrAddContact {
+    //#region properties
+    //#region injects
     fb = inject(FormBuilder);
     dialogService = inject(DialogService);
-
-    // Daniel:
     private readonly confirmationService = inject(ConfirmationService);
-    private readonly router = inject(Router);
-
     readonly profileService = inject(ProfileService);
     readonly notificationService = inject(NotificationService);
     readonly profileDeletion = inject(ProfileDeletionService);
+
+    private readonly router = inject(Router);
+    //#endregion
 
     contactForm = this.fb.nonNullable.group({
         name: [
@@ -52,6 +52,7 @@ export class EditOrAddContact {
         ],
         phone: ['', [minLengthWithoutSpaces(8), Validators.pattern(/^\+?[0-9 ]+$/)]],
     });
+    //#endregion
 
     constructor() {
         effect(() => {
@@ -65,6 +66,8 @@ export class EditOrAddContact {
         });
     }
 
+    //#region methods
+    //#region getter
     get name() {
         return this.contactForm.get('name');
     }
@@ -76,8 +79,9 @@ export class EditOrAddContact {
     get phone() {
         return this.contactForm.get('phone');
     }
+    //#endregion
 
-    // beim öffnen daten des zu bearbeitenden contacts einfügen
+    // fill form with task data in edit mode
     fillEditForm() {
         if (this.dialogService.dialogMode() == 'edit') {
             const selected = this.profileService.selectedProfile();
@@ -115,22 +119,9 @@ export class EditOrAddContact {
 
         try {
             if (this.dialogService.dialogMode() === 'edit') {
-                const selected = this.profileService.selectedProfile();
-
-                if (!selected) {
-                    return;
-                }
-
-                const updated = await this.profileService.updateProfile(selected.id, changes);
-                this.profileService.selectedProfile.set(updated);
-                this.profileService.scrollToNewContact.set(selected.id);
-
-                this.notificationService.success(`${updated.user_name} was updated`);
+                this.editContact(changes);
             } else {
-                const created = await this.profileService.createProfile(changes);
-                this.profileService.scrollToNewContact.set(created.id);
-                this.notificationService.success(`${created.user_name} was created`);
-                void this.router.navigate(['/contacts', created.id]);
+                this.addContact(changes);
             }
 
             this.dialogService.closeDialog();
@@ -139,17 +130,35 @@ export class EditOrAddContact {
         }
     }
 
-    // Daniel
+    async addContact(changes: ProfileChanges) {
+        const created = await this.profileService.createProfile(changes);
+        this.profileService.scrollToNewContact.set(created.id);
+        this.notificationService.success(`${created.user_name} was created`);
+        void this.router.navigate(['/contacts', created.id]);
+    }
+
+    async editContact(changes: ProfileChanges) {
+        const selected = this.profileService.selectedProfile();
+
+        if (!selected) {
+            return;
+        }
+
+        const updated = await this.profileService.updateProfile(selected.id, changes);
+        this.profileService.selectedProfile.set(updated);
+        this.profileService.scrollToNewContact.set(selected.id);
+
+        this.notificationService.success(`${updated.user_name} was updated`);
+    }
+
     async handleBackdropClick(event: MouseEvent): Promise<void> {
         // event.target is the element that was clicked,
         // event.currentTarget is the dialog that has this click handler.
-        //
         // If they are different, the user clicked something inside the dialog,
         // such as an input or button. In that case, do nothing.
         if (event.target !== event.currentTarget) {
             return;
         }
-
         // The user clicked directly on the dialog backdrop.
         await this.confirmationService.confirmUnsavedChanges(
             // True when the user changed at least one form field.
@@ -163,4 +172,5 @@ export class EditOrAddContact {
             () => this.dialogService.closeDialog(),
         );
     }
+    // #endregion
 }
