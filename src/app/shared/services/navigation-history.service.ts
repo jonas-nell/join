@@ -4,8 +4,7 @@ import { filter } from 'rxjs';
 
 const MAIN_ROUTES = ['/summary', '/tasks', '/board', '/contacts', '/login', '/login/signup'];
 
-// CHANGE THIS TO /summary !!!!! (once site exists)
-const DEFAULT_MAIN_ROUTE = '/contacts';
+const DEFAULT_MAIN_ROUTE = '/login';
 
 @Injectable({ providedIn: 'root' })
 export class NavigationHistoryService {

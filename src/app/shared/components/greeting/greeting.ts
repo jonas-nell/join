@@ -23,7 +23,7 @@ export class Greeting {
             return null;
         }
 
-        return this.profileService.getCachedProfileById(profileId)?.user_name ?? null ;
+        return this.profileService.getCachedProfileById(profileId)?.user_name ?? null;
     });
 
     readonly timeGreeting = signal(this.computeTimeGreeting());

@@ -1,17 +1,13 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { CdkDrag, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
-
-import { Subtask, Task } from '../../../shared/interfaces/task';
+import { Task } from '../../../shared/interfaces/task';
 import { CategoryBadge } from '../../../shared/category-badge/category-badge';
 import { Taskmanagement } from '../../../shared/services/taskmanagement';
 import { ProfileService } from '../../../shared/services/profile-service';
-import { Profile } from '../../../shared/interfaces/profile';
 import { UserBadge } from '../../../shared/components/user-badge/user-badge';
 import { DialogName, DialogService } from '../../../shared/services/dialog-service';
-import { Dialog } from "../../../shared/directives/dialog-directive";
+import { Dialog } from '../../../shared/directives/dialog-directive';
 import { TaskMembers } from '../../../shared/services/task-members';
-
-const MAX_VISIBLE_PROFILES = 3;
 
 @Component({
     selector: 'app-task-card',
@@ -26,11 +22,18 @@ export class TaskCard {
     readonly dialogService = inject(DialogService);
     readonly task = input.required<Task>();
 
-    readonly totalSubtasks = computed(() => this.taskmanagement.subtasks()[this.task().TASK_ID]?.length ?? 0);
+    readonly totalSubtasks = computed(
+        () => this.taskmanagement.subtasks()[this.task().TASK_ID]?.length ?? 0,
+    );
     readonly doneSubtasks = computed(
-        () => this.taskmanagement.subtasks()[this.task().TASK_ID]?.filter((subtask) => subtask.subtask_done).length ?? 0);
+        () =>
+            this.taskmanagement
+                .subtasks()
+                [this.task().TASK_ID]?.filter((subtask) => subtask.subtask_done).length ?? 0,
+    );
     readonly progressPercent = computed(() =>
-        this.totalSubtasks() === 0 ? 0 : (this.doneSubtasks() / this.totalSubtasks()) * 100);
+        this.totalSubtasks() === 0 ? 0 : (this.doneSubtasks() / this.totalSubtasks()) * 100,
+    );
 
     private readonly priorityIcons: Record<string, string> = {
         low: './assets/icons/Prio low.png',
@@ -43,14 +46,16 @@ export class TaskCard {
 
     taskOpen = signal(false);
 
-    readonly statusOptions: {value: Task['task_status']; label: string }[] = [
+    readonly statusOptions: { value: Task['task_status']; label: string }[] = [
         { value: 'To do', label: 'To do' },
-        { value: 'In progress', label: 'In progress'},
-        { value: 'Await feedback', label: 'Await feedback'},
-        { value: 'Done', label: 'Done'}
+        { value: 'In progress', label: 'In progress' },
+        { value: 'Await feedback', label: 'Await feedback' },
+        { value: 'Done', label: 'Done' },
     ];
 
-    readonly otherStatuses = computed(() => this.statusOptions.filter((s) => s.value !== this.task().task_status));
+    readonly otherStatuses = computed(() =>
+        this.statusOptions.filter((s) => s.value !== this.task().task_status),
+    );
 
     readonly moveMenuName = computed<DialogName>(() => `move-menu-${this.task().TASK_ID}`);
     openMoveMenu(event: MouseEvent): void {

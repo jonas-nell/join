@@ -35,3 +35,7 @@ $required-color: #FF8190;
 // #endregion
 
 $hover-btn-shadow: 0px 4px 4px 0px #00000040;
+
+
+$card-width: clamp(#{px-to-rem(210)}, 15dvw, #{px-to-rem(250)});
+$scrollbar-width: px-to-rem(5);

@@ -19,8 +19,8 @@ export class NavBar {
     isBoardPage = toSignal(
         this.router.events.pipe(
             filter((e) => e instanceof NavigationEnd),
-            map(() => this.router.url.startsWith('/board'))
+            map(() => this.router.url.startsWith('/board')),
         ),
-        { initialValue: this.router.url.startsWith('/board') }
+        { initialValue: this.router.url.startsWith('/board') },
     );
 }

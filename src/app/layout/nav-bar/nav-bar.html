@@ -1,40 +1,44 @@
 <aside [class.board-nav]="isBoardPage()" [class.public-nav]="!database.isAuthenticated()">
-    <img class="logo" src="./assets/icons/logo.svg" alt="">
+    <img class="logo" src="./assets/icons/logo.svg" alt="" />
     <nav>
         @if (!database.isAuthenticated()) {
-        <div class="nav-link">
-            <a routerLink="/login">
-                <img src="./assets/icons/login.png" alt="">
-                <span>Log in</span>
-            </a>
-        </div>
-    }
+            <div class="nav-link">
+                <a routerLink="/login">
+                    <img src="./assets/icons/login.png" alt="" />
+                    <span>Log in</span>
+                </a>
+            </div>
+        }
         @if (database.isAuthenticated()) {
-        <div class="nav-link" routerLinkActive="active">
-            <a routerLink="/summary">
-                <img src="./assets/icons/Summary.svg" alt="">
-                <span>Summary</span>
-            </a>
-        </div>
-        <div class="nav-link" routerLinkActive="active" (click)="taskmanagement.taskFormMode.set('add')">
-            <a routerLink="/add-task" routerLinkActive="active">
-                <img src="./assets/icons/tasks.svg" alt="">
-                <span>Add Tasks</span>
-            </a>
-        </div>
-        <div class="nav-link" routerLinkActive="active">
-            <a routerLink="/board">
-                <img src="./assets/icons/board.svg" alt="">
-                <span>Board</span>
-            </a>
-        </div>
-        <div class="nav-link" routerLinkActive="active">
-            <a routerLink="/contacts">
-                <img src="./assets/icons/contacts.svg" alt="">
-                <span>Contacts</span>
-            </a>
-        </div>
-    }
+            <div class="nav-link" routerLinkActive="active">
+                <a routerLink="/summary">
+                    <img src="./assets/icons/Summary.svg" alt="" />
+                    <span>Summary</span>
+                </a>
+            </div>
+            <div
+                class="nav-link"
+                routerLinkActive="active"
+                (click)="taskmanagement.taskFormMode.set('add')"
+            >
+                <a routerLink="/add-task" routerLinkActive="active">
+                    <img src="./assets/icons/tasks.svg" alt="" />
+                    <span>Add Tasks</span>
+                </a>
+            </div>
+            <div class="nav-link" routerLinkActive="active">
+                <a routerLink="/board">
+                    <img src="./assets/icons/board.svg" alt="" />
+                    <span>Board</span>
+                </a>
+            </div>
+            <div class="nav-link" routerLinkActive="active">
+                <a routerLink="/contacts">
+                    <img src="./assets/icons/contacts.svg" alt="" />
+                    <span>Contacts</span>
+                </a>
+            </div>
+        }
     </nav>
     <div class="legal">
         <a routerLink="/privacy-policy" routerLinkActive="active">Privacy Policy</a>
