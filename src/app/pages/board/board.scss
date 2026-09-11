@@ -37,7 +37,7 @@ $scrollbar-width: px-to-rem(5);
     );
 
     // Add mode on desktop: form from the right.
-    @include desktop {
+     @media (min-width: 1024px) {
         @include dialog-slide-in-out(
             $from-x: 120%,
             $duration: 400ms
@@ -53,7 +53,7 @@ $scrollbar-width: px-to-rem(5);
     @include flex($align: start, $gap: 24);
 
 
-    @include desktop{
+    @media (min-width: 1024px) {
         padding-bottom: 100px;
         height: calc(100dvh - 6rem);
     }
@@ -75,7 +75,7 @@ $scrollbar-width: px-to-rem(5);
             margin: 0;
             @include font-inter(bold, 48, 2dvh, 64);
 
-            @include desktop {
+             @media (min-width: 1024px) {
                 margin-left: 15px;
             }
         }
@@ -91,7 +91,7 @@ $scrollbar-width: px-to-rem(5);
             margin-top: px-to-rem(12);
         }
 
-        @include desktop {
+         @media (min-width: 1024px) {
             flex-wrap: nowrap;
             gap: 0;
 
@@ -115,7 +115,7 @@ $scrollbar-width: px-to-rem(5);
         width: 100%;
         @include flex($align: start, $gap: 18);
 
-        @include desktop {
+         @media (min-width: 1024px) {
             @include flex($direction: row, $align: start, $justify: start, $gap: 12);
             flex: 1;
             min-height: 0;
@@ -130,7 +130,7 @@ $scrollbar-width: px-to-rem(5);
         .task-container {
             width: 100%;
             @include flex($align: start, $gap: 18);
-            @include desktop {
+             @media (min-width: 1024px) {
                 width: calc(#{$card-width} + #{px-to-rem(24)} + #{$scrollbar-width});
                 height: 100%;
                 min-height: 0;
@@ -145,7 +145,7 @@ $scrollbar-width: px-to-rem(5);
                 @include font-inter(bold, 26, 2dvh, 26);
                 color: $board-text-color;
 
-                @include desktop {
+                 @media (min-width: 1024px) {
                     margin-left: 15px;
                 }
             }
@@ -165,7 +165,7 @@ $scrollbar-width: px-to-rem(5);
                     }
                 }
 
-                @include desktop {
+                 @media (min-width: 1024px) {
                     @include flex($direction: column, $align: start, $justify: start, $gap: 24);
                     flex: 1;
                     min-height: 0;
