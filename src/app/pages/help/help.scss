@@ -6,7 +6,7 @@
     width: 100%;
     @include flex($align: start, $gap: 12);
 
-    .legal-top{
+    .legal-top {
         width: 100%;
         @include flex(row, $justify: space-between, $gap: 14);
     }
@@ -23,9 +23,9 @@
     li {
         list-style: decimal;
     }
-    
+
     ol {
-        @include flex($align:start, $gap: 8);
+        @include flex($align: start, $gap: 8);
     }
 
     li::marker {
@@ -37,7 +37,7 @@
         padding-right: px-to-rem(32);
         max-width: px-to-rem(1300);
 
-        app-back-button{
+        app-back-button {
             display: none;
         }
     }

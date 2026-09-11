@@ -1,22 +1,21 @@
 @use '../../../../public/assets/styles/main.scss' as *;
 
-
-.legal-wrapper{
+.legal-wrapper {
     @include font-inter(regular, 16, 2dvh, 16);
     padding: distance(18, 16);
     width: 100%;
-    @include flex($align:start, $gap: 12);
+    @include flex($align: start, $gap: 12);
 
-    .legal-top{
+    .legal-top {
         width: 100%;
         @include flex(row, $justify: space-between, $gap: 14);
     }
-    
+
     h2 {
         font-size: px-to-rem(42);
     }
 
-    h3{
+    h3 {
         font-size: px-to-rem(20);
     }
 
@@ -25,7 +24,7 @@
         padding-right: px-to-rem(32);
         max-width: px-to-rem(1300);
 
-        app-back-button{
+        app-back-button {
             display: none;
         }
     }

@@ -13,7 +13,7 @@
         display: none;
     }
 
-    &.fading-out{
+    &.fading-out {
         opacity: 0;
     }
 }
@@ -22,9 +22,9 @@
     padding: distance(22, 12, 80, 12);
     @include flex($align: start, $justify: start, $gap: 24);
     @include font-inter(regular, 16, 2%, 16);
-    min-height: calc(100dvh - 6rem - 100px);
+    min-height: calc(100dvh - 6rem - px-to-rem(10));
 
-    @media (min-width: 445px){
+    @media (min-width: 445px) {
         padding-left: 11dvw;
     }
 
@@ -34,7 +34,7 @@
         min-height: calc(100dvh - 6rem);
     }
 
-    @media (min-width: 1400px){
+    @media (min-width: 1400px) {
         padding-left: calc(px-to-rem(250) + px-to-rem(48));
     }
 
@@ -56,7 +56,7 @@
             bottom: 0;
             left: 0;
             width: 48%;
-            height: 3px;
+            height: px-to-rem(3);
             background-color: $button-light;
         }
     }
@@ -72,18 +72,18 @@
             justify-content: start;
         }
 
-        @media (min-width: 1440px){
-            gap: 10%
+        @media (min-width: 1440px) {
+            gap: 10%;
         }
 
         .task-overview {
             @include flex($gap: 18);
-            max-width: 356px;
+            max-width: px-to-rem(356);
             width: 100%;
 
-            @include desktop{
+            @include desktop {
                 width: 50%;
-                max-width: 450px;
+                max-width: px-to-rem(450);
             }
 
             .counter {
@@ -92,22 +92,22 @@
             }
 
             .top {
-                @include flex(row, $justify: space-between, $gap:10);
+                @include flex(row, $justify: space-between, $gap: 10);
                 width: 100%;
 
                 button {
                     @include flex(row, $gap: 10);
                     border-radius: 16px;
                     width: 50%;
-                    height: 95px;
+                    height: px-to-rem(95);
 
-                    @include tablet{
-                        height: 110px;
+                    @include tablet {
+                        height: px-to-rem(110);
                     }
 
                     .icon-default {
-                        height: 40px;
-                        width: 40px;
+                        height: px-to-rem(40);
+                        width: px-to-rem(40);
                     }
 
                     .icon-hover {
@@ -121,8 +121,8 @@
 
                         .icon-hover {
                             display: block;
-                            height: 40px;
-                            width: 40px;
+                            height: px-to-rem(40);
+                            width: px-to-rem(40);
                         }
                     }
 
@@ -138,14 +138,14 @@
                     @include flex(row, $gap: 12);
                     width: 100%;
                     border-radius: 16px;
-                    height: 95px;
+                    height: px-to-rem(95);
 
-                    @include tablet{
-                        height: 110px;
+                    @include tablet {
+                        height: px-to-rem(110);
                     }
 
-                    &:hover{
-                        .right .date{
+                    &:hover {
+                        .right .date {
                             color: white;
                         }
                     }
@@ -174,10 +174,10 @@
                     }
 
                     .devider {
-                        width: 2px;
+                        width: px-to-rem(2);
                         height: 70%;
                         background-color: $font-light;
-                        
+
                         @include tablet {
                             margin-inline: px-to-rem(12);
                         }
@@ -201,10 +201,10 @@
                     @include flex();
                     border-radius: 16px;
                     width: 30%;
-                    height: 95px;
+                    height: px-to-rem(95);
 
-                    @include tablet{
-                        height: 110px;
+                    @include tablet {
+                        height: px-to-rem(110);
                     }
                 }
             }
@@ -212,17 +212,17 @@
 
         .welcome-message {
             display: none;
-            
-            app-greeting{
+
+            app-greeting {
                 width: 100%;
             }
-            
-            @include tablet{
+
+            @include tablet {
                 display: flex;
                 width: 50%;
             }
-            
-            @include desktop{
+
+            @include desktop {
             }
         }
     }

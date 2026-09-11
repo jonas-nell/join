@@ -1,7 +1,5 @@
 @use '../../../../public/assets/styles/main.scss' as *;
 
-
-
 .sect-contact-site {
     height: calc(100dvh - px-to-rem(180));
 
@@ -13,7 +11,6 @@
 // Mobile: show the contact list first.
 .contacts-layout {
     height: 100%;
-    // min-height: 50vh;
 }
 
 // Mobile: hide the profile until a user is selected.
@@ -83,29 +80,6 @@
         }
     }
 }
-
-// Show a large confirmation after successful deletion.
-// .contacts-notification {
-//     @include font-inter(bold, 20, 20px, 20);
-
-//     position: fixed;
-//     right: 50%;
-//     bottom: calc(12dvh + px-to-rem(24));
-//     z-index: 15;
-
-//     width: min(calc(100% - px-to-rem(32)), px-to-rem(500));
-//     padding: px-to-rem(24);
-
-//     color: #166534;
-//     text-align: center;
-
-//     background-color: #dcfce7;
-//     border: 1px solid #86efac;
-//     border-radius: 12px;
-//     box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
-
-//     transform: translateX(50%);
-// }
 
 @include tablet {
     .contacts-layout {
@@ -277,25 +251,6 @@
     &::backdrop {
         background: transparent;
     }
-    // transition:
-    // transform 0.25s ease,
-    // opacity 0.25s ease,
-    // display 0.25s allow-discrete,
-    // overlay 0.25s allow-discrete;
-
-    // @starting-style {
-    // transform: translateX(120%);
-    // opacity: 0;
-    // }
-
-    // &:not([open]) {
-    // transform: translate(120%);
-    // opacity: 0;
-    // }
-
-    // &::backdrop {
-    //     background: transparent;
-    // }
 
     button {
         @include flex(row, $align: center, $justify: start, $gap: 12);

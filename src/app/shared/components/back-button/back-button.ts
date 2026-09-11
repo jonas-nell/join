@@ -12,13 +12,16 @@ const SECONDARY_ROUTES = ['/help', '/legal-notice', '/privacy-policy'];
     styleUrl: './back-button.scss',
 })
 export class BackButton {
-    constructor (private location: Location, private router: Router, private navHistory: NavigationHistoryService) {
-    }
+    constructor(
+        private location: Location,
+        private router: Router,
+        private navHistory: NavigationHistoryService,
+    ) {}
 
     goBack(): void {
         const currentUrl = this.router.url;
         const isSecondaryPage = SECONDARY_ROUTES.some((route) => currentUrl.startsWith(route));
-        
+
         if (isSecondaryPage) {
             this.router.navigateByUrl(this.navHistory.getLastMainRoute());
             return;

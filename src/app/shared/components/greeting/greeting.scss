@@ -6,16 +6,16 @@
     @include font-inter(medium, 42, 2%, 42);
     width: 100%;
 
-    @include tablet{
+    @include tablet {
         align-items: start;
     }
 
     .greeting-time {
-        @include tablet{
-            font-size: 36px;
+        @include tablet {
+            font-size: px-to-rem(36);
         }
-        @include desktop{
-            font-size: 42px;
+        @include desktop {
+            font-size: px-to-rem(42);
         }
     }
 
@@ -23,12 +23,12 @@
         color: $button-blue;
         font-weight: bold;
 
-        @include tablet{
-            font-size: 48px;
+        @include tablet {
+            font-size: px-to-rem(48);
         }
 
-        @include desktop{
-            font-size: 54px;
+        @include desktop {
+            font-size: px-to-rem(54);
         }
     }
 }

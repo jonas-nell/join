@@ -3,7 +3,7 @@ import { Taskmanagement } from '../../shared/services/taskmanagement';
 import { DatePipe } from '@angular/common';
 import { Task } from '../../shared/interfaces/task';
 import { Router } from '@angular/router';
-import { Greeting } from "../../shared/components/greeting/greeting";
+import { Greeting } from '../../shared/components/greeting/greeting';
 import { LoginTransitionService } from '../../shared/services/login-transition-service';
 
 const PRIORITY_DISPLAY: Record<Task['task_priority'], { icon: string; color: string }> = {
@@ -30,7 +30,7 @@ export class Summary implements OnInit {
     ngOnInit(): void {
         this.taskmanagement.ensureTasksLoaded();
 
-        if (this.loginTransition.consume()){
+        if (this.loginTransition.consume()) {
             this.showLoginOverlay.set(true);
 
             setTimeout(() => this.loginOverlayFadingOut.set(true), 2000);
