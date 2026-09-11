@@ -2,7 +2,6 @@ import { Directive, effect, ElementRef, HostListener, inject, input, signal } fr
 import { DialogName, DialogService } from '../services/dialog-service';
 
 @Directive({
-    // directive wird nur auf dialog elemente angewendet (mit dem attribut appDialog)
     selector: 'dialog[appDialog]',
     host: {
         '(click)': 'onClickClose($event)',
@@ -12,18 +11,15 @@ export class Dialog {
     dialogService = inject(DialogService);
     dialog = inject(ElementRef<HTMLDialogElement>);
 
-    // input gleichen namen wie directive selector geben, damit directive angewendet und gleichzeitig ein wert übergeben wird
     appDialog = input.required<DialogName>();
     modal = input<boolean>(true);
 
-    // DAniel
     closeOnBackdrop = input<boolean>(true);
     awaitData = signal<boolean>(true);
 
     constructor() {
-        // wird ausgeführt wenn sich der wert von dialogOpen() im service verändert
         effect(() => {
-            // nativeElement = referenz zu host Element instanz
+            // nativeElement = referenz to host Element instance
             const dialog = this.dialog.nativeElement;
             const name = this.appDialog();
 
@@ -34,18 +30,6 @@ export class Dialog {
             }
         });
     }
-
-    // dialog wird beim klick auf das element geschlossen. dazu zählt auch der backdrop
-    // klick auf elemente im dialog schließen ihn nicht. daher darf der dialog kein padding haben, sondern nur die elemente darin
-    // (falls nötig wrapper innerhalb von dialog nutzen)
-
-    // Daniel
-
-    // onClickClose(event: MouseEvent) {
-    //   if (event.target === event.currentTarget) {
-    //     this.dialogService.closeDialog();
-    //   }
-    // }
 
     onClickClose(event: MouseEvent): void {
         if (event.target === event.currentTarget && this.closeOnBackdrop()) {
