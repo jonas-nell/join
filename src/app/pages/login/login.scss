@@ -37,7 +37,7 @@
     // background below logo, which uses z-index 9999
     z-index: 9998;
 
-    // Initial splash-screen background color.
+    // initial splash-screen background color.
     background: $main-color;
 
     // Run once, then hide...
@@ -123,7 +123,7 @@
 @keyframes switch-logo {
     0%,
     40% {
-        // Start white logo visible 
+        // Start white logo visible
         opacity: 1;
     }
 

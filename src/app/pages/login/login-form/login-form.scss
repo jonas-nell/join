@@ -9,9 +9,9 @@
     background-color: white;
     padding: distance(20, 16);
 
-@include tablet {
-    padding: distance(48, 16);
-}
+    @include tablet {
+        padding: distance(48, 16);
+    }
 
     @include flex();
 

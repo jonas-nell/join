@@ -25,8 +25,6 @@ export class ProfileService {
     readonly profilesError = signal('');
 
     scrollToNewContact = signal<string | null>(null);
-    // // This number changes whenever the profile list must reload.
-    // readonly profilesChanged = signal(0);
 
     readonly selectedProfile = signal<Profile | null>(null);
 
@@ -82,26 +80,6 @@ export class ProfileService {
     getCachedProfileById(profileId: string): Profile | undefined {
         return this.profiles().find((profile) => profile.id === profileId);
     }
-
-    // Store a short message shown to the user.
-    // readonly notification = signal('');
-
-    // Loads the profiles from the Supabase "profiles" table.
-    // async getProfiles(): Promise<Profile[]> {
-    //     const { data, error } = await this.database.client
-    //         .from('profiles')
-    //         .select(PROFILE_COLUMNS)
-    //         .order('user_name');
-
-    //     // Supabase returns an error object when the request fails.
-    //     if (error) {
-    //         console.error('Supabase error:', error);
-    //         throw error;
-    //     }
-    //     // Supabase may return null when no data is available,
-    //     // in that case, return an empty array...
-    //     return data ?? [];
-    // }
 
     // Load one profile using its unique ID.
     async getProfileById(profileId: string): Promise<Profile | null> {
@@ -168,14 +146,12 @@ export class ProfileService {
         const isOwnProfile = profileId === this.database.profileId();
 
         if (isOwnProfile) {
-            // Delete the logged-in Auth account.
-            // and "cascade" also deletes its profile.
-            // Calls supabase function...
+            // Delete the logged-in Auth account and "cascade" also deletes its profile.
             const { error } = await this.database.client.rpc('delete_own_account');
 
             if (error) throw error;
         } else {
-            // Other profiles may only be deleted when they are dummy profiles
+            // Other profiles may only be deleted if they are dummy profiles
             const { data, error } = await this.database.client
                 .from('profiles')
                 .delete()

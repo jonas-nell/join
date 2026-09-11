@@ -8,5 +8,4 @@ import { RouterOutlet } from '@angular/router';
     styleUrl: './login.scss',
 })
 
-
 export class Login {}

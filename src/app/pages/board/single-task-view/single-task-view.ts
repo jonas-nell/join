@@ -10,9 +10,9 @@ import { NotificationService } from '../../../shared/services/notification-servi
 import { ConfirmationService } from '../../../shared/services/confirmation-service';
 import { DialogService } from '../../../shared/services/dialog-service';
 import { Dialog } from '../../../shared/directives/dialog-directive';
-import { ConfirmationDialog } from "../../../shared/components/confirmation/confirmation/confirmation";
+import { ConfirmationDialog } from '../../../shared/components/confirmation/confirmation/confirmation';
 import { TaskMembers } from '../../../shared/services/task-members';
-import { Notification } from "../../../shared/components/notification/notification/notification";
+import { Notification } from '../../../shared/components/notification/notification/notification';
 
 @Component({
     selector: 'app-single-task-view',
@@ -86,7 +86,7 @@ export class SingleTaskView implements OnInit {
     }
 
     openEditDialog(): void {
-    this.taskmanagement.taskFormMode.set('edit');
-    this.dialogService.openDialog('task-form', 'edit');
-}
+        this.taskmanagement.taskFormMode.set('edit');
+        this.dialogService.openDialog('task-form', 'edit');
+    }
 }

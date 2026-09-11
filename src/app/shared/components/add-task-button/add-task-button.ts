@@ -16,14 +16,11 @@ export class AddTaskButton {
     private router = inject(Router);
     private responsive = inject(ResponsiveService);
 
-
-    onAddTaskClick(){
-        if (this.responsive.isDesktop()){
+    onAddTaskClick() {
+        if (this.responsive.isDesktop()) {
             this.dialogService.openDialog('task-form', 'add');
         } else {
             this.router.navigate(['/add-task']);
         }
     }
 }
-
-

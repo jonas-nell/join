@@ -1,10 +1,4 @@
-import {
-    Component,
-    effect,
-    ElementRef,
-    inject,
-    viewChild,
-} from '@angular/core';
+import { Component, effect, ElementRef, inject, viewChild } from '@angular/core';
 
 import { NotificationService } from '../../../services/notification-service';
 
@@ -16,8 +10,7 @@ import { NotificationService } from '../../../services/notification-service';
 export class Notification {
     readonly notificationService = inject(NotificationService);
 
-    private readonly notification =
-        viewChild<ElementRef<HTMLElement>>('notification');
+    private readonly notification = viewChild<ElementRef<HTMLElement>>('notification');
 
     constructor() {
         effect(() => {
