@@ -156,7 +156,7 @@ aside {
     }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1275px) {
     aside.public-nav {
         @include flex(row, center, space-between, 0);
 
@@ -180,7 +180,6 @@ aside {
 
                 &.active {
                     background: $highlight-color;
-                    border-radius: px-to-rem(24);
                     border-radius: 30px;
                 }
             }
